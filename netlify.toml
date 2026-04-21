@@ -1,9 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "ng build --configuration production"
   publish = "dist/exploriando/browser"
 
 [build.environment]
   NODE_VERSION = "20"
+  NPM_VERSION  = "10"
 
 # Netlify Functions
 [functions]
