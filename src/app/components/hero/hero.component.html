@@ -1,0 +1,90 @@
+<section class="hero" aria-label="Sección principal">
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="container hero__content">
+    <span class="badge badge--fresh hero-enter hero-enter-1">{{ t().eyebrow }}</span>
+
+    <h1 class="hero-enter hero-enter-2">{{ t().headline }}</h1>
+
+    <p class="hero__subheadline hero-enter hero-enter-3">{{ t().subheadline }}</p>
+
+    <!-- Formulario de captura de email -->
+    @if (status() !== 'success' && status() !== 'duplicate') {
+      <form class="hero__form hero-enter hero-enter-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="hero__input-group">
+          <div class="form-field">
+            <label for="hero-email" class="visually-hidden">Tu correo electrónico</label>
+            <input
+              id="hero-email"
+              type="email"
+              formControlName="email"
+              placeholder="tu@correo.com"
+              autocomplete="email"
+              [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched"
+              data-testid="hero-email" />
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn--primary btn--lg"
+            [disabled]="status() === 'loading'"
+            [attr.aria-busy]="status() === 'loading'"
+            data-testid="hero-submit">
+            @if (status() === 'loading') {
+              <span class="spinner" aria-hidden="true"></span>
+            } @else {
+              {{ t().cta }}
+            }
+          </button>
+        </div>
+
+        <!-- Honeypot -->
+        <div class="form-field--honeypot" aria-hidden="true">
+          <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <!-- Errores inline -->
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+          <p class="field-error" role="alert">Ingresá un correo válido.</p>
+        }
+        @if (status() === 'error') {
+          <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
+        }
+        @if (status() === 'rateLimit') {
+          <p class="field-error" role="alert">Demasiados intentos. Esperá unos minutos.</p>
+        }
+
+        <p class="hero__subtext">{{ t().ctaSubtext }}</p>
+      </form>
+    }
+
+    <!-- Success -->
+    @if (status() === 'success') {
+      <div class="hero__success" data-testid="hero-success" aria-live="assertive">
+        <span class="hero__success-icon" aria-hidden="true">✓</span>
+        <p>¡Listo! Revisá tu correo — ya sos parte de la comunidad.</p>
+        <div class="hero__gift">
+          <p class="hero__gift-label">✈ Tu regalo de bienvenida</p>
+          <a [href]="giftUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg">
+            Descargar guía gratuita
+          </a>
+          <span class="hero__gift-sub">También te la enviamos por email</span>
+        </div>
+      </div>
+    }
+
+    <!-- Ya suscripto -->
+    @if (status() === 'duplicate') {
+      <div class="hero__success" aria-live="polite">
+        <p>Ya sos parte de la comunidad. ¡Gracias por estar acá!</p>
+        <a [href]="giftUrl" target="_blank" rel="noopener" class="btn btn--outline">
+          Descargar tu guía ✈
+        </a>
+      </div>
+    }
+
+    <!-- Social proof -->
+    <p class="hero__social-proof hero-enter hero-enter-5">{{ t().socialProof }}</p>
+  </div>
+</section>

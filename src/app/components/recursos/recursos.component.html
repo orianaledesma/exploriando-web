@@ -1,0 +1,80 @@
+<section class="recursos" id="recursos" aria-labelledby="recursos-title">
+  <div class="container recursos__grid">
+
+    <!-- Mockup de la guía -->
+    <div class="recursos__preview" aria-hidden="true" appReveal>
+      <div class="recursos__guide-mock">
+        <span class="recursos__guide-label">Guía gratuita</span>
+        <p class="recursos__guide-title">{{ t().guideTitle }}</p>
+        <ul class="recursos__contents">
+          @for (item of t().guideContents; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contenido y formulario -->
+    <div class="recursos__content">
+      <span class="section-label" appReveal [delay]="80">{{ t().sectionLabel }}</span>
+      <h2 id="recursos-title" appReveal [delay]="160">{{ t().headline }}</h2>
+      <p appReveal [delay]="240">{{ t().subheadline }}</p>
+
+      @if (alreadyJoined()) {
+        <div class="recursos__already" aria-live="polite">
+          <p>{{ t().alreadySubscribed }}</p>
+        </div>
+      }
+
+      @if (!alreadyJoined() && status() !== 'success') {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="recursos__form" appReveal [delay]="320">
+
+          <div class="recursos__input-row">
+            <div class="form-field">
+              <label for="recursos-email">{{ t().form.emailLabel }}</label>
+              <input id="recursos-email" type="email" formControlName="email"
+                     [placeholder]="t().form.emailPlaceholder"
+                     autocomplete="email"
+                     [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+            </div>
+
+            <button type="submit" class="btn btn--primary"
+                    [disabled]="status() === 'loading'"
+                    [attr.aria-busy]="status() === 'loading'">
+              @if (status() === 'loading') {
+                <span class="spinner" aria-hidden="true"></span>
+              } @else {
+                {{ t().form.cta }}
+              }
+            </button>
+          </div>
+
+          <!-- Honeypot -->
+          <div class="form-field--honeypot" aria-hidden="true">
+            <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+          </div>
+
+          @if (emailCtrl.invalid && emailCtrl.touched) {
+            <p class="field-error" role="alert">Ingresá un correo válido.</p>
+          }
+          @if (status() === 'error') {
+            <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
+          }
+
+          <p class="recursos__privacy">{{ t().form.privacyNote }}</p>
+        </form>
+      }
+
+      @if (status() === 'success') {
+        <div class="recursos__success" data-testid="recursos-success" aria-live="assertive">
+          <p>{{ t().successMessage }}</p>
+          <a [href]="giftUrl" target="_blank" rel="noopener" class="btn btn--primary">
+            ✈ Descargar guía gratuita
+          </a>
+          <span style="font-size: var(--text-xs); color: var(--color-text-muted)">También te la enviamos por email</span>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

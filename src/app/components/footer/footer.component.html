@@ -1,0 +1,96 @@
+<!-- CTA Final -->
+<section class="footer-cta section--dark" id="comunidad-form" aria-labelledby="footer-cta-title">
+  <div class="container footer-cta__inner">
+    <div class="footer-cta__text" appReveal>
+      <h2 id="footer-cta-title">{{ t().finalCta.headline }}</h2>
+      <p>{{ t().finalCta.subheadline }}</p>
+      <p class="footer-cta__social-proof">{{ t().finalCta.ctaSubtext }}</p>
+    </div>
+
+    @if (status() !== 'success' && status() !== 'duplicate') {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="footer-cta__form" appReveal [delay]="120">
+        <div class="footer-cta__input-row">
+          <div class="form-field">
+            <label for="footer-email" class="visually-hidden">Tu correo</label>
+            <input id="footer-email" type="email" formControlName="email"
+                   placeholder="tu@correo.com" autocomplete="email"
+                   [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+          </div>
+          <button type="submit" class="btn btn--fresh"
+                  [disabled]="status() === 'loading'"
+                  [attr.aria-busy]="status() === 'loading'">
+            @if (status() === 'loading') {
+              <span class="spinner" aria-hidden="true"></span>
+            } @else {
+              {{ t().finalCta.cta }}
+            }
+          </button>
+        </div>
+
+        <div class="form-field--honeypot" aria-hidden="true">
+          <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+        </div>
+
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+          <p class="field-error" role="alert">Ingresá un correo válido.</p>
+        }
+        @if (status() === 'error') {
+          <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
+        }
+      </form>
+    }
+
+    @if (status() === 'success' || status() === 'duplicate') {
+      <div class="footer-cta__success" aria-live="assertive">
+        <p>¡Ya sos parte de la comunidad!</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Footer propiamente dicho -->
+<footer class="footer" role="contentinfo">
+  <div class="container footer__inner">
+
+    <div class="footer__brand">
+      <span class="footer__logo" aria-label="Exploriando">
+        <span class="footer__logo-base">Expl</span><span class="footer__logo-ori">ori</span><span class="footer__logo-base">ando</span>
+      </span>
+      <p class="footer__tagline">{{ t().footer.tagline }}</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Links del footer">
+      @for (col of [t().footer.columns.explore, t().footer.columns.community, t().footer.columns.brands, t().footer.columns.work]; track col.title) {
+        <div class="footer__col">
+          <p class="footer__col-title">{{ col.title }}</p>
+          @for (link of col.links; track link.href) {
+            @if (link.href.startsWith('http')) {
+              <a [href]="link.href"
+                 target="_blank"
+                 rel="noopener"
+                 class="footer__link footer__link--external"
+                 [attr.aria-label]="link.label + ' (abre en nueva pestaña)'">
+                {{ link.label }}
+              </a>
+            } @else if (link.href.startsWith('mailto:')) {
+              <a [href]="link.href" class="footer__link">{{ link.label }}</a>
+            } @else if (link.href.startsWith('#')) {
+              <a [routerLink]="['/']" [fragment]="link.href.slice(1)" class="footer__link">{{ link.label }}</a>
+            } @else {
+              <a [routerLink]="link.href" class="footer__link">{{ link.label }}</a>
+            }
+          }
+        </div>
+      }
+    </nav>
+
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>{{ t().footer.legal }}</p>
+      <p class="footer__made-in">{{ t().footer.madeIn }}</p>
+      <p class="footer__disclaimer">{{ t().footer.disclaimer }}</p>
+    </div>
+  </div>
+</footer>

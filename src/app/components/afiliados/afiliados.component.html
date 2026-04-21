@@ -1,0 +1,43 @@
+<section class="afiliados" id="herramientas" aria-labelledby="afiliados-title">
+  <div class="container">
+
+    <span class="section-label" appReveal>{{ copy.sectionLabel }}</span>
+    <h2 id="afiliados-title" appReveal [delay]="80">{{ copy.headlineA }}</h2>
+    <p class="afiliados__intro" appReveal [delay]="160">{{ copy.intro }}</p>
+
+    <ul class="afiliados__grid" role="list">
+      @for (card of cards; track card.id; let i = $index) {
+        <li class="afiliados__card" appReveal [delay]="240 + i * 100">
+
+          @if (card.badge) {
+            <span class="afiliados__badge">{{ card.badge }}</span>
+          }
+
+          <div class="afiliados__card-header">
+            <span class="afiliados__logo" aria-hidden="true">{{ card.logo }}</span>
+            <div>
+              <p class="afiliados__name">{{ card.name }}</p>
+              <p class="afiliados__tagline">{{ card.tagline }}</p>
+            </div>
+          </div>
+
+          <p class="afiliados__body">{{ card.body }}</p>
+
+          <p class="afiliados__disclaimer">{{ card.disclaimer }}</p>
+
+          <a [href]="card.ctaUrl"
+             target="_blank"
+             rel="noopener noreferrer sponsored"
+             class="btn btn--primary afiliados__cta"
+             [attr.aria-label]="card.cta + ' — ' + card.name">
+            {{ card.cta }}
+          </a>
+
+        </li>
+      }
+    </ul>
+
+    <p class="afiliados__footer-note" appReveal>{{ copy.footerNote }}</p>
+
+  </div>
+</section>

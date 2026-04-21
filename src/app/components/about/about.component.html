@@ -1,0 +1,38 @@
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="container about__grid">
+
+    <div class="about__image" aria-hidden="true" appReveal>
+      <img src="/assets/images/about.webp" alt="Ori y Mindaugas en viaje" loading="lazy" />
+    </div>
+
+    <div class="about__content">
+      <span class="section-label" appReveal [delay]="80">{{ t().sectionLabel }}</span>
+      <h2 id="about-title" appReveal [delay]="160">{{ t().headline }}</h2>
+
+      @for (paragraph of t().body; track paragraph; let i = $index) {
+        <p appReveal [delay]="240 + i * 80">{{ paragraph }}</p>
+      }
+
+      <ul class="about__stats" role="list" appReveal [delay]="400">
+        @for (stat of t().stats; track stat.label) {
+          <li class="about__stat">
+            <span class="about__stat-value">{{ stat.value }}</span>
+            <span class="about__stat-label">{{ stat.label }}</span>
+          </li>
+        }
+      </ul>
+
+      <p class="about__crosslink" appReveal [delay]="480">
+        {{ t().crossSell }}
+        <a href="https://orianaledesma.dev"
+           target="_blank"
+           rel="noopener"
+           class="about__crosslink-cta"
+           [attr.aria-label]="t().crossSellCta + ' (abre en nueva pestaña)'">
+          {{ t().crossSellCta }}
+        </a>
+      </p>
+    </div>
+
+  </div>
+</section>

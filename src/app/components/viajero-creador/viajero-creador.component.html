@@ -1,0 +1,87 @@
+<section class="viajero-creador" id="viajero-creador" aria-labelledby="vc-title">
+  <div class="container">
+
+    <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
+    <h2 id="vc-title" appReveal [delay]="80">{{ t().headline }}</h2>
+    <p class="vc-subheadline" appReveal [delay]="160">{{ t().subheadline }}</p>
+    <p class="vc-intro" appReveal [delay]="240">{{ t().intro }}</p>
+
+    <ul class="vc-topics" role="list">
+      @for (topic of t().topics; track topic.title; let i = $index) {
+        <li class="vc-topic" appReveal [delay]="320 + i * 80">
+          <h3 class="vc-topic__title">{{ topic.title }}</h3>
+          <p class="vc-topic__desc">{{ topic.description }}</p>
+        </li>
+      }
+    </ul>
+
+    <!-- Waitlist form -->
+    <div class="vc-cta" appReveal [delay]="600">
+      <span class="badge badge--waitlist">{{ t().comingSoonBadge }}</span>
+      <p class="vc-cta__text">{{ t().comingSoonText }}</p>
+
+      @if (status() !== 'success' && status() !== 'duplicate') {
+        <form
+          class="vc-waitlist-form"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+          novalidate
+          aria-label="Formulario de lista de espera">
+
+          <div class="vc-waitlist-form__row">
+            <div class="form-field">
+              <label for="vc-email" class="visually-hidden">Tu correo electrónico</label>
+              <input
+                id="vc-email"
+                type="email"
+                formControlName="email"
+                placeholder="tu@correo.com"
+                autocomplete="email"
+                [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn--primary"
+              [disabled]="status() === 'loading'"
+              [attr.aria-busy]="status() === 'loading'">
+              @if (status() === 'loading') {
+                <span class="spinner" aria-hidden="true"></span>
+              } @else {
+                {{ t().cta }}
+              }
+            </button>
+          </div>
+
+          <!-- Honeypot -->
+          <div class="form-field--honeypot" aria-hidden="true">
+            <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+          </div>
+
+          @if (emailCtrl.invalid && emailCtrl.touched) {
+            <p class="field-error" role="alert">Ingresá un correo válido.</p>
+          }
+          @if (status() === 'error') {
+            <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
+          }
+          @if (status() === 'rateLimit') {
+            <p class="field-error" role="alert">Demasiados intentos. Esperá unos minutos.</p>
+          }
+        </form>
+      }
+
+      @if (status() === 'success') {
+        <p class="vc-waitlist-success" aria-live="assertive" role="status">
+          ✓ {{ t().waitlistSuccess }}
+        </p>
+      }
+
+      @if (status() === 'duplicate') {
+        <p class="vc-waitlist-success" aria-live="polite" role="status">
+          {{ t().waitlistDuplicate }}
+        </p>
+      }
+    </div>
+
+  </div>
+</section>

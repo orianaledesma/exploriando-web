@@ -1,0 +1,30 @@
+<section class="comunidad" id="comunidad" aria-labelledby="comunidad-title">
+  <div class="container">
+
+    <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
+    <h2 id="comunidad-title" appReveal [delay]="80">{{ t().headline }}</h2>
+
+    <ul class="comunidad__items" role="list" appReveal [delay]="160">
+      @for (item of t().items; track item.title) {
+        <li class="comunidad__item">
+          <span class="comunidad__item-icon" aria-hidden="true">{{ item.icon }}</span>
+          <div class="comunidad__item-body">
+            <p class="comunidad__item-title">{{ item.title }}</p>
+            <p class="comunidad__item-desc">{{ item.desc }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+
+    <div class="comunidad__cta" appReveal [delay]="280">
+      <button
+        type="button"
+        class="btn btn--primary btn--lg"
+        (click)="scrollToHero()"
+        aria-label="Sumarme gratis — ir al formulario de la comunidad">
+        {{ t().cta }}
+      </button>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,71 @@
+<section class="ugc" id="marcas" aria-labelledby="ugc-title">
+  <div class="container">
+
+    <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
+    <h2 id="ugc-title" appReveal [delay]="80">{{ t().headline }}</h2>
+    <p class="ugc__subheadline" appReveal [delay]="160">{{ t().subheadline }}</p>
+
+    <!-- Portfolio cards -->
+    <div class="ugc__portfolio" appReveal [delay]="200">
+      <h3 class="ugc__portfolio-title">{{ portfolioTitle }}</h3>
+      <ul class="ugc__portfolio-grid" role="list">
+        @for (card of portfolio; track card.brand; let i = $index) {
+          <li class="ugc__portfolio-card" appReveal [delay]="240 + i * 80">
+            <span
+              class="ugc__portfolio-badge"
+              [class.ugc__portfolio-badge--available]="card.status === 'available'"
+              [attr.aria-label]="'Estado: ' + card.badge">
+              {{ card.badge }}
+            </span>
+            <p class="ugc__portfolio-brand">{{ card.brand }}</p>
+            <p class="ugc__portfolio-type">{{ card.type }}</p>
+            <p class="ugc__portfolio-desc">{{ card.desc }}</p>
+            @if (card.status === 'available') {
+              <a [href]="formUrl"
+                 target="_blank"
+                 rel="noopener"
+                 class="btn btn--outline ugc__portfolio-cta"
+                 [attr.aria-label]="'Reservar slot — ' + card.brand + ' (abre en nueva pestaña)'">
+                Reservar slot →
+              </a>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Pricing packages -->
+    <ul class="ugc__packages" role="list">
+      @for (pkg of t().packages; track pkg.name; let i = $index) {
+        <li class="ugc__package" [class.ugc__package--featured]="i === 1" [attr.aria-label]="pkg.name"
+            appReveal [delay]="320 + i * 100">
+          @if (i === 1) {
+            <span class="ugc__featured-badge">Más elegido</span>
+          }
+          <p class="ugc__package-name">{{ pkg.name }}</p>
+          <p class="ugc__package-price">{{ pkg.price }}</p>
+          <ul class="ugc__includes" role="list">
+            @for (item of pkg.includes; track item) {
+              <li class="ugc__include-item">{{ item }}</li>
+            }
+          </ul>
+          <a [href]="formUrl"
+             target="_blank"
+             rel="noopener"
+             class="btn btn--outline ugc__pkg-cta"
+             [attr.aria-label]="'Quiero el ' + pkg.name + ' (abre en nueva pestaña)'">
+            Quiero este paquete
+          </a>
+        </li>
+      }
+    </ul>
+
+    <div class="ugc__cta" appReveal [delay]="120">
+      <a routerLink="/marcas" class="btn btn--primary btn--lg">
+        {{ t().cta }}
+      </a>
+      <span class="ugc__cta-sub">{{ t().ctaSubtext }}</span>
+    </div>
+
+  </div>
+</section>
