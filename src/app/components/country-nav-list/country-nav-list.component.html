@@ -1,0 +1,17 @@
+<nav class="country-nav" [attr.aria-label]="t().countriesNavLabel">
+  <ul class="country-nav__list" role="list">
+    @for (c of countries(); track c.code) {
+      <li class="country-nav__item">
+        <a
+          class="country-nav__link"
+          [routerLink]="['/mapa', c.slug]"
+          [attr.aria-label]="ariaLabelFor(c)">
+          <span class="country-nav__flag" aria-hidden="true">{{ c.flag }}</span>
+          <span class="country-nav__name">{{ c.name }}</span>
+          <span class="country-nav__count" aria-hidden="true">{{ countOf(c.code) }} {{ citySuffix(countOf(c.code)) }}</span>
+          <span class="country-nav__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

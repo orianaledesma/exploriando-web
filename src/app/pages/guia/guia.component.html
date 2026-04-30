@@ -1,0 +1,217 @@
+<main class="guia-page">
+
+  <!-- HERO -->
+  <section class="guia-hero">
+    <div class="container guia-hero__inner">
+      <a routerLink="/" class="guia-hero__back">← Volver al inicio</a>
+      <span class="guia-hero__eyebrow">La guía completa</span>
+      <h1 class="guia-hero__title">Guía para tu primer viaje.</h1>
+      <p class="guia-hero__sub">
+        Todo lo que aprendí en 10 años viajando full time, condensado en
+        una guía que podés leer en una noche.
+      </p>
+      <p class="guia-hero__author">Por <strong>Ori</strong> · Exploriando</p>
+    </div>
+  </section>
+
+  @if (!unlocked()) {
+    <!-- EMAIL GATE -->
+    <section class="guia-gate" appReveal>
+      <div class="container guia-gate__inner">
+        <p class="guia-gate__eyebrow">Antes de empezar</p>
+        <h2 class="guia-gate__title">Dejá tu email y entrás a leer la guía.</h2>
+        <p class="guia-gate__sub">
+          La leés acá mismo, sin descargas. Y te mando una copia al correo
+          para tenerla guardada cuando estés sin internet.
+        </p>
+
+        <div class="guia-vs" appReveal [delay]="80">
+          <h3 class="guia-vs__title">{{ copy.vsGratuita.vsTitle }}</h3>
+          <div class="guia-vs__grid">
+            <div class="guia-vs__col guia-vs__col--free">
+              <p class="guia-vs__label">{{ copy.vsGratuita.freeLabel }}</p>
+              <ul role="list">
+                @for (item of copy.vsGratuita.free; track item) {
+                  <li class="guia-vs__item guia-vs__item--free">{{ item }}</li>
+                }
+              </ul>
+            </div>
+            <div class="guia-vs__col guia-vs__col--paid">
+              <p class="guia-vs__label">{{ copy.vsGratuita.paidLabel }}</p>
+              <ul role="list">
+                @for (item of copy.vsGratuita.paid; track item) {
+                  <li class="guia-vs__item guia-vs__item--paid">{{ item }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="guia-gate__form">
+          <div class="guia-gate__row">
+            <div class="form-field">
+              <label for="guia-email" class="visually-hidden">Tu correo electrónico</label>
+              <input
+                id="guia-email"
+                type="email"
+                formControlName="email"
+                placeholder="tu@correo.com"
+                autocomplete="email"
+                [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--lg"
+                    [disabled]="status() === 'loading'"
+                    [attr.aria-busy]="status() === 'loading'">
+              @if (status() === 'loading') {
+                <span class="spinner" aria-hidden="true"></span>
+              } @else {
+                Acceder a la guía →
+              }
+            </button>
+          </div>
+
+          <!-- Honeypot -->
+          <div class="form-field--honeypot" aria-hidden="true">
+            <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+          </div>
+
+          @if (emailCtrl.invalid && emailCtrl.touched) {
+            <p class="field-error" role="alert">Ingresá un correo válido.</p>
+          }
+          @if (status() === 'error') {
+            <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
+          }
+          @if (status() === 'rateLimit') {
+            <p class="field-error" role="alert">Demasiados intentos. Esperá unos minutos.</p>
+          }
+
+          <p class="guia-gate__privacy">
+            Cero spam. Podés darte de baja cuando quieras.
+          </p>
+        </form>
+      </div>
+    </section>
+  }
+
+  @if (unlocked()) {
+    <!-- ÍNDICE -->
+    <section class="guia-index" appReveal>
+      <div class="container">
+        <p class="guia-index__label">En esta guía</p>
+        <ol class="guia-index__list" role="list">
+          @for (item of copy.includes; track item.title; let i = $index) {
+            <li class="guia-index__item">
+              <a [href]="'#capitulo-' + (i + 1)" class="guia-index__link">
+                <span class="guia-index__num">{{ i + 1 }}</span>
+                {{ item.title }}
+              </a>
+            </li>
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- CAPÍTULOS -->
+    <div class="guia-chapters">
+      <div class="container">
+
+        @for (item of copy.includes; track item.title; let i = $index) {
+          <article class="guia-chapter" [id]="'capitulo-' + (i + 1)" appReveal [delay]="60">
+            <div class="guia-chapter__header">
+              <span class="guia-chapter__num">{{ i + 1 }}</span>
+              <span class="guia-chapter__icon" aria-hidden="true">{{ item.icon }}</span>
+              <h2 class="guia-chapter__title">{{ item.title }}</h2>
+            </div>
+            <p class="guia-chapter__desc">{{ item.desc }}</p>
+
+            @if (item.body) {
+              <div class="guia-chapter__body">
+                @for (block of item.body; track $index) {
+                  @if (block.type === 'p') {
+                    <p>{{ block.text }}</p>
+                  }
+                  @if (block.type === 'h3') {
+                    <h3>{{ block.text }}</h3>
+                  }
+                  @if (block.type === 'ul') {
+                    <ul role="list">
+                      @for (li of block.items; track li) {
+                        <li>{{ li }}</li>
+                      }
+                    </ul>
+                  }
+                  @if (block.type === 'callout') {
+                    <aside class="guia-chapter__callout">
+                      <strong>{{ block.title }}</strong>
+                      <p>{{ block.text }}</p>
+                    </aside>
+                  }
+                }
+              </div>
+            }
+
+            <!-- Afiliado Revolut — capítulo de presupuesto / dinero (índice 2) -->
+            @if (i === 2) {
+              <div class="guia-affiliate guia-affiliate--revolut">
+                <div class="guia-affiliate__content">
+                  <p class="guia-affiliate__name">💳 Revolut</p>
+                  <p class="guia-affiliate__text">
+                    La herramienta que uso para no perder dinero en comisiones bancarias al pagar en el exterior.
+                    Tipo de cambio real, sin recargo, cuenta gratis.
+                  </p>
+                </div>
+                <a [href]="revolutUrl" target="_blank" rel="noopener sponsored"
+                   class="btn btn--outline guia-affiliate__cta">
+                  Abrir cuenta gratis →
+                </a>
+              </div>
+            }
+
+            <!-- Afiliado Heymondo — capítulo de seguros (índice 4) -->
+            @if (i === 4) {
+              <div class="guia-affiliate guia-affiliate--heymondo">
+                <div class="guia-affiliate__content">
+                  <p class="guia-affiliate__name">🛡 Heymondo</p>
+                  <p class="guia-affiliate__text">
+                    El seguro que uso y recomiendo. Chat 24/7 en la app, cobertura real, sin letra chica.
+                    Con el código <strong>EXPLORIANDO</strong> tenés descuento.
+                  </p>
+                </div>
+                <a [href]="heymondoUrl" target="_blank" rel="noopener sponsored"
+                   class="btn btn--outline guia-affiliate__cta">
+                  Ver coberturas →
+                </a>
+              </div>
+            }
+          </article>
+
+          @if (i < copy.includes.length - 1) {
+            <hr class="guia-chapter__divider" />
+          }
+        }
+
+      </div>
+    </div>
+
+    <!-- CTA COMUNIDAD -->
+    <section class="guia-cta" appReveal>
+      <div class="container guia-cta__inner">
+        <p class="guia-cta__eyebrow">¿Querés más como esto?</p>
+        <h2 class="guia-cta__title">Cada semana mando algo nuevo a la comunidad.</h2>
+        <p class="guia-cta__sub">
+          Más destinos, errores que evitar, recursos que uso en el camino.
+          Todo directo a tu email.
+        </p>
+        <a routerLink="/" fragment="comunidad" class="btn btn--primary btn--lg">
+          Ver más en la home →
+        </a>
+        <p class="guia-cta__contact">
+          ¿Tenés preguntas? Escribime a
+          <a href="mailto:exploriando.info@gmail.com">exploriando.info&#64;gmail.com</a>
+        </p>
+      </div>
+    </section>
+  }
+
+</main>

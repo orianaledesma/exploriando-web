@@ -1,0 +1,40 @@
+<svg
+  class="world-map"
+  [class.world-map--compact]="compact()"
+  viewBox="0 0 800 313"
+  preserveAspectRatio="xMidYMid meet"
+  role="img"
+  [attr.aria-label]="t().mapAriaLabel"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <g class="world-map__continents" aria-hidden="true">
+    @for (d of continentPaths; track d) {
+      <path [attr.d]="d" />
+    }
+  </g>
+
+  <g class="world-map__markers">
+    @for (m of markers(); track m.slug) {
+      <a
+        class="world-map__marker"
+        [class.world-map__marker--inactive]="!isActive(m)"
+        [class.world-map__marker--region-europe]="m.countryCode === 'NLD' || m.countryCode === 'DEU' || m.countryCode === 'ESP' || m.countryCode === 'FRA' || m.countryCode === 'ITA' || m.countryCode === 'EGY'"
+        [routerLink]="['/mapa', m.countrySlug]"
+        [attr.aria-label]="ariaLabel(m)">
+        <rect
+          class="world-map__marker-hit"
+          [attr.x]="m.x - 6"
+          [attr.y]="m.y - 6"
+          width="12"
+          height="12" />
+        <circle
+          class="world-map__marker-dot"
+          [attr.cx]="m.x"
+          [attr.cy]="m.y"
+          r="2.4" />
+        <title>{{ tooltip(m) }}</title>
+      </a>
+    }
+  </g>
+
+</svg>

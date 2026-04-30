@@ -6,6 +6,7 @@
   --color-accent-fresh:    #4ECEC5;
   --color-accent-warm:     #7184F0;
   --color-accent-green:    #4ECEC5;
+  --color-accent-dim:      rgba(255, 107, 107, 0.10);
   --color-fresh-glow:      rgba(78, 206, 197, 0.20);
 
   // Backgrounds
@@ -109,6 +110,13 @@ video {
 }
 
 a { color: inherit; }
+
+// Focus management programático (a11y para cambios de ruta SPA): los
+// elementos con `tabindex="-1"` reciben focus solo vía `.focus()` para
+// anunciar a screen readers el nuevo título. No deben mostrar outline visual.
+// Si el usuario navega por teclado, el outline aparece en otros elementos
+// (links, botones) que tienen tabindex >= 0 — esos no son afectados.
+[tabindex="-1"]:focus { outline: none; }
 
 button {
   font-family: inherit;
@@ -496,3 +504,4 @@ select {
     &:hover { background: var(--color-text-muted); }
   }
 }
+

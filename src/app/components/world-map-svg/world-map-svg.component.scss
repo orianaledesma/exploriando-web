@@ -1,0 +1,107 @@
+// Mapa SVG estilizado con markers a nivel ciudad.
+// Mobile: decorativo. Desktop con pointer fino: interactivo con hover.
+
+.world-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 313;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+// ─── Continentes ────────────────────────────────────────────────────────────
+.world-map__continents {
+  fill: var(--color-bg-soft);
+  stroke: var(--color-text-muted);
+  stroke-opacity: 0.12;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+// ─── Markers ────────────────────────────────────────────────────────────────
+.world-map__marker {
+  // Default: decorativo, no recibe taps
+  pointer-events: none;
+  cursor: default;
+  outline: none;
+
+  // Halo vacío por default — solo aparece en hover/focus desktop
+  &-dot {
+    fill: var(--color-accent);                   // coral (América)
+    stroke: var(--color-bg-primary);
+    stroke-width: 0.7;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: r 120ms ease, fill-opacity 120ms ease;
+    }
+  }
+
+  &-hit {
+    fill: transparent;                           // tap target invisible 12x12 viewBox
+  }
+
+  // Markers de Europa + Egipto: turquesa
+  &--region-europe .world-map__marker-dot {
+    fill: var(--color-accent-fresh);
+  }
+
+  // Países atenuados cuando hay un país activo distinto
+  &--inactive .world-map__marker-dot {
+    fill-opacity: 0.4;
+  }
+
+  // ─── Solo en desktop con pointer fino: interactividad real ─────────────────
+  @media (min-width: 768px) and (pointer: fine) {
+    pointer-events: auto;
+    cursor: pointer;
+
+    &:hover .world-map__marker-dot,
+    &:focus-visible .world-map__marker-dot {
+      r: 4;
+      fill-opacity: 1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent-fresh);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+  }
+}
+
+// ─── Variante compact (MapaTeaser) ──────────────────────────────────────────
+.world-map--compact {
+  .world-map__marker-dot { r: 1.8; }
+
+  @media (min-width: 768px) and (pointer: fine) {
+    .world-map__marker:hover .world-map__marker-dot,
+    .world-map__marker:focus-visible .world-map__marker-dot {
+      r: 3;
+    }
+  }
+}
+
+// ─── Mobile (M3): dots más grandes + treatment banner ──────────────────────
+// A 375px viewport el SVG queda en ~131px de altura. Sin este override los
+// dots de r=2.4 quedan a 1.13px reales — invisibles. Subimos el radio para
+// que se sigan leyendo como "puntos de mapa", no como motas.
+@media (max-width: 767px) {
+  .world-map__marker-dot {
+    r: 4;
+    stroke-width: 1.2;
+  }
+
+  .world-map--compact .world-map__marker-dot {
+    r: 3.4;
+    stroke-width: 1;
+  }
+
+  // Treatment banner: sombra y borde sutiles para que el SVG se sienta
+  // como un objeto/card y no parte del fondo plano.
+  .world-map {
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+  }
+}

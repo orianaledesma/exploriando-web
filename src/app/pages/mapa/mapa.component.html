@@ -1,0 +1,37 @@
+<section class="mapa">
+
+  <header class="mapa__header">
+    <div class="container">
+      <p class="mapa__eyebrow">{{ t().eyebrow }}</p>
+      <h1 #pageTitle class="mapa__title">{{ t().title }}</h1>
+      <p class="mapa__subtitle">{{ t().subtitle }}</p>
+
+      <ul class="mapa__stats" role="list">
+        <li class="mapa__stat">
+          <span class="mapa__stat-value">{{ stats().countries }}</span>
+          <span class="mapa__stat-label">{{ t().countriesLabel }}</span>
+        </li>
+        <li class="mapa__stat">
+          <span class="mapa__stat-value">{{ stats().places }}</span>
+          <span class="mapa__stat-label">{{ t().placesLabel }}</span>
+        </li>
+        <li class="mapa__stat">
+          <span class="mapa__stat-value">10+</span>
+          <span class="mapa__stat-label">{{ t().yearsLabel }}</span>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="container mapa__layout">
+    <div class="mapa__svg">
+      <app-world-map-svg [places]="places" />
+      <p class="mapa__hint">{{ t().mapHint }}</p>
+    </div>
+
+    <div class="mapa__list">
+      <app-country-nav-list [countries]="countries()" [cityCounts]="cityCounts()" />
+    </div>
+  </div>
+
+</section>

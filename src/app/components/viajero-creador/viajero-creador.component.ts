@@ -14,6 +14,8 @@ import { EmailCaptureStatus } from '../../models/email-capture.model';
 
 const WAITLIST_SOURCE = 'viajero-creador' as const;
 
+const BOOKING_URL = 'https://calendly.com/orianaledesma/asesoria-exploriando';
+
 @Component({
   selector: 'app-viajero-creador',
   templateUrl: './viajero-creador.component.html',
@@ -26,8 +28,9 @@ export class ViajeroCreadorComponent {
   private readonly fb           = inject(FormBuilder);
   private readonly emailService = inject(EmailCaptureService);
 
-  readonly t      = computed(() => TRANSLATIONS[this.lang.current()].viajeroCreador);
-  readonly status = signal<EmailCaptureStatus>('idle');
+  readonly t          = computed(() => TRANSLATIONS[this.lang.current()].viajeroCreador);
+  readonly status     = signal<EmailCaptureStatus>('idle');
+  readonly bookingUrl = BOOKING_URL;
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],

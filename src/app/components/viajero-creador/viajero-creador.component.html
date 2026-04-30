@@ -15,6 +15,38 @@
       }
     </ul>
 
+    <!-- Sesiones 1:1 disponibles ahora -->
+    <div class="vc-sessions" appReveal [delay]="500">
+      <p class="vc-sessions__pre">{{ t().sessions.preTitle }}</p>
+      <h3 class="vc-sessions__title">{{ t().sessions.title }}</h3>
+      <p class="vc-sessions__sub">{{ t().sessions.sub }}</p>
+
+      <div class="vc-sessions__grid">
+        <article class="vc-session-card">
+          <p class="vc-session-card__name">{{ t().sessions.session1Name }}</p>
+          <p class="vc-session-card__duration">{{ t().sessions.session1Duration }}</p>
+          <p class="vc-session-card__price">USD 150</p>
+          <a [href]="bookingUrl" target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta">
+            {{ t().sessions.cta }}
+          </a>
+        </article>
+
+        <article class="vc-session-card vc-session-card--featured">
+          <span class="vc-session-card__badge">{{ t().sessions.session2Badge }}</span>
+          <p class="vc-session-card__name">{{ t().sessions.session2Name }}</p>
+          <p class="vc-session-card__duration">{{ t().sessions.session2Duration }}</p>
+          <p class="vc-session-card__price">USD 400</p>
+          <a [href]="bookingUrl" target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta">
+            {{ t().sessions.cta }}
+          </a>
+        </article>
+      </div>
+
+      <p class="vc-sessions__note">{{ t().sessions.ctaNote }}</p>
+    </div>
+
     <!-- Waitlist form -->
     <div class="vc-cta" appReveal [delay]="600">
       <span class="badge badge--waitlist">{{ t().comingSoonBadge }}</span>

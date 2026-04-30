@@ -43,7 +43,7 @@ export const AFILIADOS_COPY_A: AfiliadosCopy = {
         'Es el que le recomiendo a cualquiera que viaja por primera vez.',
       disclaimer: 'Cobertura desde €35 por viaje.',
       cta:        'Conseguir descuento',
-      ctaUrl:     'https://heymondo.com',   // reemplazar con link de afiliado
+      ctaUrl:     'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=ENTRADA&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa',
       badge:      'El que yo uso',
     },
     {
@@ -70,7 +70,7 @@ export const AFILIADOS_COPY_A: AfiliadosCopy = {
         'En mi primer año de uso me ahorré cientos de euros. La cuenta es gratis.',
       disclaimer: 'Cuenta gratuita. Sin costos de apertura.',
       cta:        'Abrir cuenta gratis',
-      ctaUrl:     'https://revolut.com',    // reemplazar con link de afiliado
+      ctaUrl:     'https://revolut.com/referral/?referral-code=oriledesma!MAY1-26-AR-H3-RNDM&geo-redirect',
       badge:      'Gratis',
     },
   ],
@@ -100,7 +100,7 @@ export const AFILIADOS_COPY_B: AfiliadosCopy = {
         'Lo usé, funcionó. Es el primero que contrato antes de cada viaje.',
       disclaimer: 'Cobertura desde €35 por viaje.',
       cta:        'Ver coberturas',
-      ctaUrl:     'https://heymondo.com',
+      ctaUrl:     'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=ENTRADA&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa',
       badge:      'Recomendado',
     },
     {
@@ -126,7 +126,7 @@ export const AFILIADOS_COPY_B: AfiliadosCopy = {
         'Abrís la cuenta en 5 minutos desde el teléfono y la usás en cualquier parte del mundo.',
       disclaimer: 'Plan gratuito disponible.',
       cta:        'Abrir mi cuenta',
-      ctaUrl:     'https://revolut.com',
+      ctaUrl:     'https://revolut.com/referral/?referral-code=oriledesma!MAY1-26-AR-H3-RNDM&geo-redirect',
       badge:      'Gratis',
     },
   ],

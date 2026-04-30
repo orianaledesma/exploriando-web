@@ -1,5 +1,5 @@
 [build]
-  command = "ng build --configuration production"
+  command = ""
   publish = "dist/exploriando/browser"
 
 [build.environment]

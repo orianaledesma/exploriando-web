@@ -1,0 +1,112 @@
+.mapa {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── Header ────────────────────────────────────────────────────────────────
+.mapa__header {
+  // --space-3xl da respiro real entre el nav fijo (64px) y el título.
+  padding-top:    var(--space-3xl);
+  padding-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.mapa__eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-sm);
+}
+
+.mapa__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin-bottom: var(--space-sm);
+}
+
+.mapa__subtitle {
+  max-width: 38rem;
+  margin: 0 auto var(--space-lg);
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.mapa__stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.mapa__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mapa__stat-value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-black);
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.mapa__stat-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: lowercase;
+  margin-top: var(--space-2xs);
+}
+
+// ─── Layout: SVG arriba, lista abajo (mobile); SVG | lista (desktop) ───────
+.mapa__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-3xl);
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+}
+
+.mapa__svg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.mapa__hint {
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  margin: 0;
+
+  &::before {
+    content: '↓ ';
+    color: var(--color-accent);
+
+    @media (min-width: 900px) {
+      content: '→ ';
+    }
+  }
+}
+
+.mapa__list {
+  // En desktop: sidebar sticky para que la lista siempre esté visible
+  // mientras se hace scroll del SVG (que es alto en aspect-ratio 800x313).
+  @media (min-width: 900px) {
+    position: sticky;
+    top: var(--space-2xl);
+    max-height: calc(100vh - var(--space-3xl));
+    overflow-y: auto;
+  }
+}

@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: clamp(560px, 90svh, 720px);
   display: flex;
   align-items: center;
   background:

@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "discover:youtube": "node scripts/discover-youtube-videos.mjs",
+    "pick:youtube": "node scripts/pick-best-videos.mjs",
+    "fetch:descriptions": "node scripts/fetch-youtube-descriptions.mjs"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@emailjs/browser": "^4.4.1",
+    "marked": "^15.0.12",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -27,8 +31,8 @@
     "@angular-devkit/build-angular": "^19.0.0",
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
-    "@netlify/functions": "^2.0.0",
     "@anthropic-ai/sdk": "^0.37.0",
+    "@netlify/functions": "^2.0.0",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.0.0",
     "jasmine-core": "~5.1.0",

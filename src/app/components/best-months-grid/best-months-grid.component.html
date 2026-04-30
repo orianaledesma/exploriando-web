@@ -1,0 +1,15 @@
+@if (hasActive()) {
+  <ul class="months" role="list" aria-label="Meses recomendados para visitar">
+    @for (cell of cells(); track cell.index) {
+      <li
+        class="months__cell"
+        [class.months__cell--active]="cell.active"
+        [attr.aria-label]="cell.long"
+        [title]="cell.long">
+        {{ cell.short }}
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="months__empty">Mejor época: por confirmar</p>
+}

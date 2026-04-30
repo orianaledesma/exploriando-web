@@ -43,5 +43,12 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Keys de desarrollo local — NUNCA subir al repo
+src/environments/environment.ts
+
 # Netlify
 .netlify/
+
+# Output de scripts/discover-youtube-videos.mjs (regenerable)
+scripts/youtube-matches.json
+scripts/youtube-recommended.json

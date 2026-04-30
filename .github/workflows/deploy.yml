@@ -16,7 +16,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: ng test --watch=false --browsers=ChromeHeadless
+      - run: npx ng test --watch=false --browsers=ChromeHeadless
 
   deploy:
     needs: test
@@ -29,16 +29,22 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - name: Inject environment variables
-        run: |
-          sed -i "s/serviceId:  ''/serviceId:  '${{ secrets.EMAILJS_SERVICE_ID }}'/" src/environments/environment.prod.ts
-          sed -i "s/templateId: ''/templateId: '${{ secrets.EMAILJS_TEMPLATE_ID }}'/" src/environments/environment.prod.ts
-          sed -i "s/publicKey:  ''/publicKey:  '${{ secrets.EMAILJS_PUBLIC_KEY }}'/" src/environments/environment.prod.ts
-      - run: ng build --configuration production
-      - name: Deploy to Netlify
+
+      - name: Generar environment.prod.ts desde GitHub Secrets
+        run: node scripts/set-env.js
+        env:
+          EMAILJS_SERVICE_ID:              ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_NOTIFICATION_TEMPLATE_ID: ${{ secrets.EMAILJS_NOTIFICATION_TEMPLATE_ID }}
+          EMAILJS_CONFIRMATION_TEMPLATE_ID: ${{ secrets.EMAILJS_CONFIRMATION_TEMPLATE_ID }}
+          EMAILJS_PUBLIC_KEY:              ${{ secrets.EMAILJS_PUBLIC_KEY }}
+
+      - name: Build producción
+        run: npx ng build --configuration production
+
+      - name: Deploy a Netlify
         uses: netlify/actions/cli@master
         with:
           args: deploy --prod --dir=dist/exploriando/browser
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}

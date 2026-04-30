@@ -1,5 +1,5 @@
 .recursos {
-  background-color: var(--color-accent-warm);
+  background-color: var(--color-bg-soft);
 
   &__grid {
     display: grid;
@@ -16,46 +16,19 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-
-    h2, p { color: var(--color-text-on-accent); }
-    p     { opacity: 0.9; }
-
-    .section-label { color: var(--color-text); opacity: 0.7; }
   }
 
-  &__form { display: flex; flex-direction: column; gap: var(--space-sm); }
-
-  &__input-row {
+  &__cta-block {
     display: flex;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
-
-    .form-field { flex: 1; min-width: 200px; }
-
-    input {
-      background: rgba(255,255,255,0.90);
-      border-color: transparent;
-      &:focus { background: #fff; }
-    }
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
   }
 
   &__privacy {
-    font-size: var(--text-xs) !important;
-    opacity: 0.70 !important;
-  }
-
-  &__success {
-    background: rgba(255,255,255,0.30);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-    p { color: var(--color-text-on-accent); font-weight: var(--font-weight-medium); }
-  }
-
-  &__already {
-    background: rgba(255,255,255,0.20);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-    p { color: var(--color-text-on-accent); }
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
   }
 
   // Mockup de la guía
@@ -65,12 +38,13 @@
   }
 
   &__guide-mock {
-    background: #fff;
+    background: var(--color-bg-primary);
     border-radius: var(--radius-xl);
     padding: var(--space-xl);
-    box-shadow: var(--shadow-lg), 0 20px 60px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-lg), 0 20px 60px rgba(0,0,0,0.08);
     max-width: 340px;
     width: 100%;
+    border: 1px solid var(--color-border);
   }
 
   &__guide-label {
@@ -111,6 +85,31 @@
         color: var(--color-accent-green);
         font-weight: var(--font-weight-bold);
       }
+    }
+  }
+
+  &__testimonial {
+    margin: var(--space-lg) 0 0;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+
+    p {
+      font-size: var(--text-base);
+      color: var(--color-text);
+      line-height: 1.6;
+      font-style: italic;
+      margin: 0;
+    }
+
+    cite {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      font-style: normal;
     }
   }
 }

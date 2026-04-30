@@ -1,0 +1,231 @@
+.place {
+  padding-top:    var(--space-lg);
+  padding-bottom: var(--space-3xl);
+}
+
+// ─── Missing state ─────────────────────────────────────────────────────────
+
+.place--missing {
+  text-align: center;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+
+  h1 { margin-bottom: var(--space-md); }
+  p  { color: var(--color-text-muted); margin-bottom: var(--space-lg); }
+}
+
+// ─── Breadcrumbs ────────────────────────────────────────────────────────────
+
+.place__crumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding-top:    var(--space-sm);
+  padding-bottom: var(--space-md);
+
+  a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+
+    &:hover { color: var(--color-accent); }
+  }
+
+  span[aria-hidden] {
+    color: var(--color-border);
+  }
+
+  span[aria-current] {
+    color: var(--color-text);
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+// ─── Hero ──────────────────────────────────────────────────────────────────
+
+.place__hero {
+  text-align: center;
+  padding-top:    var(--space-lg);
+  padding-bottom: var(--space-xl);
+}
+
+.place__flag {
+  display: block;
+  font-size: clamp(4rem, 8vw, 6rem);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.place__title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: var(--space-2xs);
+}
+
+.place__country {
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.place__months {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 auto;
+  max-width: max-content;
+}
+
+.place__months-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+}
+
+// ─── Video ─────────────────────────────────────────────────────────────────
+
+.place__video {
+  max-width: 64rem;
+  margin: 0 auto var(--space-2xl);
+}
+
+// ─── Body (markdown) ───────────────────────────────────────────────────────
+
+.place__body {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.place__loading {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: var(--space-2xl) 0;
+}
+
+.prose {
+  font-size: var(--text-lg);
+  line-height: 1.75;
+
+  // Headings
+  ::ng-deep h1,
+  ::ng-deep h2,
+  ::ng-deep h3 {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  ::ng-deep h2 { font-size: var(--text-3xl); }
+  ::ng-deep h3 { font-size: var(--text-xl); }
+
+  ::ng-deep p { margin-bottom: var(--space-md); }
+
+  ::ng-deep ul,
+  ::ng-deep ol {
+    list-style: revert;
+    padding-left: var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  ::ng-deep li { margin-bottom: var(--space-xs); }
+
+  ::ng-deep strong {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+  }
+
+  ::ng-deep blockquote {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-md);
+    border-left: 3px solid var(--color-accent);
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+
+  ::ng-deep a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover { color: var(--color-accent-warm); }
+  }
+}
+
+// ─── Sibling cities ────────────────────────────────────────────────────────
+
+.place__siblings {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.place__siblings-title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.place__siblings-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-sm);
+  list-style: none;
+  padding: 0;
+}
+
+.place__sibling {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: transform var(--transition), border-color var(--transition);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+
+    .place__sibling-arrow { transform: translateX(4px); }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent-fresh);
+    outline-offset: 2px;
+  }
+}
+
+.place__sibling-flag {
+  font-size: 1.25rem;
+}
+
+.place__sibling-city {
+  flex: 1;
+  font-weight: var(--font-weight-bold);
+}
+
+.place__sibling-arrow {
+  color: var(--color-accent);
+  transition: transform var(--transition);
+}
+
+// ─── CTA ───────────────────────────────────────────────────────────────────
+
+.place__cta {
+  margin-top: var(--space-3xl);
+  text-align: center;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl) var(--space-lg);
+
+  h2 { margin-bottom: var(--space-sm); }
+  p  { color: var(--color-text-muted); margin-bottom: var(--space-lg); }
+}

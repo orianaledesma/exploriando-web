@@ -1,0 +1,81 @@
+.country-nav {
+  width: 100%;
+}
+
+.country-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.country-nav__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.country-nav__link {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 56px;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-bg-soft);
+    color: var(--color-accent);
+
+    .country-nav__arrow {
+      transform: translateX(4px);
+      color: var(--color-accent);
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent-fresh);
+    outline-offset: -3px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+.country-nav__flag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.country-nav__name {
+  font-size: var(--text-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // min-width: 0 permite que el grid track 1fr se reduzca por debajo del
+  // min-content del texto. Sin esto, "República Dominicana" empuja al
+  // count fuera del viewport en mobile.
+  min-width: 0;
+}
+
+.country-nav__count {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.country-nav__arrow {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+}

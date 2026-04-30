@@ -13,26 +13,38 @@
     </div>
   </section>
 
-  <!-- Portfolio grid -->
+  <!-- Portfolio de videos -->
   <section class="marcas-portfolio" aria-labelledby="portfolio-title">
     <div class="container">
-      <h2 id="portfolio-title" appReveal>Trabajos recientes</h2>
+      <h2 id="portfolio-title" appReveal>Portafolio de contenido</h2>
       <p class="marcas-portfolio__sub" appReveal [delay]="80">
-        Contenido auténtico creado desde destinos reales, con perspectiva latinoamericana.
+        Videos reales, grabados en destino. Cada pieza tiene historia detrás.
       </p>
 
-      <ul class="marcas-grid" role="list">
-        @for (item of portfolioItems; track item.id; let i = $index) {
-          <li class="marcas-card" appReveal [delay]="160 + i * 80">
-            <div class="marcas-card__img-wrap">
-              <img [src]="item.image" [alt]="item.brand" loading="lazy"
-                   onerror="this.style.display='none'; this.parentElement.classList.add('marcas-card__img-wrap--placeholder')" />
-              <span class="marcas-card__category">{{ item.category }}</span>
-            </div>
-            <p class="marcas-card__brand">{{ item.brand }}</p>
-          </li>
+      <div class="marcas-video-grid">
+        @for (video of portfolioVideos; track video.id; let i = $index) {
+          <div class="marcas-video-card" appReveal [delay]="100 + i * 60">
+            <span class="marcas-video-card__chip">{{ video.category }}</span>
+            <iframe
+              [src]="video.safeUrl"
+              [title]="'Video de portafolio — ' + video.category"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+              class="marcas-video-card__iframe">
+            </iframe>
+          </div>
         }
-      </ul>
+      </div>
+
+      <div class="marcas-portfolio__more" appReveal [delay]="200">
+        <p>¿Querés ver más trabajos?</p>
+        <a [href]="youtubeChannelUrl" target="_blank" rel="noopener"
+           class="btn btn--ghost">
+          Ver canal completo →
+        </a>
+      </div>
     </div>
   </section>
 

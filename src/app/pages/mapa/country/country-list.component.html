@@ -1,0 +1,93 @@
+@switch (status()) {
+
+  @case ('ok') {
+    @if (meta(); as m) {
+      <section class="country-list">
+        <div class="container">
+
+          <a routerLink="/mapa" class="country-list__back">{{ t().backToMap }}</a>
+
+          <header class="country-list__header">
+            <span class="country-list__flag" aria-hidden="true">{{ m.flag }}</span>
+            <p class="country-list__eyebrow">{{ fillCountry(t().eyebrow) }}</p>
+            <h1 #pageTitle class="country-list__title">{{ m.name }}</h1>
+            <p class="country-list__subtitle">{{ fillCountry(t().subtitle) }}</p>
+
+            <ul class="country-list__stats" role="list">
+              <li class="country-list__stat" [innerHTML]="statsCitiesText()"></li>
+              <li class="country-list__stat" [innerHTML]="statsVideosText()"></li>
+              <li class="country-list__stat">{{ t().statsYears }}</li>
+            </ul>
+          </header>
+
+          <ul class="country-list__cities" role="list" [attr.aria-label]="fillCountry(t().citiesGridLabel)">
+            @for (city of cities(); track city.slug) {
+              <li>
+                <a class="city-card"
+                   [routerLink]="['/mapa', m.slug, city.slug]"
+                   [attr.aria-label]="'Ver guía de ' + city.city + ' en ' + m.name">
+                  <div class="city-card__thumb">
+                    <img [src]="thumbnailUrl(city.youtubeId)"
+                         [alt]="city.city + ', ' + m.name + ' ' + t().thumbAltSuffix"
+                         loading="lazy"
+                         width="320" height="180"
+                         (error)="onThumbError($event)" />
+                    <span class="city-card__thumb-fallback" aria-hidden="true">{{ m.flag }}</span>
+                  </div>
+                  <div class="city-card__body">
+                    <h3 class="city-card__name">{{ city.city }}</h3>
+                    <span class="city-card__arrow" aria-hidden="true">→</span>
+                  </div>
+                </a>
+              </li>
+            }
+          </ul>
+
+          <footer class="country-list__cta">
+            <p class="country-list__cta-intro">{{ t().footerCtaIntro }}</p>
+            <div class="country-list__cta-actions">
+              <a routerLink="/" fragment="viajero-creador" class="btn btn--primary">
+                {{ t().footerCtaPrimary }}
+              </a>
+              <a routerLink="/mapa" class="btn btn--outline">
+                {{ t().footerCtaSecondary }}
+              </a>
+            </div>
+          </footer>
+
+        </div>
+      </section>
+    }
+  }
+
+  @case ('pending-content') {
+    @if (meta(); as m) {
+      <section class="country-list country-list--pending">
+        <div class="container">
+          <span class="country-list__flag" aria-hidden="true">{{ m.flag }}</span>
+          <h1 #pageTitle class="country-list__title">{{ fillCountry(t().pendingTitle) }}</h1>
+          <p class="country-list__subtitle">{{ t().pendingBody }}</p>
+          <div class="country-list__cta-actions">
+            <a routerLink="/" fragment="viajero-creador" class="btn btn--primary">
+              {{ t().pendingCta }}
+            </a>
+            <a routerLink="/mapa" class="btn btn--outline">
+              {{ t().pendingBackToMap }}
+            </a>
+          </div>
+        </div>
+      </section>
+    }
+  }
+
+  @case ('invalid-slug') {
+    <section class="country-list country-list--not-found">
+      <div class="container">
+        <h1 #pageTitle>{{ t().notFoundTitle }}</h1>
+        <p>{{ t().notFoundBody }}</p>
+        <a routerLink="/mapa" class="btn btn--primary">{{ t().backToMap }}</a>
+      </div>
+    </section>
+  }
+
+}

@@ -9,9 +9,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { fromEvent } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
 import { LanguageService } from '../../services/language.service';
 import { Lang } from '../../models/language.model';
 import { TRANSLATIONS } from '../../translations/translations';
@@ -36,6 +37,7 @@ const LANG_OPTIONS: LangOption[] = [
 export class NavComponent {
   private readonly destroyRef  = inject(DestroyRef);
   private readonly lang        = inject(LanguageService);
+  private readonly router      = inject(Router);
   private readonly langDropRef = viewChild<ElementRef<HTMLElement>>('langDrop');
 
   readonly langOptions  = LANG_OPTIONS;
@@ -45,6 +47,29 @@ export class NavComponent {
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].nav);
   readonly currentLang = computed(() => this.lang.current().toUpperCase());
+
+  /** URL actual reactivamente, para saber si estamos en la home o en una ruta interna. */
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map(e => e.urlAfterRedirects),
+      startWith(this.router.url),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  /** True solamente cuando estamos en la home (`/`, `/?...`, `/#...`). */
+  readonly isHome = computed(() => {
+    const url = this.currentUrl();
+    return url === '/' || url.startsWith('/?') || url.startsWith('/#');
+  });
+
+  /**
+   * El nav usa fondo opaco (oscuro) si el usuario scrolleó O si estamos en
+   * una ruta interna (cualquiera que no sea la home). Esto evita el caso de
+   * texto blanco-sobre-blanco en páginas como /mapa, /marcas, /guia.
+   */
+  readonly opaqueNav = computed(() => this.scrolled() || !this.isHome());
 
   constructor() {
     afterNextRender(() => {

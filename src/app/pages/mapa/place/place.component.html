@@ -1,0 +1,84 @@
+@let s = state();
+
+@if (notFound()) {
+
+  <section class="place place--missing container">
+    <h1>{{ t().notFoundTitle }}</h1>
+    <p>{{ t().notFoundBody }}</p>
+    <a routerLink="/mapa" class="btn btn--primary">{{ t().backToMap }}</a>
+  </section>
+
+} @else if (s) {
+
+  <article class="place">
+
+    <!-- Breadcrumb -->
+    <nav class="place__crumbs container" aria-label="breadcrumb">
+      <a routerLink="/mapa">{{ t().crumbMap }}</a>
+      <span aria-hidden="true">›</span>
+      <a [routerLink]="['/mapa']" [queryParams]="{ country: s.country.slug }">
+        {{ s.country.name }}
+      </a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ s.place.city }}</span>
+    </nav>
+
+    <!-- Hero -->
+    <header class="place__hero container">
+      <span class="place__flag" aria-hidden="true">{{ s.country.flag }}</span>
+      <h1 class="place__title">{{ s.place.city }}</h1>
+      <p class="place__country">{{ s.country.name }}</p>
+
+      <div class="place__months">
+        <p class="place__months-label">{{ t().bestMonthsLabel }}</p>
+        <app-best-months-grid [months]="s.place.bestMonths" />
+      </div>
+    </header>
+
+    <!-- Video -->
+    <div class="place__video container">
+      <app-lite-youtube
+        [videoId]="s.place.youtubeId"
+        [title]="content()?.frontmatter?.youtubeTitle ?? s.place.city" />
+    </div>
+
+    <!-- Contenido del .md -->
+    <div class="place__body container">
+      @if (content(); as cont) {
+        <div class="prose" [innerHTML]="cont.bodyHtml"></div>
+      } @else {
+        <p class="place__loading">{{ t().loading }}</p>
+      }
+    </div>
+
+    <!-- Otras ciudades del país -->
+    @if (siblingPlaces().length) {
+      <aside class="place__siblings container">
+        <h2 class="place__siblings-title">
+          {{ t().moreInCountry }} {{ s.country.name }}
+        </h2>
+        <ul class="place__siblings-list" role="list">
+          @for (sib of siblingPlaces(); track sib.slug) {
+            <li>
+              <a [routerLink]="['/mapa', s.country.slug, sib.slug]" class="place__sibling">
+                <span class="place__sibling-flag" aria-hidden="true">{{ s.country.flag }}</span>
+                <span class="place__sibling-city">{{ sib.city }}</span>
+                <span class="place__sibling-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </aside>
+    }
+
+    <!-- CTA newsletter -->
+    <section class="place__cta container">
+      <h2>{{ t().ctaTitle.replace('{city}', s.place.city) }}</h2>
+      <p>{{ t().ctaBody }}</p>
+      <a routerLink="/" fragment="hero-email" class="btn btn--primary btn--lg">
+        {{ t().ctaButton }}
+      </a>
+    </section>
+
+  </article>
+}

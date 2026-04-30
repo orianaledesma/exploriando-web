@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { NavComponent } from './nav.component';
 
 describe('NavComponent', () => {
@@ -9,6 +10,7 @@ describe('NavComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture   = TestBed.createComponent(NavComponent);
@@ -43,16 +45,16 @@ describe('NavComponent', () => {
     expect(component.scrolled()).toBe(false);
   });
 
-  it('should not have nav--scrolled class initially', () => {
+  it('should not have nav--opaque class initially on home', () => {
     const header = compiled.querySelector('header');
-    expect(header?.classList).not.toContain('nav--scrolled');
+    expect(header?.classList).not.toContain('nav--opaque');
   });
 
-  it('should apply nav--scrolled class when scrolled signal is true', () => {
+  it('should apply nav--opaque class when scrolled signal is true', () => {
     component.scrolled.set(true);
     fixture.detectChanges();
     const header = compiled.querySelector('header');
-    expect(header?.classList).toContain('nav--scrolled');
+    expect(header?.classList).toContain('nav--opaque');
   });
 
   // ─── Nav links ─────────────────────────────────────────────────────────────

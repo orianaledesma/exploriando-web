@@ -1,0 +1,48 @@
+<section class="mapa-teaser" id="mapa" aria-labelledby="mapa-teaser-title">
+  <div class="container mapa-teaser__inner">
+
+    <div class="mapa-teaser__copy">
+      <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
+      <h2 id="mapa-teaser-title" appReveal [delay]="80">{{ t().headline }}</h2>
+      <p class="mapa-teaser__lead" appReveal [delay]="160">{{ t().lead }}</p>
+
+      <ul class="mapa-teaser__stats" role="list" appReveal [delay]="240">
+        <li>
+          <span class="mapa-teaser__stat-value">{{ stats().countries }}</span>
+          <span class="mapa-teaser__stat-label">{{ t().countriesLabel }}</span>
+        </li>
+        <li>
+          <span class="mapa-teaser__stat-value">{{ stats().places }}</span>
+          <span class="mapa-teaser__stat-label">{{ t().placesLabel }}</span>
+        </li>
+        <li>
+          <span class="mapa-teaser__stat-value">10+</span>
+          <span class="mapa-teaser__stat-label">{{ t().yearsLabel }}</span>
+        </li>
+      </ul>
+
+      <a routerLink="/mapa" class="btn btn--primary btn--lg" appReveal [delay]="320">
+        {{ t().cta }} →
+      </a>
+    </div>
+
+    <div class="mapa-teaser__interactive" appReveal [delay]="160">
+      <p class="mapa-teaser__hint">{{ t().mapHint }}</p>
+
+      <ul class="mapa-teaser__cards" role="list" aria-label="Países visitados">
+        @for (c of countries(); track c.code) {
+          <li>
+            <a class="mapa-teaser__card"
+               [routerLink]="['/mapa', c.slug]"
+               [attr.aria-label]="'Ver guías de ' + c.name + ' (' + countOf(c.code) + ' ' + citySuffix(countOf(c.code)) + ')'">
+              <span class="mapa-teaser__card-flag" aria-hidden="true">{{ c.flag }}</span>
+              <span class="mapa-teaser__card-name">{{ c.name }}</span>
+              <span class="mapa-teaser__card-count" aria-hidden="true">{{ countOf(c.code) }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+  </div>
+</section>

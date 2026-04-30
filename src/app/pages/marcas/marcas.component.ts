@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
 import { TRANSLATIONS } from '../../translations/translations';
@@ -7,13 +8,17 @@ import { RevealDirective } from '../../directives/reveal.directive';
 const GOOGLE_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSeytaDQFUtlmkt7_12laaoroyxsE7H_FNtrQ9zrFkB8Tveslw/viewform?usp=dialog';
 
-const PORTFOLIO_ITEMS = [
-  { id: 1, brand: 'Ejemplo Marca A', category: 'Turismo', image: '/assets/images/ugc-1.webp' },
-  { id: 2, brand: 'Ejemplo Marca B', category: 'Gastronomía', image: '/assets/images/ugc-2.webp' },
-  { id: 3, brand: 'Ejemplo Marca C', category: 'Hospedaje', image: '/assets/images/ugc-3.webp' },
-  { id: 4, brand: 'Ejemplo Marca D', category: 'Aventura', image: '/assets/images/ugc-4.webp' },
-  { id: 5, brand: 'Ejemplo Marca E', category: 'Cultura', image: '/assets/images/ugc-5.webp' },
-  { id: 6, brand: 'Ejemplo Marca F', category: 'Transporte', image: '/assets/images/ugc-6.webp' },
+const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@exploriando';
+
+// 6 piezas curadas: 2 alojamientos + 2 eventos + 1 gastronomía + 1 moda
+// Para cambiar la selección, actualizá esta lista (el canal completo está en YOUTUBE_CHANNEL_URL)
+const PORTFOLIO_VIDEOS: { id: string; embedUrl: string; category: string }[] = [
+  { id: 'rCevn0IHPoQ', embedUrl: 'https://www.youtube.com/embed/rCevn0IHPoQ?rel=0', category: 'Alojamientos' },
+  { id: 'ArpO3W5Rzhw', embedUrl: 'https://www.youtube.com/embed/ArpO3W5Rzhw?rel=0', category: 'Alojamientos' },
+  { id: 'pvtR3abCZW0', embedUrl: 'https://www.youtube.com/embed/pvtR3abCZW0?rel=0', category: 'Eventos' },
+  { id: 'Urf1Qvxu3AU', embedUrl: 'https://www.youtube.com/embed/Urf1Qvxu3AU?rel=0', category: 'Eventos' },
+  { id: 'Gw4LnyMO864', embedUrl: 'https://www.youtube.com/embed/Gw4LnyMO864?rel=0', category: 'Gastronomía' },
+  { id: '5WDRY-KvFSM', embedUrl: 'https://www.youtube.com/embed/5WDRY-KvFSM?rel=0', category: 'Moda' },
 ];
 
 @Component({
@@ -25,8 +30,14 @@ const PORTFOLIO_ITEMS = [
 })
 export class MarcasComponent {
   private readonly lang = inject(LanguageService);
-  readonly t = computed(() => TRANSLATIONS[this.lang.current()].ugc);
+  private readonly sanitizer = inject(DomSanitizer);
 
-  readonly portfolioItems = PORTFOLIO_ITEMS;
+  readonly t = computed(() => TRANSLATIONS[this.lang.current()].ugc);
   readonly formUrl = GOOGLE_FORM_URL;
+  readonly youtubeChannelUrl = YOUTUBE_CHANNEL_URL;
+
+  readonly portfolioVideos = PORTFOLIO_VIDEOS.map(v => ({
+    ...v,
+    safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(v.embedUrl),
+  }));
 }
