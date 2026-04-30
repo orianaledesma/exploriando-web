@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { ComunidadComponent } from './comunidad.component';
 import { LanguageService } from '../../services/language.service';
 import { signal } from '@angular/core';
@@ -15,7 +16,10 @@ describe('ComunidadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ComunidadComponent],
-      providers: [{ provide: LanguageService, useValue: mockLangService }],
+      providers: [
+        { provide: LanguageService, useValue: mockLangService },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ComunidadComponent);

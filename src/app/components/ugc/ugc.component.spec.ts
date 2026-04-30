@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { UgcComponent } from './ugc.component';
 import { UGC_COPY } from '../../copy/ugc.copy';
 
@@ -9,6 +10,7 @@ describe('UgcComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UgcComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UgcComponent);

@@ -59,15 +59,20 @@ describe('NavComponent', () => {
 
   // ─── Nav links ─────────────────────────────────────────────────────────────
 
-  it('should render all 5 nav links', () => {
+  it('should render all 4 nav links from translations', () => {
+    // Translations actuales: Nosotros, Viajero Creador, Marcas, Recursos.
+    // (#documentacion fue removido cuando se ocultó la sección IA por costos.)
     const links = compiled.querySelectorAll('.nav__links .nav__link');
-    expect(links.length).toBe(5);
+    expect(links.length).toBe(4);
   });
 
-  it('should render nav link hrefs correctly', () => {
+  it('should render nav link hrefs from translations', () => {
+    // Con <base href="/"> los hashes se serializan como /#about, /#viajero-creador, etc.
     const links = compiled.querySelectorAll<HTMLAnchorElement>('.nav__links .nav__link');
-    expect(links[0]?.getAttribute('href')).toBe('#about');
-    expect(links[2]?.getAttribute('href')).toBe('#documentacion');
+    expect(links[0]?.getAttribute('href')).toBe('/#about');
+    expect(links[1]?.getAttribute('href')).toBe('/#viajero-creador');
+    expect(links[2]?.getAttribute('href')).toBe('/marcas');
+    expect(links[3]?.getAttribute('href')).toBe('/#recursos');
   });
 
   // ─── Mobile menu ───────────────────────────────────────────────────────────
@@ -106,8 +111,9 @@ describe('NavComponent', () => {
     expect(btn?.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('should have desktop CTA linking to #comunidad', () => {
+  it('should have desktop CTA pointing to /#comunidad fragment', () => {
+    // routerLink="/" + fragment="comunidad" + <base href="/"> → /#comunidad
     const cta = compiled.querySelector<HTMLAnchorElement>('.nav__cta');
-    expect(cta?.getAttribute('href')).toBe('#comunidad');
+    expect(cta?.getAttribute('href')).toBe('/#comunidad');
   });
 });

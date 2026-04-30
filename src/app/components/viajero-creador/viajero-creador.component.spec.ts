@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { ViajeroCreadorComponent } from './viajero-creador.component';
 import { VIAJERO_CREADOR_COPY } from '../../copy/viajero-creador.copy';
 
@@ -9,6 +10,7 @@ describe('ViajeroCreadorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ViajeroCreadorComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ViajeroCreadorComponent);
