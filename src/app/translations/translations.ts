@@ -42,6 +42,7 @@ interface AppTranslations {
   ugc: {
     sectionLabel: string; headline: string; subheadline: string;
     packages: Package[]; cta: string; ctaSubtext: string;
+    meta: { title: string; description: string; };
   };
   mapaTeaser: {
     sectionLabel: string; headline: string; lead: string;
@@ -145,10 +146,10 @@ const es: AppTranslations = {
   hero: {
     eyebrow:     'Comunidad de viajeros latinos',
     headline:    'No necesitás más plata. Necesitás saber cómo hacerlo.',
-    subheadline: 'Dejé Argentina con lo justo y llevo 10 años viajando full time. Lo que aprendí lo estoy poniendo acá, gratis, para que vos puedas hacer lo mismo.',
+    subheadline: 'Dejé Argentina con lo justo y llevo 9 años viajando full time. Lo que aprendí lo estoy poniendo acá, gratis, para que vos puedas hacer lo mismo.',
     cta:         'Mandame la guía gratis',
     ctaSubtext:  'Sin costo. Sin spam. Solo información que funciona.',
-    socialProof: '+2.000 viajeros · 40+ ciudades · 10 años viajando',
+    socialProof: '+2.000 viajeros · 54 ciudades · 9 años viajando',
   },
   comunidad: {
     sectionLabel: 'La comunidad',
@@ -170,8 +171,8 @@ const es: AppTranslations = {
       'Después se sumó Mindaugas, mi marido lituano, y Exploriando dejó de ser un proyecto mío para ser de los dos. Yo pongo la mirada de la latina que se enfrentó a cada trámite y cada miedo desde cero; él, la del europeo que vive donde para muchos es destino. Las rutas, las guías y los videos los pensamos, los viajamos y los grabamos juntos.',
     ],
     stats: [
-      { value: '40+', label: 'ciudades recorridas' },
-      { value: '10+', label: 'años viajando full time' },
+      { value: '54', label: 'ciudades recorridas' },
+      { value: '9',   label: 'años viajando full time' },
       { value: '3',   label: 'continentes desde cero' },
     ],
     crossSell:    '¿Querés que tu proyecto tenga presencia digital profesional?',
@@ -280,6 +281,10 @@ const es: AppTranslations = {
     ],
     cta:       'Hablemos de tu marca',
     ctaSubtext: 'Respondemos en menos de 48hs.',
+    meta: {
+      title:       'UGC para marcas de viaje — Exploriando',
+      description: 'Contenido UGC en destino para hospitality y travel-tech. 9 años recorriendo, videos reales grabados en ruta, entrega en 7-14 días.',
+    },
   },
   mapaTeaser: {
     sectionLabel:   'Esto es para vos',
@@ -290,7 +295,7 @@ const es: AppTranslations = {
     yearsLabel:     'años recorriendo',
     mapHint:        'Tocá un país para ver sus guías',
     cta:            'Explorar las guías',
-    mapAriaLabel:   '42 ciudades en 12 países que recorrió Oriana — mapa decorativo, navegá por la lista',
+    mapAriaLabel:   '54 ciudades en 16 países que recorrió Oriana — mapa decorativo, navegá por la lista',
   },
   mapa: {
     eyebrow:              'Mapa de viajes',
@@ -300,7 +305,7 @@ const es: AppTranslations = {
     placesLabel:          'ciudades',
     yearsLabel:           'años en la ruta',
     mapHint:              'Tocá un país de la lista para ver sus guías',
-    mapAriaLabel:         '42 ciudades en 12 países visitados',
+    mapAriaLabel:         '54 ciudades en 16 países visitados',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'Ver guías de {country}',
     countriesNavLabel:    'Países visitados',
@@ -343,7 +348,7 @@ const es: AppTranslations = {
   footer: {
     finalCta: {
       headline:    '¿Todavía no sos parte?',
-      subheadline: 'Cada semana mandamos información concreta: destinos accesibles, requisitos actualizados, errores que evitar. Gratis, siempre.',
+      subheadline: 'Cada mes mandamos información concreta: destinos accesibles, requisitos actualizados, errores que evitar. Gratis, siempre.',
       cta:         'Unirme ahora',
       ctaSubtext:  'Ya son más de 2.000 viajeros adentro.',
     },
@@ -393,10 +398,10 @@ const en: AppTranslations = {
   hero: {
     eyebrow:     'Latin traveler community',
     headline:    "You don't need more money. You need to know how.",
-    subheadline: "I left Argentina with just enough and have been traveling full time for 10 years. What I've learned, I'm sharing here — free — so you can do the same.",
+    subheadline: "I left Argentina with just enough and have been traveling full time for 9 years. What I've learned, I'm sharing here — free — so you can do the same.",
     cta:         'Send me the free guide',
     ctaSubtext:  'Free. No spam. Just information that works.',
-    socialProof: '+2,000 travelers · 40+ cities · 10 years traveling',
+    socialProof: '+2,000 travelers · 54 cities · 9 years traveling',
   },
   comunidad: {
     sectionLabel: 'The community',
@@ -418,8 +423,8 @@ const en: AppTranslations = {
       "Then Mindaugas, my Lithuanian husband, joined the project — and Exploriando stopped being mine and became ours. I bring the perspective of a Latina who faced every form, every visa and every fear from scratch; he brings the side of the European who lives where, for many, the trip ends. The routes, the guides and the videos — we think them, travel them and film them together.",
     ],
     stats: [
-      { value: '40+', label: 'cities visited' },
-      { value: '10+', label: 'years traveling full time' },
+      { value: '54', label: 'cities visited' },
+      { value: '9',   label: 'years traveling full time' },
       { value: '3',   label: 'continents from scratch' },
     ],
     crossSell:    'Looking for professional web design for your project?',
@@ -528,6 +533,10 @@ const en: AppTranslations = {
     ],
     cta:       "Let's talk about your brand",
     ctaSubtext: 'We respond in less than 48hs.',
+    meta: {
+      title:       'Travel UGC for brands — Exploriando',
+      description: 'On-location UGC for hospitality and travel-tech brands. 9 years on the road, real videos shot on the way, 7-14 day delivery.',
+    },
   },
   mapaTeaser: {
     sectionLabel:   "This one's for you",
@@ -538,7 +547,7 @@ const en: AppTranslations = {
     yearsLabel:     'years on the road',
     mapHint:        'Tap a country to see its guides',
     cta:            'Explore the guides',
-    mapAriaLabel:   '42 cities across 12 countries Oriana traveled — decorative map, navigate via the list',
+    mapAriaLabel:   '54 cities across 16 countries Oriana traveled — decorative map, navigate via the list',
   },
   mapa: {
     eyebrow:              'Travel map',
@@ -548,7 +557,7 @@ const en: AppTranslations = {
     placesLabel:          'cities',
     yearsLabel:           'years on the road',
     mapHint:              'Tap a country in the list to see its guides',
-    mapAriaLabel:         '42 cities across 12 countries visited',
+    mapAriaLabel:         '54 cities across 16 countries visited',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'See guides for {country}',
     countriesNavLabel:    'Countries visited',
@@ -591,7 +600,7 @@ const en: AppTranslations = {
   footer: {
     finalCta: {
       headline:    'Not a member yet?',
-      subheadline: 'Every week we send concrete information: accessible destinations, updated requirements, mistakes to avoid. Free, always.',
+      subheadline: 'Every month we send concrete information: accessible destinations, updated requirements, mistakes to avoid. Free, always.',
       cta:         'Join now',
       ctaSubtext:  'Over 2,000 travelers are already inside.',
     },
@@ -641,10 +650,10 @@ const pt: AppTranslations = {
   hero: {
     eyebrow:     'Comunidade de viajantes latinos',
     headline:    'Você não precisa de mais dinheiro. Você precisa saber como.',
-    subheadline: 'Deixei a Argentina com o mínimo e já viajei em tempo integral por 10 anos. O que aprendi estou compartilhando aqui, de graça, para você poder fazer o mesmo.',
+    subheadline: 'Deixei a Argentina com o mínimo e já viajei em tempo integral por 9 anos. O que aprendi estou compartilhando aqui, de graça, para você poder fazer o mesmo.',
     cta:         'Me envie o guia grátis',
     ctaSubtext:  'Grátis. Sem spam. Apenas informação que funciona.',
-    socialProof: '+2.000 viajantes · 40+ cidades · 10 anos viajando',
+    socialProof: '+2.000 viajantes · 54 cidades · 9 anos viajando',
   },
   comunidad: {
     sectionLabel: 'A comunidade',
@@ -666,8 +675,8 @@ const pt: AppTranslations = {
       'Depois o Mindaugas, meu marido lituano, entrou no projeto, e o Exploriando deixou de ser meu para ser dos dois. Eu trago o olhar da latina que enfrentou cada trâmite e cada medo do zero; ele, o do europeu que vive onde, para muitos, a viagem termina. As rotas, os guias e os vídeos — pensamos, viajamos e filmamos juntos.',
     ],
     stats: [
-      { value: '40+', label: 'cidades percorridas' },
-      { value: '10+', label: 'anos viajando em tempo integral' },
+      { value: '54', label: 'cidades percorridas' },
+      { value: '9',   label: 'anos viajando em tempo integral' },
       { value: '3',   label: 'continentes do zero' },
     ],
     crossSell:    'Quer que seu projeto tenha presença digital profissional?',
@@ -776,6 +785,10 @@ const pt: AppTranslations = {
     ],
     cta:       'Vamos falar sobre sua marca',
     ctaSubtext: 'Respondemos em menos de 48hs.',
+    meta: {
+      title:       'UGC para marcas de viagem — Exploriando',
+      description: 'Conteúdo UGC no destino para marcas de hospitalidade e travel-tech. 9 anos na estrada, vídeos reais gravados em rota, entrega em 7-14 dias.',
+    },
   },
   mapaTeaser: {
     sectionLabel:   'Isso aqui é pra você',
@@ -786,7 +799,7 @@ const pt: AppTranslations = {
     yearsLabel:     'anos na estrada',
     mapHint:        'Toque em um país pra ver os guias',
     cta:            'Explorar os guias',
-    mapAriaLabel:   '42 cidades em 12 países que a Oriana percorreu — mapa decorativo, navegue pela lista',
+    mapAriaLabel:   '54 cidades em 16 países que a Oriana percorreu — mapa decorativo, navegue pela lista',
   },
   mapa: {
     eyebrow:              'Mapa de viagens',
@@ -796,7 +809,7 @@ const pt: AppTranslations = {
     placesLabel:          'cidades',
     yearsLabel:           'anos na estrada',
     mapHint:              'Toque em um país da lista pra ver os guias',
-    mapAriaLabel:         '42 cidades em 12 países visitados',
+    mapAriaLabel:         '54 cidades em 16 países visitados',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'Ver guias de {country}',
     countriesNavLabel:    'Países visitados',
@@ -839,7 +852,7 @@ const pt: AppTranslations = {
   footer: {
     finalCta: {
       headline:    'Ainda não faz parte?',
-      subheadline: 'Toda semana enviamos informações concretas: destinos acessíveis, requisitos atualizados, erros a evitar. Grátis, sempre.',
+      subheadline: 'Todo mês enviamos informações concretas: destinos acessíveis, requisitos atualizados, erros a evitar. Grátis, sempre.',
       cta:         'Entrar agora',
       ctaSubtext:  'Mais de 2.000 viajantes já estão dentro.',
     },
