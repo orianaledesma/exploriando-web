@@ -128,6 +128,10 @@ interface AppTranslations {
       legal: string; disclaimer: string; madeIn: string;
     };
   };
+  a11y: {
+    /** Texto del skip link (visible solo on focus). */
+    skipLink: string;
+  };
 }
 
 // ─── Español ──────────────────────────────────────────────────────────────────
@@ -379,6 +383,9 @@ const es: AppTranslations = {
       disclaimer: 'La información de documentación es orientativa. Siempre verificá con fuentes oficiales antes de viajar.',
       madeIn:     'Hecho desde Kaunas, Lituania · Para toda Latinoamérica y Europa',
     },
+  },
+  a11y: {
+    skipLink: 'Ir al contenido principal',
   },
 };
 
@@ -632,6 +639,9 @@ const en: AppTranslations = {
       madeIn:     'Made from Kaunas, Lithuania · For all of Latin America and Europe',
     },
   },
+  a11y: {
+    skipLink: 'Skip to main content',
+  },
 };
 
 // ─── Português ────────────────────────────────────────────────────────────────
@@ -883,6 +893,9 @@ const pt: AppTranslations = {
       disclaimer: 'As informações de documentação são orientativas. Sempre verifique com fontes oficiais antes de viajar.',
       madeIn:     'Feito em Kaunas, Lituânia · Para toda a América Latina e Europa',
     },
+  },
+  a11y: {
+    skipLink: 'Ir para o conteúdo principal',
   },
 };
 

@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { CountryNavListComponent } from './country-nav-list.component';
+import { AnalyticsService } from '../../services/analytics.service';
 import { COUNTRIES, cityCountByCountry, visitedCountries } from '../../data/places';
 
 describe('CountryNavListComponent', () => {
   let fixture: ComponentFixture<CountryNavListComponent>;
   let component: CountryNavListComponent;
+  let trackSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,6 +18,7 @@ describe('CountryNavListComponent', () => {
 
     fixture = TestBed.createComponent(CountryNavListComponent);
     component = fixture.componentInstance;
+    trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
     fixture.componentRef.setInput('countries', visitedCountries());
     fixture.componentRef.setInput('cityCounts', cityCountByCountry());
     fixture.detectChanges();
@@ -56,5 +59,16 @@ describe('CountryNavListComponent', () => {
 
   it('countOf devuelve 0 para país no presente en cityCounts', () => {
     expect(component.countOf('XXX')).toBe(0);
+  });
+
+  it('trackea country_list_click al clickear un link', () => {
+    const link = fixture.debugElement.query(By.css('.country-nav__link'));
+    const country = visitedCountries()[0];
+    link.triggerEventHandler('click', new MouseEvent('click'));
+
+    expect(trackSpy).toHaveBeenCalledWith('country_list_click', {
+      country_code: country.code,
+      country_slug: country.slug,
+    });
   });
 });

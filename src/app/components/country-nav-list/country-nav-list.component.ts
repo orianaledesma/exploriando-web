@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { CountryMeta } from '../../data/places';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 
 /**
@@ -20,6 +21,7 @@ import { TRANSLATIONS } from '../../translations/translations';
 })
 export class CountryNavListComponent {
   private readonly lang = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
 
   /** Lista de países a mostrar (en el orden recibido). */
   readonly countries = input.required<readonly CountryMeta[]>();
@@ -45,5 +47,13 @@ export class CountryNavListComponent {
     return `${this.t().markerAriaLabel
       .replace('{city}', `${n} ${this.citySuffix(n)}`)
       .replace('{country}', country.name)}`;
+  }
+
+  /** Tracking: click en país desde la nav del sidebar/lista. */
+  onCountryClick(country: CountryMeta): void {
+    this.analytics.track('country_list_click', {
+      country_code: country.code,
+      country_slug: country.slug,
+    });
   }
 }

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 import {
@@ -28,6 +29,7 @@ import {
 })
 export class MapaTeaserComponent {
   private readonly lang = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].mapaTeaser);
   readonly tMapa = computed(() => TRANSLATIONS[this.lang.current()].mapa);
@@ -47,5 +49,18 @@ export class MapaTeaserComponent {
   /** Devuelve "ciudad" o "ciudades" según el count. */
   citySuffix(count: number): string {
     return count === 1 ? this.tMapa().citiesCountSuffixOne : this.tMapa().citiesCountSuffix;
+  }
+
+  /** Tracking: click en card de país (intent: ver guías de ese país). */
+  onCountryCardClick(country: CountryMeta): void {
+    this.analytics.track('country_card_click', {
+      country_code: country.code,
+      country_slug: country.slug,
+    });
+  }
+
+  /** Tracking: click en CTA "Explorar las guías" (intent: ver el mapa completo). */
+  onCtaClick(): void {
+    this.analytics.track('mapa_cta_click');
   }
 }

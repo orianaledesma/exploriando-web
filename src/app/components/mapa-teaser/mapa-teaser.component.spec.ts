@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MapaTeaserComponent } from './mapa-teaser.component';
+import { AnalyticsService } from '../../services/analytics.service';
 import { visitedCountries } from '../../data/places';
 
 describe('MapaTeaserComponent', () => {
   let fixture: ComponentFixture<MapaTeaserComponent>;
   let component: MapaTeaserComponent;
+  let trackSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,6 +18,7 @@ describe('MapaTeaserComponent', () => {
 
     fixture = TestBed.createComponent(MapaTeaserComponent);
     component = fixture.componentInstance;
+    trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
     fixture.detectChanges();
   });
 
@@ -62,5 +65,23 @@ describe('MapaTeaserComponent', () => {
   it('citySuffix devuelve singular para count=1', () => {
     expect(component.citySuffix(1)).toBe('ciudad');
     expect(component.citySuffix(7)).toBe('ciudades');
+  });
+
+  it('trackea country_card_click al clickear una card', () => {
+    const card = fixture.debugElement.query(By.css('.mapa-teaser__card'));
+    const country = visitedCountries()[0];
+    card.triggerEventHandler('click', new MouseEvent('click'));
+
+    expect(trackSpy).toHaveBeenCalledWith('country_card_click', {
+      country_code: country.code,
+      country_slug: country.slug,
+    });
+  });
+
+  it('trackea mapa_cta_click al clickear el CTA principal', () => {
+    const cta = fixture.debugElement.query(By.css('.mapa-teaser__copy .btn--primary'));
+    cta.triggerEventHandler('click', new MouseEvent('click'));
+
+    expect(trackSpy).toHaveBeenCalledWith('mapa_cta_click');
   });
 });

@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import emailjs from '@emailjs/browser';
 import { forkJoin, from, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { EmailCaptureData } from '../models/email-capture.model';
+import { AnalyticsService } from './analytics.service';
 
 const RATE_LIMIT_KEY    = 'email_submissions';
 const RATE_LIMIT_MAX    = 3;
@@ -23,6 +25,7 @@ const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
 
 @Injectable({ providedIn: 'root' })
 export class EmailCaptureService {
+  private readonly analytics = inject(AnalyticsService);
 
   isRateLimited(): boolean {
     return this.getTimestamps().length >= RATE_LIMIT_MAX;
@@ -63,7 +66,12 @@ export class EmailCaptureService {
       ),
     );
 
-    return forkJoin([notify$, confirm$]);
+    return forkJoin([notify$, confirm$]).pipe(
+      tap({
+        next:  () => this.analytics.track('email_capture_submit', { source: data.source }),
+        error: () => this.analytics.track('email_capture_error',  { source: data.source }),
+      }),
+    );
   }
 
   recordSubmission(source = 'default'): void {

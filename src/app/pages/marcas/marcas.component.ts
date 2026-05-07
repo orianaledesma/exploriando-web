@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, injec
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 
@@ -32,6 +33,7 @@ export class MarcasComponent {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly analytics = inject(AnalyticsService);
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].ugc);
   readonly formUrl = GOOGLE_FORM_URL;
@@ -77,5 +79,12 @@ export class MarcasComponent {
       this.meta.updateTag({ name: 'twitter:title', content: this.previousTwitterTitle });
       this.meta.updateTag({ name: 'twitter:description', content: this.previousTwitterDescription });
     });
+  }
+
+  /** Tracking: click outbound al Google Form. `location` distingue de qué CTA salió. */
+  onMarcasFormClick(location: 'hero' | 'package' | 'final_cta', packageName?: string): void {
+    const params: Record<string, string> = { location };
+    if (packageName) params['package'] = packageName;
+    this.analytics.track('marcas_form_click', params);
   }
 }

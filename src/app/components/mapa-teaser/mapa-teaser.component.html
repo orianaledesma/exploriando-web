@@ -21,7 +21,8 @@
         </li>
       </ul>
 
-      <a routerLink="/mapa" class="btn btn--primary btn--lg" appReveal [delay]="320">
+      <a routerLink="/mapa" class="btn btn--primary btn--lg" appReveal [delay]="320"
+         (click)="onCtaClick()">
         {{ t().cta }} →
       </a>
     </div>
@@ -34,6 +35,7 @@
           <li>
             <a class="mapa-teaser__card"
                [routerLink]="['/mapa', c.slug]"
+               (click)="onCountryCardClick(c)"
                [attr.aria-label]="'Ver guías de ' + c.name + ' (' + countOf(c.code) + ' ' + citySuffix(countOf(c.code)) + ')'">
               <span class="mapa-teaser__card-flag" aria-hidden="true">{{ c.flag }}</span>
               <span class="mapa-teaser__card-name">{{ c.name }}</span>

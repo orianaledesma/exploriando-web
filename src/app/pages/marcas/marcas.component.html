@@ -7,7 +7,8 @@
       <span class="section-label hero-enter hero-enter-1">UGC &amp; Contenido de marca</span>
       <h1 class="hero-enter hero-enter-2">{{ t().headline }}</h1>
       <p class="marcas-hero__sub hero-enter hero-enter-3">{{ t().subheadline }}</p>
-      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg hero-enter hero-enter-4">
+      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg hero-enter hero-enter-4"
+         (click)="onMarcasFormClick('hero')">
         Hablemos de tu proyecto ✈
       </a>
     </div>
@@ -67,6 +68,7 @@
               }
             </ul>
             <a [href]="formUrl" target="_blank" rel="noopener"
+               (click)="onMarcasFormClick('package', pkg.name)"
                class="btn btn--primary" style="margin-top: auto;">
               Quiero este paquete
             </a>
@@ -81,7 +83,8 @@
     <div class="container marcas-cta__inner">
       <h2>¿Listo para trabajar juntos?</h2>
       <p>Completá el formulario y te respondemos con una propuesta a medida en 48 hs.</p>
-      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg">
+      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg"
+         (click)="onMarcasFormClick('final_cta')">
         Completar formulario
       </a>
       <span class="marcas-cta__sub">Sin compromiso — la primera consulta es gratis</span>

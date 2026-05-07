@@ -4,6 +4,7 @@ import { COUNTRIES, Place } from '../../data/places';
 import { CONTINENT_PATHS } from '../../data/world-map.paths';
 import { projectLngLat } from '../../data/world-map.projection';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 
 interface ProjectedMarker {
@@ -40,6 +41,7 @@ interface ProjectedMarker {
 })
 export class WorldMapSvgComponent {
   private readonly lang = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
 
   /** Lista de lugares a renderizar. Solo se muestran los que tengan `coords`. */
   readonly places = input.required<Place[]>();
@@ -88,5 +90,13 @@ export class WorldMapSvgComponent {
   isActive(m: ProjectedMarker): boolean {
     const active = this.activeCountryCode();
     return active === null || active === m.countryCode;
+  }
+
+  /** Tracking: click en marker (intent: ese país/ciudad despertó interés). */
+  onMarkerClick(m: ProjectedMarker): void {
+    this.analytics.track('marker_click', {
+      country_code: m.countryCode,
+      city_slug:    m.citySlug,
+    });
   }
 }

@@ -5,6 +5,7 @@
         <a
           class="country-nav__link"
           [routerLink]="['/mapa', c.slug]"
+          (click)="onCountryClick(c)"
           [attr.aria-label]="ariaLabelFor(c)">
           <span class="country-nav__flag" aria-hidden="true">{{ c.flag }}</span>
           <span class="country-nav__name">{{ c.name }}</span>

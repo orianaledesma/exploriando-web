@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { WorldMapSvgComponent } from './world-map-svg.component';
+import { AnalyticsService } from '../../services/analytics.service';
 import { PLACES } from '../../data/places';
 
 describe('WorldMapSvgComponent', () => {
   let fixture: ComponentFixture<WorldMapSvgComponent>;
   let component: WorldMapSvgComponent;
+  let trackSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,6 +18,7 @@ describe('WorldMapSvgComponent', () => {
 
     fixture = TestBed.createComponent(WorldMapSvgComponent);
     component = fixture.componentInstance;
+    trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
     fixture.componentRef.setInput('places', PLACES);
     fixture.detectChanges();
   });
@@ -83,5 +86,16 @@ describe('WorldMapSvgComponent', () => {
     const europeanMarkers = fixture.debugElement.queryAll(By.css('.world-map__marker--region-europe'));
     const expected = PLACES.filter(p => p.coords && europeans.includes(p.countryCode)).length;
     expect(europeanMarkers.length).toBe(expected);
+  });
+
+  it('trackea marker_click con country_code y city_slug al clickear un marker', () => {
+    const firstMarker = fixture.debugElement.query(By.css('.world-map__marker'));
+    const expected = component.markers()[0];
+    firstMarker.triggerEventHandler('click', new MouseEvent('click'));
+
+    expect(trackSpy).toHaveBeenCalledWith('marker_click', {
+      country_code: expected.countryCode,
+      city_slug:    expected.citySlug,
+    });
   });
 });

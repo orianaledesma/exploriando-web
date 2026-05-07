@@ -20,6 +20,7 @@
         [class.world-map__marker--inactive]="!isActive(m)"
         [class.world-map__marker--region-europe]="m.countryCode === 'NLD' || m.countryCode === 'DEU' || m.countryCode === 'ESP' || m.countryCode === 'FRA' || m.countryCode === 'ITA' || m.countryCode === 'EGY'"
         [routerLink]="['/mapa', m.countrySlug]"
+        (click)="onMarkerClick(m)"
         [attr.aria-label]="ariaLabel(m)">
         <rect
           class="world-map__marker-hit"
