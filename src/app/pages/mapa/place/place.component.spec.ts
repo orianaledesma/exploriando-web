@@ -38,6 +38,7 @@ describe('PlaceComponent', () => {
     expect(component.place()).toBeDefined();
     expect(component.place()!.city).toBe('Mendoza');
     expect(component.country()!.name).toBe('Argentina');
+    http.expectOne('/assets/content/places/argentina/mendoza.md').flush('');
   });
 
   it('hace request al .md correspondiente', () => {
@@ -60,11 +61,23 @@ describe('PlaceComponent', () => {
     expect(siblings.length).toBeGreaterThan(0);
     expect(siblings.find(s => s.slug === 'mendoza')).toBeUndefined();
     expect(siblings.every(s => s.countryCode === 'ARG')).toBe(true);
+    http.expectOne('/assets/content/places/argentina/mendoza.md').flush('');
   });
 
   it('notFound es true cuando los slugs no matchean ningún lugar', () => {
+    http.expectOne('/assets/content/places/argentina/mendoza.md').flush('');
     paramMap$.next(convertToParamMap({ country: 'xxx', city: 'yyy' }));
     fixture.detectChanges();
     expect(component.notFound()).toBe(true);
+  });
+
+  it('breadcrumb tiene 2 links: /mapa y /mapa/[country] (sin queryParams)', () => {
+    http.expectOne('/assets/content/places/argentina/mendoza.md').flush('---\ncity: Mendoza\n---\n');
+    fixture.detectChanges();
+
+    const links = fixture.debugElement.queryAll(By.css('.place__crumbs a'));
+    expect(links.length).toBe(2);
+    expect(links[0].nativeElement.getAttribute('href')).toBe('/mapa');
+    expect(links[1].nativeElement.getAttribute('href')).toBe('/mapa/argentina');
   });
 });

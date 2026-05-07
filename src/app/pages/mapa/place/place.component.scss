@@ -1,5 +1,7 @@
 .place {
-  padding-top:    var(--space-lg);
+  // El nav es position:fixed con 64px → padding-top necesita compensar para
+  // que el breadcrumb no quede oculto detrás. Mismo offset que CountryList.
+  padding-top:    var(--space-3xl);
   padding-bottom: var(--space-3xl);
 }
 

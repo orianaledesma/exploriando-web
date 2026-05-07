@@ -16,7 +16,7 @@
     <nav class="place__crumbs container" aria-label="breadcrumb">
       <a routerLink="/mapa">{{ t().crumbMap }}</a>
       <span aria-hidden="true">›</span>
-      <a [routerLink]="['/mapa']" [queryParams]="{ country: s.country.slug }">
+      <a [routerLink]="['/mapa', s.country.slug]">
         {{ s.country.name }}
       </a>
       <span aria-hidden="true">›</span>
