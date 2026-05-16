@@ -26,7 +26,9 @@ export class ComunidadComponent {
         Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 21, 0, 0)
         - vilniusOffsetMs
       );
-      return new Intl.DateTimeFormat(navigator.language || 'es', {
+      // Fixed locale (not navigator.language): keeps server and client
+      // render identical so SSG prerender doesn't trigger a hydration mismatch.
+      return new Intl.DateTimeFormat('es', {
         hour:   'numeric',
         minute: '2-digit',
         hour12: true,

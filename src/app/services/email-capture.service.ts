@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import emailjs from '@emailjs/browser';
 import { forkJoin, from, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -26,12 +27,15 @@ const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
 @Injectable({ providedIn: 'root' })
 export class EmailCaptureService {
   private readonly analytics = inject(AnalyticsService);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   isRateLimited(): boolean {
+    if (!this.isBrowser) return false;
     return this.getTimestamps().length >= RATE_LIMIT_MAX;
   }
 
   hasAlreadySubmitted(source = 'default'): boolean {
+    if (!this.isBrowser) return false;
     const key = source === 'default' ? SUBMITTED_KEY : `${SUBMITTED_KEY}_${source}`;
     return localStorage.getItem(key) === 'true';
   }
