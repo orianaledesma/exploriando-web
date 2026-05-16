@@ -13,7 +13,8 @@ export type AnalyticsEvent =
   | 'country_list_click'      // item de CountryNavList en /mapa
   | 'email_capture_submit'    // submit exitoso de cualquier form (param `source` lo identifica: hero/footer/guia/viajero-creador/etc.)
   | 'email_capture_error'     // error en submit (EmailJS, network)
-  | 'marcas_form_click';      // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
+  | 'marcas_form_click'       // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
+  | 'affiliate_click';        // click outbound a un link de afiliado (param `partner` = id de la card)
 
 export type AnalyticsParams = Record<string, string | number | boolean>;
 

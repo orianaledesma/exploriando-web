@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AfiliadosComponent } from './afiliados.component';
 import { AFILIADOS_COPY_A } from '../../copy/afiliados.copy';
+import { AnalyticsService } from '../../services/analytics.service';
 
 describe('AfiliadosComponent', () => {
   let fixture: ComponentFixture<AfiliadosComponent>;
@@ -49,5 +51,15 @@ describe('AfiliadosComponent', () => {
   it('should render the affiliate disclosure note', () => {
     expect(compiled.querySelector('.afiliados__footer-note')?.textContent)
       .toContain('afiliado');
+  });
+
+  it('tracks affiliate_click with the partner id on CTA click', () => {
+    const trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
+    const firstCard = AFILIADOS_COPY_A.cards[0];
+    fixture.debugElement
+      .query(By.css('.afiliados__cta'))
+      .triggerEventHandler('click', new MouseEvent('click'));
+
+    expect(trackSpy).toHaveBeenCalledWith('affiliate_click', { partner: firstCard.id });
   });
 });
