@@ -1,5 +1,6 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { COUNTRIES, PLACES } from './data/places';
+import { BLOG_POSTS } from './data/blog';
 
 /** ISO country code → URL slug, from the single source of truth. */
 const slugByCode = new Map(
@@ -31,6 +32,12 @@ export const serverRoutes: ServerRoute[] = [
         city: p.slug,
       })).filter((r) => r.country !== ''),
   },
-  // Everything else (/, /marcas, /guia, /mapa) is static-prerendered.
+  {
+    path: 'blog/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () =>
+      BLOG_POSTS.map((p) => ({ slug: p.slug })),
+  },
+  // Everything else (/, /marcas, /guia, /mapa, /blog) is static-prerendered.
   { path: '**', renderMode: RenderMode.Prerender },
 ];

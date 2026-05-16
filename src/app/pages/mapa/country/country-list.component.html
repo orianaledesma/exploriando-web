@@ -27,9 +27,8 @@
                    [routerLink]="['/mapa', m.slug, city.slug]"
                    [attr.aria-label]="'Ver guía de ' + city.city + ' en ' + m.name">
                   <div class="city-card__thumb">
-                    <img [src]="thumbnailUrl(city.youtubeId)"
+                    <img [ngSrc]="thumbnailUrl(city.youtubeId)"
                          [alt]="city.city + ', ' + m.name + ' ' + t().thumbAltSuffix"
-                         loading="lazy"
                          width="320" height="180"
                          (error)="onThumbError($event)" />
                     <span class="city-card__thumb-fallback" aria-hidden="true">{{ m.flag }}</span>

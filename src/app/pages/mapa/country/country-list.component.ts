@@ -9,6 +9,7 @@ import {
   input,
   viewChild,
 } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { COUNTRIES, CountryMeta, Place, placesOfCountry } from '../../../data/places';
 import { LanguageService } from '../../../services/language.service';
@@ -33,7 +34,7 @@ type CountryListStatus = 'ok' | 'invalid-slug' | 'pending-content';
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, NgOptimizedImage],
 })
 export class CountryListComponent {
   private readonly lang = inject(LanguageService);

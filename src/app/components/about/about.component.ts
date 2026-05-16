@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { LanguageService } from '../../services/language.service';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
@@ -8,7 +9,7 @@ import { RevealDirective } from '../../directives/reveal.directive';
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RevealDirective],
+  imports: [RevealDirective, NgOptimizedImage],
 })
 export class AboutComponent {
   private readonly lang = inject(LanguageService);
