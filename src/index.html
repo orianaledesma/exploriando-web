@@ -34,6 +34,15 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      // GDPR: deny analytics until the user consents (Consent Mode v2).
+      // CookieConsentService flips analytics_storage to 'granted' on accept.
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
       gtag('js', new Date());
       gtag('config', 'G-QS5SN1M3H3', { send_page_view: false });
     </script>

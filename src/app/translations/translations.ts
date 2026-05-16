@@ -132,6 +132,11 @@ interface AppTranslations {
     /** Texto del skip link (visible solo on focus). */
     skipLink: string;
   };
+  cookieConsent: {
+    message: string;
+    accept: string;
+    reject: string;
+  };
 }
 
 // ─── Español ──────────────────────────────────────────────────────────────────
@@ -386,6 +391,11 @@ const es: AppTranslations = {
   },
   a11y: {
     skipLink: 'Ir al contenido principal',
+  },
+  cookieConsent: {
+    message: 'Usamos cookies de analítica para entender qué contenido te sirve. Solo se activan si aceptás.',
+    accept: 'Aceptar',
+    reject: 'Rechazar',
   },
 };
 
@@ -642,6 +652,11 @@ const en: AppTranslations = {
   a11y: {
     skipLink: 'Skip to main content',
   },
+  cookieConsent: {
+    message: 'We use analytics cookies to understand which content helps you. They only run if you accept.',
+    accept: 'Accept',
+    reject: 'Reject',
+  },
 };
 
 // ─── Português ────────────────────────────────────────────────────────────────
@@ -893,6 +908,11 @@ const pt: AppTranslations = {
       disclaimer: 'As informações de documentação são orientativas. Sempre verifique com fontes oficiais antes de viajar.',
       madeIn:     'Feito em Kaunas, Lituânia · Para toda a América Latina e Europa',
     },
+  },
+  cookieConsent: {
+    message: 'Usamos cookies de analytics para entender qual conteúdo te ajuda. Só são ativadas se você aceitar.',
+    accept: 'Aceitar',
+    reject: 'Recusar',
   },
   a11y: {
     skipLink: 'Ir para o conteúdo principal',
