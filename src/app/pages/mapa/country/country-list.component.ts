@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   input,
@@ -11,6 +12,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { COUNTRIES, CountryMeta, Place, placesOfCountry } from '../../../data/places';
 import { LanguageService } from '../../../services/language.service';
+import { SeoService } from '../../../services/seo.service';
 import { TRANSLATIONS } from '../../../translations/translations';
 
 type CountryListStatus = 'ok' | 'invalid-slug' | 'pending-content';
@@ -35,6 +37,7 @@ type CountryListStatus = 'ok' | 'invalid-slug' | 'pending-content';
 })
 export class CountryListComponent {
   private readonly lang = inject(LanguageService);
+  private readonly seo = inject(SeoService);
 
   /** Slug del país, viene del route param `:country`. */
   readonly country = input.required<string>();
@@ -102,6 +105,32 @@ export class CountryListComponent {
         el.setAttribute('tabindex', '-1');
         el.focus({ preventScroll: false });
       }
+    });
+
+    // Per-route SEO (prerender + client navigation).
+    effect(() => {
+      const m = this.meta();
+      if (!m) return;
+      const n = this.cities().length;
+      const path = `/mapa/${m.slug}`;
+      const url = `https://exploriando.page${path}`;
+      const description =
+        n > 0
+          ? `${n} ${n === 1 ? 'ciudad' : 'ciudades'} de ${m.name} con video real, mejor época para visitar e info concreta para viajeros latinoamericanos.`
+          : `Pronto: guía de ${m.name} con videos reales e info concreta para viajar más por menos.`;
+
+      this.seo.update({
+        title: `${m.name} — qué visitar | Exploriando`,
+        description,
+        path,
+        jsonLd: {
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: `${m.name} — Exploriando`,
+          description,
+          url,
+        },
+      });
     });
   }
 }

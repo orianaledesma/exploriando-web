@@ -21,6 +21,7 @@ import {
   PlaceContentService,
 } from '../../../services/place-content.service';
 import { LanguageService } from '../../../services/language.service';
+import { SeoService } from '../../../services/seo.service';
 import { TRANSLATIONS } from '../../../translations/translations';
 import { LiteYoutubeComponent } from '../../../components/lite-youtube/lite-youtube.component';
 import { BestMonthsGridComponent } from '../../../components/best-months-grid/best-months-grid.component';
@@ -46,6 +47,7 @@ export class PlaceComponent {
   private readonly route        = inject(ActivatedRoute);
   private readonly contentSvc   = inject(PlaceContentService);
   private readonly lang         = inject(LanguageService);
+  private readonly seo          = inject(SeoService);
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].mapa);
 
@@ -108,6 +110,41 @@ export class PlaceComponent {
       }
       this.contentSvc.load(c.slug, p.slug).subscribe(content => {
         this._content.set(content);
+      });
+    });
+
+    // Per-route SEO (runs on prerender + client navigation).
+    effect(() => {
+      const p = this.place();
+      const c = this.country();
+      if (!p || !c) return;
+      const summary = this.content()?.frontmatter.summary?.trim();
+      const description =
+        summary ||
+        `${p.city}, ${c.name}: qué ver, mejor época para visitar y video real de Exploriando. Info concreta para viajeros latinoamericanos.`;
+      const path = `/mapa/${c.slug}/${p.slug}`;
+      const url = `https://exploriando.page${path}`;
+      const image = `https://i.ytimg.com/vi/${p.youtubeId}/maxresdefault.jpg`;
+
+      this.seo.update({
+        title: `${p.city}, ${c.name} — Exploriando`,
+        description,
+        path,
+        image,
+        type: 'article',
+        jsonLd: {
+          '@context': 'https://schema.org',
+          '@type': 'TouristDestination',
+          name: `${p.city}, ${c.name}`,
+          description,
+          url,
+          image,
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: c.name,
+          },
+          isAccessibleForFree: true,
+        },
       });
     });
   }
