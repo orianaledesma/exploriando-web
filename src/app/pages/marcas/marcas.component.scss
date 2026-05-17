@@ -2,8 +2,9 @@
 
 .marcas-hero {
   background-color: var(--color-bg-dark);
-  padding: calc(var(--space-3xl) + 64px) 0 var(--space-3xl);
-  min-height: 60vh;
+  // 64px despeja el nav fijo; espacio superior reducido para que el
+  // contenido no quede tan abajo (antes: space-3xl + min-height 60vh centrado).
+  padding: calc(var(--space-xl) + 64px) 0 var(--space-2xl);
   display: flex;
   align-items: center;
 
