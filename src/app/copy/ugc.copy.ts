@@ -42,11 +42,11 @@ export const UGC_COPY = {
 
   sectionLabel: 'Para marcas',
 
-  headline: 'Contenido de viaje que convierte, no solo que se ve lindo.',
+  headline: 'Contenido que vende la experiencia, no una escena armada.',
 
   subheadline:
-    'Creamos contenido auténtico para marcas de turismo, alojamiento, productos de viaje y productos digitales. ' +
-    'Nada de escenas armadas: puro viaje real.',
+    'Video real que frena el scroll para marcas de viaje, beauty y lifestyle. ' +
+    'Del que la gente cree porque no parece un anuncio.',
 
   portfolioTitle: 'Trabajos recientes',
 

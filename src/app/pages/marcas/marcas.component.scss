@@ -1,7 +1,23 @@
 // ─── Page Hero ────────────────────────────────────────────────────────────────
 
 .marcas-hero {
+  // Fallback sólido: si la webp no carga, el hero queda legible como antes.
   background-color: var(--color-bg-dark);
+  // Desktop: gradiente direccional (texto izquierda oscuro → foto visible
+  // a la derecha). El rgba es un velo funcional sobre la foto, no color de
+  // marca. background-position right center = no corta las caras.
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--color-bg-dark) 0%,
+      rgba(13, 13, 13, 0.92) 32%,
+      rgba(13, 13, 13, 0.55) 60%,
+      rgba(13, 13, 13, 0.15) 100%
+    ),
+    url('/assets/images/marcas-hero.webp');
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
   // 64px despeja el nav fijo; espacio superior reducido para que el
   // contenido no quede tan abajo (antes: space-3xl + min-height 60vh centrado).
   padding: calc(var(--space-xl) + 64px) 0 var(--space-2xl);
@@ -13,11 +29,12 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
+    max-width: 560px; // el texto nunca invade la zona de la foto
   }
 
   &__back {
     font-size: var(--text-sm);
-    color: rgba(255, 255, 255, 0.60);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     margin-bottom: var(--space-sm);
 
@@ -26,17 +43,30 @@
 
   h1 {
     color: var(--color-text-on-dark);
-    max-width: 640px;
+    max-width: 16ch;
   }
 
   &__sub {
     font-size: var(--text-lg);
-    color: rgba(255, 255, 255, 0.70);
+    color: var(--color-text-on-dark);
+    opacity: 0.85;
     max-width: 540px;
     line-height: 1.6;
   }
 
   .section-label { margin-bottom: 0; }
+
+  // Mobile: la foto ocupa todo → overlay vertical fuerte para garantizar AA.
+  @media (max-width: 768px) {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(13, 13, 13, 0.55) 0%,
+        rgba(13, 13, 13, 0.85) 100%
+      ),
+      url('/assets/images/marcas-hero.webp');
+    background-position: center 20%; // sube el encuadre a las caras
+  }
 }
 
 // ─── Portfolio ────────────────────────────────────────────────────────────────

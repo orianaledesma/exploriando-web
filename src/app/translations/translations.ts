@@ -281,8 +281,8 @@ const es: AppTranslations = {
   },
   ugc: {
     sectionLabel: 'Para marcas',
-    headline:     'Contenido de viaje que convierte, no solo que se ve lindo.',
-    subheadline:  'Creamos contenido auténtico para marcas de turismo, alojamiento, productos de viaje y productos digitales. Nada de escenas armadas: puro viaje real.',
+    headline:     'Contenido que vende la experiencia, no una escena armada.',
+    subheadline:  'Video real que frena el scroll para marcas de viaje, beauty y lifestyle. Del que la gente cree porque no parece un anuncio.',
     packages: [
       { name: 'Pack Básico',  price: '€150',     includes: ['3 reels/TikToks listos para publicar', '3 aperturas por video para frenar el scroll', 'Entrega en 7 días · uso ilimitado en tus redes'] },
       { name: 'Pack Completo', price: '€400',    includes: ['Campaña de 5 videos pensada para UN objetivo (lanzamiento, venta o awareness)', 'Guión y estrategia: yo defino el ángulo, vos publicás', '1 ronda de ajustes · entrega en 14 días'] },
@@ -541,8 +541,8 @@ const en: AppTranslations = {
   },
   ugc: {
     sectionLabel: 'For brands',
-    headline:     'Travel content that converts, not just looks good.',
-    subheadline:  'We create authentic content for tourism, accommodation, travel product and digital product brands. Nothing staged: pure real travel.',
+    headline:     'Content that sells the experience — not a staged set.',
+    subheadline:  "Real, scroll-stopping video for travel, beauty and lifestyle brands. The kind people trust because it doesn't look like an ad.",
     packages: [
       { name: 'Basic Pack',    price: '€150',     includes: ['3 ready-to-post reels/TikToks', '3 hooks per video to stop the scroll', 'Delivered in 7 days · unlimited use on your socials'] },
       { name: 'Complete Pack', price: '€400',     includes: ['A 5-video campaign built for ONE goal (launch, sale or awareness)', 'Script & strategy: I set the angle, you post', '1 round of revisions · delivered in 14 days'] },
@@ -801,8 +801,8 @@ const pt: AppTranslations = {
   },
   ugc: {
     sectionLabel: 'Para marcas',
-    headline:     'Conteúdo de viagem que converte, não apenas que fica bonito.',
-    subheadline:  'Criamos conteúdo autêntico para marcas de turismo, hospedagem, produtos de viagem e produtos digitais. Nada encenado: pura viagem real.',
+    headline:     'Conteúdo que vende a experiência, não uma cena montada.',
+    subheadline:  'Vídeo real que freia o scroll para marcas de viagem, beauty e lifestyle. Do tipo em que as pessoas confiam porque não parece um anúncio.',
     packages: [
       { name: 'Pack Básico',  price: '€150',      includes: ['3 reels/TikToks prontos para publicar', '3 aberturas por vídeo para frear o scroll', 'Entrega em 7 dias · uso ilimitado nas suas redes'] },
       { name: 'Pack Completo', price: '€400',     includes: ['Uma campanha de 5 vídeos para UM objetivo (lançamento, venda ou awareness)', 'Roteiro e estratégia: eu defino o ângulo, você publica', '1 rodada de ajustes · entrega em 14 dias'] },
