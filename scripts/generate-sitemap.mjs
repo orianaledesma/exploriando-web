@@ -27,7 +27,12 @@ function findRoutes(dir, base = dir) {
   return routes;
 }
 
-const routes = [...new Set(findRoutes(DIST))].sort();
+// Rutas privadas/no indexables — fuera del sitemap.
+const PRIVATE = ['/guia-acceso'];
+
+const routes = [...new Set(findRoutes(DIST))]
+  .filter((r) => !PRIVATE.some((p) => r === p || r.startsWith(`${p}/`)))
+  .sort();
 
 const urls = routes
   .map((r) => {

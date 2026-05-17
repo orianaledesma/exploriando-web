@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import emailjs from '@emailjs/browser';
@@ -27,6 +28,7 @@ const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
 @Injectable({ providedIn: 'root' })
 export class EmailCaptureService {
   private readonly analytics = inject(AnalyticsService);
+  private readonly http = inject(HttpClient);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   isRateLimited(): boolean {
@@ -41,7 +43,7 @@ export class EmailCaptureService {
   }
 
   submit(data: EmailCaptureData): Observable<unknown> {
-    const { serviceId, notificationTemplateId, confirmationTemplateId, publicKey } =
+    const { serviceId, notificationTemplateId, publicKey } =
       environment.emailjs;
 
     // Notificación interna — avisa a Oriana del nuevo suscriptor
@@ -57,20 +59,14 @@ export class EmailCaptureService {
       ),
     );
 
-    // Confirmación al suscriptor — bienvenida + link guía + email de contacto
-    const confirm$ = from(
-      emailjs.send(
-        serviceId,
-        confirmationTemplateId,
-        {
-          to_email:  data.email,
-          gift_link: GIFT_DRIVE_URL,
-        },
-        publicKey,
-      ),
-    );
+    // Alta en MailerLite (lista + doble opt-in/bienvenida los maneja
+    // MailerLite). El token vive server-side en la Netlify Function.
+    const subscribe$ = this.http.post('/api/subscribe', {
+      email:  data.email,
+      source: data.source,
+    });
 
-    return forkJoin([notify$, confirm$]).pipe(
+    return forkJoin([notify$, subscribe$]).pipe(
       tap({
         next:  () => this.analytics.track('email_capture_submit', { source: data.source }),
         error: () => this.analytics.track('email_capture_error',  { source: data.source }),

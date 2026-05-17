@@ -1,5 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import emailjs from '@emailjs/browser';
 import { EmailCaptureService } from './email-capture.service';
 import { AnalyticsService } from './analytics.service';
@@ -7,11 +11,15 @@ import { AnalyticsService } from './analytics.service';
 describe('EmailCaptureService', () => {
   let svc: EmailCaptureService;
   let trackSpy: jasmine.Spy;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     svc = TestBed.inject(EmailCaptureService);
     trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
+    httpMock = TestBed.inject(HttpTestingController);
     localStorage.clear();
   });
 
@@ -25,9 +33,12 @@ describe('EmailCaptureService', () => {
         expect(trackSpy).toHaveBeenCalledWith('email_capture_submit', { source: 'hero' });
         done();
       });
+
+      // El alta a MailerLite pasa por la Netlify Function vía /api/subscribe.
+      httpMock.expectOne('/api/subscribe').flush({ ok: true });
     });
 
-    it('dispara email_capture_error con source en fallo', (done) => {
+    it('dispara email_capture_error con source en fallo (emailjs)', (done) => {
       spyOn(emailjs, 'send').and.returnValue(Promise.reject(new Error('emailjs down')));
 
       svc.submit({ email: 'a@b.com', source: 'guia' }).subscribe({
@@ -37,18 +48,25 @@ describe('EmailCaptureService', () => {
           done();
         },
       });
+      // forkJoin cancela el request al errar emailjs; lo drenamos si quedó abierto.
+      httpMock.match('/api/subscribe').forEach((r) => !r.cancelled && r.flush({}));
     });
 
     it('mantiene el contrato — el componente sigue recibiendo el error', (done) => {
-      spyOn(emailjs, 'send').and.returnValue(Promise.reject(new Error('boom')));
+      spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
 
       svc.submit({ email: 'a@b.com', source: 'footer' }).subscribe({
         next:  () => done.fail('should not emit next'),
-        error: (err: Error) => {
-          expect(err.message).toBe('boom');
+        error: (err: { status?: number }) => {
+          expect(err.status).toBe(502);
           done();
         },
       });
+
+      httpMock.expectOne('/api/subscribe').flush(
+        { error: 'down' },
+        { status: 502, statusText: 'Bad Gateway' },
+      );
     });
   });
 
@@ -68,7 +86,5 @@ describe('EmailCaptureService', () => {
     });
   });
 
-  // Suprimir noise de rxjs en tests del subscribe sin descartar suscripciones.
-  // No hace falta `unsubscribe` porque `forkJoin` completa solo.
   it('compila', () => expect(svc).toBeTruthy());
 });
