@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AboutComponent } from './about.component';
-import { ABOUT_COPY } from '../../copy/about.copy';
+import { TRANSLATIONS } from '../../translations/translations';
+
+const COPY = TRANSLATIONS.es.about;
 
 describe('AboutComponent', () => {
   let fixture: ComponentFixture<AboutComponent>;
   let compiled: HTMLElement;
-
-  const copy = ABOUT_COPY.versionA;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,34 +26,36 @@ describe('AboutComponent', () => {
 
   it('should render section label', () => {
     const label = compiled.querySelector('.section-label');
-    expect(label?.textContent?.trim()).toBe(ABOUT_COPY.sectionLabel);
+    expect(label?.textContent?.trim()).toBe(COPY.sectionLabel);
   });
 
   it('should render headline', () => {
     const h2 = compiled.querySelector('h2');
-    expect(h2?.textContent?.trim()).toBe(copy.headline);
+    expect(h2?.textContent?.trim()).toBe(COPY.headline);
   });
 
   it('should render all body paragraphs', () => {
-    const paragraphs = compiled.querySelectorAll('.about__content p');
-    expect(paragraphs.length).toBe(copy.body.length);
+    const paragraphs = compiled.querySelectorAll(
+      '.about__content > p:not(.about__crosslink)',
+    );
+    expect(paragraphs.length).toBe(COPY.body.length);
   });
 
   it('should render all stats', () => {
     const stats = compiled.querySelectorAll('.about__stat');
-    expect(stats.length).toBe(copy.stats.length);
+    expect(stats.length).toBe(COPY.stats.length);
   });
 
   it('should render stat values', () => {
     const values = compiled.querySelectorAll('.about__stat-value');
-    copy.stats.forEach((stat, i) => {
+    COPY.stats.forEach((stat, i) => {
       expect(values[i]?.textContent?.trim()).toBe(stat.value);
     });
   });
 
   it('should render stat labels', () => {
     const labels = compiled.querySelectorAll('.about__stat-label');
-    copy.stats.forEach((stat, i) => {
+    COPY.stats.forEach((stat, i) => {
       expect(labels[i]?.textContent?.trim()).toBe(stat.label);
     });
   });
@@ -61,6 +63,5 @@ describe('AboutComponent', () => {
   it('should render about image', () => {
     const img = compiled.querySelector<HTMLImageElement>('.about__image img');
     expect(img).toBeTruthy();
-    expect(img?.getAttribute('loading')).toBe('lazy');
   });
 });

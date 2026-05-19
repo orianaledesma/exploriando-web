@@ -16,16 +16,13 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      # Tests son informativos por ahora — hay deuda técnica preexistente
-      # (~10 specs sin provideRouter / con bugs reales en componentes legacy
-      # como UgcComponent, PlaceComponent, LiteYoutubeComponent). Para no
-      # bloquear el deploy, marcamos el step como continue-on-error. Cuando
-      # se arregle la deuda, quitar la flag y volver a `needs: test` en deploy.
+      # Deuda técnica de specs resuelta (2026-05-18): 208/208 verdes.
+      # Tests vuelven a ser bloqueantes — si fallan, no se deploya.
       - run: npx ng test --watch=false --browsers=ChromeHeadless
-        continue-on-error: true
 
   deploy:
     runs-on: ubuntu-latest
+    needs: test
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4

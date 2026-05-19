@@ -16,10 +16,11 @@ interface AppTranslations {
   about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; crossSellCta: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
-    topics: Topic[]; cta: string; ctaSubtext: string; comingSoonBadge: string; comingSoonText: string;
-    waitlistSuccess: string; waitlistDuplicate: string;
+    topics: Topic[];
+    youtube: { badge: string; text: string; cta: string; };
     sessions: {
       preTitle: string; title: string; sub: string;
+      coversTitle: string; covers: string[];
       session1Name: string; session1Duration: string;
       session2Name: string; session2Duration: string; session2Badge: string;
       cta: string; ctaNote: string;
@@ -34,7 +35,7 @@ interface AppTranslations {
   };
   recursos: {
     sectionLabel: string; headline: string; subheadline: string; guideTitle: string;
-    guideContents: string[];
+    guideContents: string[]; videoLabel: string;
     form: { emailLabel: string; emailPlaceholder: string; cta: string; ctaLoading: string; privacyNote: string; };
     successMessage: string; alreadySubscribed: string;
     testimonial: { quote: string; author: string; location: string; };
@@ -44,6 +45,7 @@ interface AppTranslations {
     packages: Package[]; cta: string; ctaSubtext: string;
     meta: { title: string; description: string; };
   };
+  marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
   mapaTeaser: {
     sectionLabel: string; headline: string; lead: string;
     countriesLabel: string; placesLabel: string; yearsLabel: string;
@@ -184,8 +186,8 @@ const es: AppTranslations = {
       { value: '9',   label: 'años viajando full time' },
       { value: '3',   label: 'continentes desde cero' },
     ],
-    crossSell:    '¿Querés que tu proyecto tenga presencia digital profesional?',
-    crossSellCta: 'Conocé los servicios de diseño web →',
+    crossSell:    'Exploriando lo construí yo, de punta a punta. Si tu proyecto necesita una web propia, eso también lo hago.',
+    crossSellCta: 'orianaledesma.dev →',
   },
   viajeroCreador: {
     sectionLabel:    'Viajero Creador',
@@ -198,16 +200,23 @@ const es: AppTranslations = {
       { title: 'Viajando mientras creás',     description: 'Cómo organizar tu tiempo para no perderte el viaje mientras lo grabás. El balance que nadie te cuenta en los videos de lifestyle.' },
       { title: 'Colaboraciones con marcas',   description: 'Cómo conseguir tu primera colaboración, qué pedir, qué evitar y cómo no laburar gratis.' },
     ],
-    cta:              'Anotarme a la lista de espera',
-    ctaSubtext:       '',
-    comingSoonBadge:  'LISTA DE ESPERA ABIERTA',
-    comingSoonText:   'Cupos limitados. Descuento early-bird para los primeros.',
-    waitlistSuccess:  '¡Anotada! Te avisamos antes que nadie cuando abra.',
-    waitlistDuplicate: 'Ya estás en la lista. ¡Nos vemos adentro!',
+    youtube: {
+      badge: 'GRATIS EN YOUTUBE',
+      text:  'Todo esto lo enseño gratis en mi canal. Cero curso pago: solo dale play, suscribite y empezá hoy.',
+      cta:   'Ver todo gratis en YouTube',
+    },
     sessions: {
-      preTitle:         '¿No querés esperar al programa?',
-      title:            'Sesiones 1:1 conmigo',
-      sub:              'Una hora directo conmigo para resolver lo que tengas trabado: documentación, plan de ruta, vuelos baratos, presupuesto, o cómo arrancar a crear contenido en el camino.',
+      preTitle:         'Uno a uno',
+      title:            'Cómo te ayudo con tu plan de viaje',
+      sub:              'Una hora, vos y yo, sobre tu viaje real. Traés tus dudas y salís con un plan concreto y los próximos pasos claros — sin vueltas ni teoría.',
+      coversTitle:      'Qué podemos ver juntas',
+      covers: [
+        'Armar tu ruta y tiempos sin morir en el intento',
+        'Documentación y visas según tu pasaporte',
+        'Vuelos baratos: cómo y cuándo cazarlos',
+        'Presupuesto realista y cómo estirarlo',
+        'Cómo arrancar a crear contenido en el camino',
+      ],
       session1Name:     'Sesión individual',
       session1Duration: '45 min',
       session2Name:     'Pack 3 sesiones',
@@ -256,13 +265,14 @@ const es: AppTranslations = {
     headline:      'La guía que hubiéramos querido tener antes de nuestro primer viaje.',
     subheadline:   'Sin relleno, sin teoría. Solo lo que realmente necesitás saber para organizar tu primer viaje sin gastar de más.',
     guideTitle:    'Guía para tu primer viaje',
+    videoLabel:    'Mirá la guía explicada en video',
     guideContents: [
-      'Documentos y pasaporte: qué llevar y cómo guardarlo en la nube',
-      'Dinero, tarjetas y seguro médico: lo básico que no puede faltar',
-      'Qué meter en el bolso de mano si tu maleta facturada se pierde',
-      'Apps imprescindibles de traducción, transporte y pagos digitales',
-      'Checklist final: alojamiento, vuelos y reservas antes de salir',
-      'Consejos de viajero inteligente: equipaje, clima y programas de millas',
+      'Documentos: qué fotocopiar, dónde guardarlo y los permisos que se olvidan',
+      'Money y tarjetas: la tarjeta sin comisiones y apps para controlar gastos',
+      'Bolso de mano perfecto: qué entra, qué no y qué no puede faltar',
+      '5 apps imprescindibles: mapas offline, comunicación y hacks de vuelo',
+      'Revisión final antes de volar: seguros, avisar al banco, último chequeo',
+      'Tips de viajera inteligente: viajá más seguro, gastá menos, adaptate rápido',
     ],
     form: {
       emailLabel:   'Tu correo',
@@ -284,9 +294,9 @@ const es: AppTranslations = {
     headline:     'Contenido que vende la experiencia, no una escena armada.',
     subheadline:  'Video real que frena el scroll para marcas de viaje, beauty y lifestyle. Del que la gente cree porque no parece un anuncio.',
     packages: [
-      { name: 'Pack Básico',  price: '€150',     includes: ['3 reels/TikToks listos para publicar', '3 aperturas por video para frenar el scroll', 'Entrega en 7 días · uso ilimitado en tus redes'] },
-      { name: 'Pack Completo', price: '€400',    includes: ['Campaña de 5 videos pensada para UN objetivo (lanzamiento, venta o awareness)', 'Guión y estrategia: yo defino el ángulo, vos publicás', '1 ronda de ajustes · entrega en 14 días'] },
-      { name: 'VIP Mensual',   price: '€700/mes', includes: ['8 videos al mes + estrategia de contenido continua', 'Calendario de publicación + reporte mensual', 'Hasta 2 rondas/mes · canal directo acordado'] },
+      { name: 'Probar el agua',       price: '€150',     includes: ['3 reels/TikToks listos para publicar', '3 aperturas por video para frenar el scroll', 'Entrega en 7 días · uso ilimitado en tus redes'] },
+      { name: 'Campaña con objetivo', price: '€400',     includes: ['Campaña de 5 videos pensada para UN objetivo (lanzamiento, venta o awareness)', 'Guión y estrategia: yo defino el ángulo, vos publicás', '1 ronda de ajustes · entrega en 14 días'] },
+      { name: 'Presencia sostenida',  price: '€700/mes', includes: ['8 videos al mes + estrategia de contenido continua', 'Calendario de publicación + reporte mensual', 'Hasta 2 rondas/mes · canal directo acordado'] },
     ],
     cta:       'Hablemos de tu marca',
     ctaSubtext: 'Respondemos en menos de 48hs.',
@@ -294,6 +304,12 @@ const es: AppTranslations = {
       title:       'UGC para marcas de viaje — Exploriando',
       description: 'Contenido UGC en destino para hospitality y travel-tech. 9 años recorriendo, videos reales grabados en ruta, entrega en 7-14 días.',
     },
+  },
+  marcasTeaser: {
+    sectionLabel: '¿Sos una marca?',
+    headline:     'Contenido que vende la experiencia, no una escena armada.',
+    text:         'Hago UGC real en destino para marcas de viaje, beauty y lifestyle. Mirá el portafolio y los paquetes.',
+    cta:          'Ver portafolio y paquetes',
   },
   mapaTeaser: {
     sectionLabel:   'Esto es para vos',
@@ -304,7 +320,7 @@ const es: AppTranslations = {
     yearsLabel:     'años recorriendo',
     mapHint:        'Tocá un país para ver sus guías',
     cta:            'Explorar las guías',
-    mapAriaLabel:   '54 ciudades en 16 países que recorrió Oriana — mapa decorativo, navegá por la lista',
+    mapAriaLabel:   'Mapa decorativo de los lugares recorridos por Oriana — navegá por la lista de países',
   },
   mapa: {
     eyebrow:              'Mapa de viajes',
@@ -314,7 +330,7 @@ const es: AppTranslations = {
     placesLabel:          'ciudades',
     yearsLabel:           'años en la ruta',
     mapHint:              'Tocá un país de la lista para ver sus guías',
-    mapAriaLabel:         '54 ciudades en 16 países visitados',
+    mapAriaLabel:         '{cities} ciudades en {countries} países visitados',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'Ver guías de {country}',
     countriesNavLabel:    'Países visitados',
@@ -365,7 +381,7 @@ const es: AppTranslations = {
       tagline: 'No necesitás ser rico para viajar.\nNecesitás saber cómo hacerlo.',
       columns: {
         explore: { title: 'Explorar', links: [
-          { label: 'YouTube',            href: 'https://www.youtube.com/@Exploriando' },
+          { label: 'Mapa de viajes',     href: '/mapa' },
           { label: 'Viajero Creador',    href: 'https://www.youtube.com/watch?v=-XOHTRkBZv8&list=PLjZ30HHREgvqeMNLcj36yBabdMVw_fAwa' },
           { label: 'Guía de viaje',      href: '/guia' },
         ]},
@@ -444,8 +460,8 @@ const en: AppTranslations = {
       { value: '9',   label: 'years traveling full time' },
       { value: '3',   label: 'continents from scratch' },
     ],
-    crossSell:    'Looking for professional web design for your project?',
-    crossSellCta: 'Explore web design services →',
+    crossSell:    'I built Exploriando end to end myself. If your project needs its own website, I do that too.',
+    crossSellCta: 'orianaledesma.dev →',
   },
   viajeroCreador: {
     sectionLabel:    'Creator Traveler',
@@ -458,16 +474,23 @@ const en: AppTranslations = {
       { title: 'Traveling while creating',   description: "How to organize your time so you don't miss the trip while filming it. The balance nobody tells you about in lifestyle videos." },
       { title: 'Brand collaborations',       description: "How to get your first collaboration, what to ask for, what to avoid, and how not to work for free." },
     ],
-    cta:               'Join the waitlist',
-    ctaSubtext:        '',
-    comingSoonBadge:   'WAITLIST OPEN',
-    comingSoonText:    'Limited spots. Early-bird discount for the first ones in.',
-    waitlistSuccess:   "You're on the list! We'll notify you before anyone else when it opens.",
-    waitlistDuplicate: "You're already on the list. See you inside!",
+    youtube: {
+      badge: 'FREE ON YOUTUBE',
+      text:  'I teach all of this for free on my channel. No paid course: just hit play, subscribe and start today.',
+      cta:   'Watch it all free on YouTube',
+    },
     sessions: {
-      preTitle:         "Don't want to wait for the program?",
-      title:            '1:1 sessions with me',
-      sub:              "An hour directly with me to unblock whatever's stuck: paperwork, route planning, cheap flights, budgeting, or how to start creating content on the road.",
+      preTitle:         'One on one',
+      title:            'How I help with your travel plan',
+      sub:              'One hour, you and me, about your real trip. Bring your questions and leave with a concrete plan and clear next steps — no fluff, no theory.',
+      coversTitle:      'What we can cover',
+      covers: [
+        'Building your route and timing without losing your mind',
+        'Paperwork and visas for your passport',
+        'Cheap flights: how and when to catch them',
+        'A realistic budget and how to stretch it',
+        'How to start creating content on the road',
+      ],
       session1Name:     'Single session',
       session1Duration: '45 min',
       session2Name:     'Pack of 3 sessions',
@@ -516,13 +539,14 @@ const en: AppTranslations = {
     headline:      "The guide we wish we'd had before our first trip.",
     subheadline:   "No fluff, no theory. Just what you really need to know to organize your first trip without overspending.",
     guideTitle:    'Guide for your first trip',
+    videoLabel:    'Watch the guide explained on video',
     guideContents: [
-      'Documents and passport: what to carry and how to back it up online',
-      'Money, cards and travel insurance: the basics you cannot skip',
-      'What to pack in your carry-on in case your checked bag is lost',
-      'Must-have apps for translation, transport and digital payments',
-      'Final checklist: accommodation, flights and reservations before you go',
-      'Smart traveler tips: luggage, weather and frequent flyer programs',
+      'Documents: what to photocopy, where to store it and the permits people forget',
+      'Money & cards: the no-fee card and apps to keep spending in check',
+      'The perfect carry-on: what goes in, what doesn’t and what can’t be missing',
+      '5 must-have apps: offline maps, communication and flight hacks',
+      'Final check before flying: insurance, notify your bank, last review',
+      'Smart traveler tips: travel safer, spend less, adapt faster',
     ],
     form: {
       emailLabel:       'Your email',
@@ -544,9 +568,9 @@ const en: AppTranslations = {
     headline:     'Content that sells the experience — not a staged set.',
     subheadline:  "Real, scroll-stopping video for travel, beauty and lifestyle brands. The kind people trust because it doesn't look like an ad.",
     packages: [
-      { name: 'Basic Pack',    price: '€150',     includes: ['3 ready-to-post reels/TikToks', '3 hooks per video to stop the scroll', 'Delivered in 7 days · unlimited use on your socials'] },
-      { name: 'Complete Pack', price: '€400',     includes: ['A 5-video campaign built for ONE goal (launch, sale or awareness)', 'Script & strategy: I set the angle, you post', '1 round of revisions · delivered in 14 days'] },
-      { name: 'VIP Monthly',   price: '€700/mo',  includes: ['8 videos a month + ongoing content strategy', 'Publishing calendar + monthly performance report', 'Up to 2 revision rounds/mo · direct channel'] },
+      { name: 'Test the waters',     price: '€150',     includes: ['3 ready-to-post reels/TikToks', '3 hooks per video to stop the scroll', 'Delivered in 7 days · unlimited use on your socials'] },
+      { name: 'Campaign with a goal', price: '€400',    includes: ['A 5-video campaign built for ONE goal (launch, sale or awareness)', 'Script & strategy: I set the angle, you post', '1 round of revisions · delivered in 14 days'] },
+      { name: 'Sustained presence',  price: '€700/mo',  includes: ['8 videos a month + ongoing content strategy', 'Publishing calendar + monthly performance report', 'Up to 2 revision rounds/mo · direct channel'] },
     ],
     cta:       "Let's talk about your brand",
     ctaSubtext: 'We respond in less than 48hs.',
@@ -554,6 +578,12 @@ const en: AppTranslations = {
       title:       'Travel UGC for brands — Exploriando',
       description: 'On-location UGC for hospitality and travel-tech brands. 9 years on the road, real videos shot on the way, 7-14 day delivery.',
     },
+  },
+  marcasTeaser: {
+    sectionLabel: 'Are you a brand?',
+    headline:     'Content that sells the experience — not a staged set.',
+    text:         'I make real on-location UGC for travel, beauty and lifestyle brands. Check the portfolio and packages.',
+    cta:          'See portfolio and packages',
   },
   mapaTeaser: {
     sectionLabel:   "This one's for you",
@@ -564,7 +594,7 @@ const en: AppTranslations = {
     yearsLabel:     'years on the road',
     mapHint:        'Tap a country to see its guides',
     cta:            'Explore the guides',
-    mapAriaLabel:   '54 cities across 16 countries Oriana traveled — decorative map, navigate via the list',
+    mapAriaLabel:   'Decorative map of places Oriana has traveled — navigate via the country list',
   },
   mapa: {
     eyebrow:              'Travel map',
@@ -574,7 +604,7 @@ const en: AppTranslations = {
     placesLabel:          'cities',
     yearsLabel:           'years on the road',
     mapHint:              'Tap a country in the list to see its guides',
-    mapAriaLabel:         '54 cities across 16 countries visited',
+    mapAriaLabel:         '{cities} cities across {countries} countries visited',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'See guides for {country}',
     countriesNavLabel:    'Countries visited',
@@ -625,7 +655,7 @@ const en: AppTranslations = {
       tagline: "You don't need to be rich to travel.\nYou need to know how.",
       columns: {
         explore: { title: 'Explore', links: [
-          { label: 'YouTube',           href: 'https://www.youtube.com/@Exploriando' },
+          { label: 'Travel map',        href: '/mapa' },
           { label: 'Creator Traveler',  href: 'https://www.youtube.com/watch?v=-XOHTRkBZv8&list=PLjZ30HHREgvqeMNLcj36yBabdMVw_fAwa' },
           { label: 'Travel guide',      href: '/guia' },
         ]},
@@ -704,8 +734,8 @@ const pt: AppTranslations = {
       { value: '9',   label: 'anos viajando em tempo integral' },
       { value: '3',   label: 'continentes do zero' },
     ],
-    crossSell:    'Quer que seu projeto tenha presença digital profissional?',
-    crossSellCta: 'Conheça os serviços de design web →',
+    crossSell:    'Eu construí o Exploriando inteiro, de ponta a ponta. Se o seu projeto precisa de um site próprio, isso também faço eu.',
+    crossSellCta: 'orianaledesma.dev →',
   },
   viajeroCreador: {
     sectionLabel:    'Viajante Criador',
@@ -718,16 +748,23 @@ const pt: AppTranslations = {
       { title: 'Viajando enquanto cria',  description: 'Como organizar seu tempo para não perder a viagem enquanto a filma. O equilíbrio que ninguém conta nos vídeos de lifestyle.' },
       { title: 'Colaborações com marcas', description: 'Como conseguir sua primeira colaboração, o que pedir, o que evitar e como não trabalhar de graça.' },
     ],
-    cta:               'Entrar na lista de espera',
-    ctaSubtext:        '',
-    comingSoonBadge:   'LISTA DE ESPERA ABERTA',
-    comingSoonText:    'Vagas limitadas. Desconto early-bird para os primeiros.',
-    waitlistSuccess:   'Anotada! Avisamos você antes de qualquer um quando abrir.',
-    waitlistDuplicate: 'Você já está na lista. Nos vemos dentro!',
+    youtube: {
+      badge: 'GRÁTIS NO YOUTUBE',
+      text:  'Ensino tudo isso de graça no meu canal. Zero curso pago: é só dar play, se inscrever e começar hoje.',
+      cta:   'Ver tudo grátis no YouTube',
+    },
     sessions: {
-      preTitle:         'Não quer esperar pelo programa?',
-      title:            'Sessões 1:1 comigo',
-      sub:              'Uma hora direto comigo para resolver o que estiver travado: documentação, planejamento da rota, voos baratos, orçamento ou como começar a criar conteúdo pelo caminho.',
+      preTitle:         'Um a um',
+      title:            'Como te ajudo com seu plano de viagem',
+      sub:              'Uma hora, você e eu, sobre a sua viagem real. Você traz suas dúvidas e sai com um plano concreto e os próximos passos claros — sem enrolação nem teoria.',
+      coversTitle:      'O que podemos ver juntas',
+      covers: [
+        'Montar sua rota e os tempos sem enlouquecer',
+        'Documentação e vistos conforme seu passaporte',
+        'Voos baratos: como e quando caçá-los',
+        'Orçamento realista e como esticá-lo',
+        'Como começar a criar conteúdo pelo caminho',
+      ],
       session1Name:     'Sessão individual',
       session1Duration: '45 min',
       session2Name:     'Pack 3 sessões',
@@ -776,13 +813,14 @@ const pt: AppTranslations = {
     headline:      'O guia que gostaríamos de ter tido antes da nossa primeira viagem.',
     subheadline:   'Sem enrolação, sem teoria. Apenas o que você realmente precisa saber para organizar sua primeira viagem sem gastar demais.',
     guideTitle:    'Guia para sua primeira viagem',
+    videoLabel:    'Veja o guia explicado em vídeo',
     guideContents: [
-      'Documentos e passaporte: o que levar e como guardá-los na nuvem',
-      'Dinheiro, cartões e seguro de viagem: o básico que não pode faltar',
-      'O que colocar na mala de mão se a mala despachada se perder',
-      'Apps indispensáveis de tradução, transporte e pagamentos digitais',
-      'Checklist final: hospedagem, voos e reservas antes de partir',
-      'Dicas de viajante inteligente: bagagem, clima e programas de milhas',
+      'Documentos: o que fotocopiar, onde guardar e as permissões que esquecem',
+      'Money e cartões: o cartão sem comissões e apps para controlar gastos',
+      'Mala de mão perfeita: o que entra, o que não e o que não pode faltar',
+      '5 apps indispensáveis: mapas offline, comunicação e hacks de voo',
+      'Revisão final antes de voar: seguros, avisar o banco, último check',
+      'Dicas de viajante inteligente: viaje mais seguro, gaste menos, adapte-se rápido',
     ],
     form: {
       emailLabel:       'Seu email',
@@ -804,9 +842,9 @@ const pt: AppTranslations = {
     headline:     'Conteúdo que vende a experiência, não uma cena montada.',
     subheadline:  'Vídeo real que freia o scroll para marcas de viagem, beauty e lifestyle. Do tipo em que as pessoas confiam porque não parece um anúncio.',
     packages: [
-      { name: 'Pack Básico',  price: '€150',      includes: ['3 reels/TikToks prontos para publicar', '3 aberturas por vídeo para frear o scroll', 'Entrega em 7 dias · uso ilimitado nas suas redes'] },
-      { name: 'Pack Completo', price: '€400',     includes: ['Uma campanha de 5 vídeos para UM objetivo (lançamento, venda ou awareness)', 'Roteiro e estratégia: eu defino o ângulo, você publica', '1 rodada de ajustes · entrega em 14 dias'] },
-      { name: 'VIP Mensal',    price: '€700/mês', includes: ['8 vídeos por mês + estratégia de conteúdo contínua', 'Calendário de publicação + relatório mensal', 'Até 2 rodadas/mês · canal direto combinado'] },
+      { name: 'Testar a água',        price: '€150',      includes: ['3 reels/TikToks prontos para publicar', '3 aberturas por vídeo para frear o scroll', 'Entrega em 7 dias · uso ilimitado nas suas redes'] },
+      { name: 'Campanha com objetivo', price: '€400',     includes: ['Uma campanha de 5 vídeos para UM objetivo (lançamento, venda ou awareness)', 'Roteiro e estratégia: eu defino o ângulo, você publica', '1 rodada de ajustes · entrega em 14 dias'] },
+      { name: 'Presença contínua',    price: '€700/mês',  includes: ['8 vídeos por mês + estratégia de conteúdo contínua', 'Calendário de publicação + relatório mensal', 'Até 2 rodadas/mês · canal direto combinado'] },
     ],
     cta:       'Vamos falar sobre sua marca',
     ctaSubtext: 'Respondemos em menos de 48hs.',
@@ -814,6 +852,12 @@ const pt: AppTranslations = {
       title:       'UGC para marcas de viagem — Exploriando',
       description: 'Conteúdo UGC no destino para marcas de hospitalidade e travel-tech. 9 anos na estrada, vídeos reais gravados em rota, entrega em 7-14 dias.',
     },
+  },
+  marcasTeaser: {
+    sectionLabel: 'Você é uma marca?',
+    headline:     'Conteúdo que vende a experiência, não uma cena montada.',
+    text:         'Faço UGC real no destino para marcas de viagem, beauty e lifestyle. Veja o portfólio e os pacotes.',
+    cta:          'Ver portfólio e pacotes',
   },
   mapaTeaser: {
     sectionLabel:   'Isso aqui é pra você',
@@ -824,7 +868,7 @@ const pt: AppTranslations = {
     yearsLabel:     'anos na estrada',
     mapHint:        'Toque em um país pra ver os guias',
     cta:            'Explorar os guias',
-    mapAriaLabel:   '54 cidades em 16 países que a Oriana percorreu — mapa decorativo, navegue pela lista',
+    mapAriaLabel:   'Mapa decorativo dos lugares que a Oriana percorreu — navegue pela lista de países',
   },
   mapa: {
     eyebrow:              'Mapa de viagens',
@@ -834,7 +878,7 @@ const pt: AppTranslations = {
     placesLabel:          'cidades',
     yearsLabel:           'anos na estrada',
     mapHint:              'Toque em um país da lista pra ver os guias',
-    mapAriaLabel:         '54 cidades em 16 países visitados',
+    mapAriaLabel:         '{cities} cidades em {countries} países visitados',
     markerTooltip:        '{city} · {country}',
     markerAriaLabel:      'Ver guias de {country}',
     countriesNavLabel:    'Países visitados',
@@ -885,7 +929,7 @@ const pt: AppTranslations = {
       tagline: 'Você não precisa ser rico para viajar.\nVocê precisa saber como.',
       columns: {
         explore: { title: 'Explorar', links: [
-          { label: 'YouTube',            href: 'https://www.youtube.com/@Exploriando' },
+          { label: 'Mapa de viagens',    href: '/mapa' },
           { label: 'Viajante Criador',   href: 'https://www.youtube.com/watch?v=-XOHTRkBZv8&list=PLjZ30HHREgvqeMNLcj36yBabdMVw_fAwa' },
           { label: 'Guia de viagem',     href: '/guia' },
         ]},

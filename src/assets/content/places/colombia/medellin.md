@@ -71,7 +71,7 @@ Los paisas (gente de Medellín) tienen una energía única: alegres, hospitalari
 
 **Evitar:** Comuna 13 para alojarse (lindo de visitar pero no recomendado para dormir si no conocés). Centro de noche.
 
-<!-- VERIFY: hoteles concretos donde te alojaste, con USD por noche -->
+
 
 ## Dónde comer
 
@@ -117,7 +117,7 @@ Los paisas (gente de Medellín) tienen una energía única: alegres, hospitalari
 - **Plaza Minorista** — mercado popular auténtico
 - **Mercado Pueblito Paisa** — más turístico
 
-<!-- VERIFY: restaurants concretos donde comiste, opiniones reales y precios -->
+
 
 ## Cómo moverse
 

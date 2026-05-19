@@ -28,13 +28,7 @@ describe('LiteYoutubeComponent', () => {
     expect(component.thumbUrl()).toBe('https://i.ytimg.com/vi/abc123XYZ/hqdefault.jpg');
   });
 
-  it('iframeSrc usa youtube-nocookie y autoplay=1', () => {
-    expect(component.iframeSrc()).toContain('youtube-nocookie.com/embed/abc123XYZ');
-    expect(component.iframeSrc()).toContain('autoplay=1');
-    expect(component.iframeSrc()).toContain('rel=0');
-  });
-
-  it('al hacer click en el poster, monta el iframe', () => {
+  it('al hacer click en el poster, monta el iframe con src seguro', () => {
     fixture.debugElement.query(By.css('.lite-youtube__poster')).nativeElement.click();
     fixture.detectChanges();
 
@@ -42,6 +36,11 @@ describe('LiteYoutubeComponent', () => {
     const iframe = fixture.debugElement.query(By.css('.lite-youtube__iframe'));
     expect(iframe).toBeTruthy();
     expect(iframe.nativeElement.getAttribute('title')).toBe('Test video');
+
+    const src = iframe.nativeElement.getAttribute('src') as string;
+    expect(src).toContain('youtube-nocookie.com/embed/abc123XYZ');
+    expect(src).toContain('autoplay=1');
+    expect(src).toContain('rel=0');
   });
 
   it('aria-label del botón incluye el título del video', () => {

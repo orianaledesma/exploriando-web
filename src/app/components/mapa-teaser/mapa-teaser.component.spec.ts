@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MapaTeaserComponent } from './mapa-teaser.component';
 import { AnalyticsService } from '../../services/analytics.service';
+import { LanguageService } from '../../services/language.service';
 import { visitedCountries } from '../../data/places';
 
 describe('MapaTeaserComponent', () => {
@@ -15,6 +16,10 @@ describe('MapaTeaserComponent', () => {
       imports: [MapaTeaserComponent],
       providers: [provideRouter([])],
     }).compileComponents();
+
+    // Karma comparte localStorage entre specs → forzamos 'es' para que
+    // citySuffix/labels asierten contra el copy español (evita contaminación).
+    TestBed.inject(LanguageService).set('es');
 
     fixture = TestBed.createComponent(MapaTeaserComponent);
     component = fixture.componentInstance;

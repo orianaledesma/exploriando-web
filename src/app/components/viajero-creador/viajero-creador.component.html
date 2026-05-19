@@ -15,19 +15,41 @@
       }
     </ul>
 
-    <!-- Sesiones 1:1 disponibles ahora -->
-    <div class="vc-sessions" appReveal [delay]="500">
+    <!-- Contenido gratis en YouTube (objetivo: watch hours del canal) -->
+    <div class="vc-youtube" appReveal [delay]="440">
+      <span class="badge badge--fresh">{{ t().youtube.badge }}</span>
+      <p class="vc-youtube__text">{{ t().youtube.text }}</p>
+      <a [href]="youtubeUrl" target="_blank" rel="noopener"
+         class="btn btn--primary btn--lg vc-youtube__cta"
+         (click)="onYoutubeClick()">
+        {{ t().youtube.cta }} →
+      </a>
+    </div>
+
+    <!-- Sesiones 1:1 — único producto pago -->
+    <div class="vc-sessions" appReveal [delay]="560">
       <p class="vc-sessions__pre">{{ t().sessions.preTitle }}</p>
       <h3 class="vc-sessions__title">{{ t().sessions.title }}</h3>
       <p class="vc-sessions__sub">{{ t().sessions.sub }}</p>
+
+      <div class="vc-sessions__covers">
+        <p class="vc-sessions__covers-title">{{ t().sessions.coversTitle }}</p>
+        <ul class="vc-sessions__covers-list" role="list">
+          @for (item of t().sessions.covers; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
 
       <div class="vc-sessions__grid">
         <article class="vc-session-card">
           <p class="vc-session-card__name">{{ t().sessions.session1Name }}</p>
           <p class="vc-session-card__duration">{{ t().sessions.session1Duration }}</p>
           <p class="vc-session-card__price">USD 150</p>
-          <a [href]="bookingUrl" target="_blank" rel="noopener"
-             class="btn btn--primary vc-session-card__cta">
+          <a [href]="bookingUrl(t().sessions.session1Name + ' (USD 150)')"
+             target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta"
+             (click)="onSessionClick()">
             {{ t().sessions.cta }}
           </a>
         </article>
@@ -37,82 +59,16 @@
           <p class="vc-session-card__name">{{ t().sessions.session2Name }}</p>
           <p class="vc-session-card__duration">{{ t().sessions.session2Duration }}</p>
           <p class="vc-session-card__price">USD 400</p>
-          <a [href]="bookingUrl" target="_blank" rel="noopener"
-             class="btn btn--primary vc-session-card__cta">
+          <a [href]="bookingUrl(t().sessions.session2Name + ' (USD 400)')"
+             target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta"
+             (click)="onSessionClick()">
             {{ t().sessions.cta }}
           </a>
         </article>
       </div>
 
       <p class="vc-sessions__note">{{ t().sessions.ctaNote }}</p>
-    </div>
-
-    <!-- Waitlist form -->
-    <div class="vc-cta" appReveal [delay]="600">
-      <span class="badge badge--waitlist">{{ t().comingSoonBadge }}</span>
-      <p class="vc-cta__text">{{ t().comingSoonText }}</p>
-
-      @if (status() !== 'success' && status() !== 'duplicate') {
-        <form
-          class="vc-waitlist-form"
-          [formGroup]="form"
-          (ngSubmit)="onSubmit()"
-          novalidate
-          aria-label="Formulario de lista de espera">
-
-          <div class="vc-waitlist-form__row">
-            <div class="form-field">
-              <label for="vc-email" class="visually-hidden">Tu correo electrónico</label>
-              <input
-                id="vc-email"
-                type="email"
-                formControlName="email"
-                placeholder="tu@correo.com"
-                autocomplete="email"
-                [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
-            </div>
-
-            <button
-              type="submit"
-              class="btn btn--primary"
-              [disabled]="status() === 'loading'"
-              [attr.aria-busy]="status() === 'loading'">
-              @if (status() === 'loading') {
-                <span class="spinner" aria-hidden="true"></span>
-              } @else {
-                {{ t().cta }}
-              }
-            </button>
-          </div>
-
-          <!-- Honeypot -->
-          <div class="form-field--honeypot" aria-hidden="true">
-            <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
-          </div>
-
-          @if (emailCtrl.invalid && emailCtrl.touched) {
-            <p class="field-error" role="alert">Ingresá un correo válido.</p>
-          }
-          @if (status() === 'error') {
-            <p class="field-error" role="alert">Algo falló. Intentá de nuevo.</p>
-          }
-          @if (status() === 'rateLimit') {
-            <p class="field-error" role="alert">Demasiados intentos. Esperá unos minutos.</p>
-          }
-        </form>
-      }
-
-      @if (status() === 'success') {
-        <p class="vc-waitlist-success" aria-live="assertive" role="status">
-          ✓ {{ t().waitlistSuccess }}
-        </p>
-      }
-
-      @if (status() === 'duplicate') {
-        <p class="vc-waitlist-success" aria-live="polite" role="status">
-          {{ t().waitlistDuplicate }}
-        </p>
-      }
     </div>
 
   </div>
