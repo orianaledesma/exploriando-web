@@ -1,0 +1,21 @@
+@if (visible()) {
+  <div
+    class="cookie-consent"
+    role="region"
+    aria-label="Cookie consent"
+  >
+    <p class="cookie-consent__text">{{ t().message }}</p>
+    <div class="cookie-consent__actions">
+      <button
+        type="button"
+        class="cookie-consent__btn cookie-consent__btn--ghost"
+        (click)="reject()"
+      >{{ t().reject }}</button>
+      <button
+        type="button"
+        class="cookie-consent__btn cookie-consent__btn--primary"
+        (click)="accept()"
+      >{{ t().accept }}</button>
+    </div>
+  </div>
+}

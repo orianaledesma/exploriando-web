@@ -22,5 +22,21 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/mapa/place/place.component').then(m => m.PlaceComponent),
   },
 
+  // Blog / guías — terreno listo y prerenderizable (contenido se suma en data/blog.ts).
+  {
+    path: 'blog',
+    loadComponent: () => import('./pages/blog/blog-list.component').then(m => m.BlogListComponent),
+  },
+  {
+    path: 'blog/:slug',
+    loadComponent: () => import('./pages/blog/blog-post.component').then(m => m.BlogPostComponent),
+  },
+
+  // Página privada de la guía — solo accesible vía el link del email de MailerLite.
+  {
+    path: 'guia-acceso',
+    loadComponent: () => import('./pages/guia-acceso/guia-acceso.component').then(m => m.GuiaAccesoComponent),
+  },
+
   { path: '**', redirectTo: '' },
 ];

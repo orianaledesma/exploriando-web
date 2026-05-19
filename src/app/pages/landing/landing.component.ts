@@ -5,12 +5,16 @@ import { MapaTeaserComponent } from '../../components/mapa-teaser/mapa-teaser.co
 import { ViajeroCreadorComponent } from '../../components/viajero-creador/viajero-creador.component';
 import { AfiliadosComponent } from '../../components/afiliados/afiliados.component';
 import { RecursosComponent } from '../../components/recursos/recursos.component';
-import { UgcComponent } from '../../components/ugc/ugc.component';
+import { MarcasTeaserComponent } from '../../components/marcas-teaser/marcas-teaser.component';
 
-// Sección "Comunidad" reemplazada por MapaTeaser (decisión 2026-04-30):
-// el mapa interactivo cumple mejor el rol de "qué ganás sumándote" porque
-// muestra el contenido real del canal en vez de bullets abstractos.
+// Landing 100% viajero (auditoría 2026-05-18). Orden por funnel:
+// captura → prueba de valor → promesa gratis → confianza → herramientas →
+// creador (YouTube + 1:1) → derivación B2B a /marcas.
 //
+// La sección UGC completa se removió del landing: vive en /marcas. Acá solo
+// queda un teaser que deriva al B2B sin contaminar el funnel del viajero.
+//
+// "Comunidad" fue reemplazada por MapaTeaser (decisión 2026-04-30).
 // DocumentacionComponent sigue oculto — consume créditos de Anthropic API.
 
 @Component({
@@ -18,21 +22,21 @@ import { UgcComponent } from '../../components/ugc/ugc.component';
   template: `
     <app-hero />
     <app-mapa-teaser />
-    <app-about />
-    <app-viajero-creador />
-    <app-afiliados />
     <app-recursos />
-    <app-ugc />
+    <app-about />
+    <app-afiliados />
+    <app-viajero-creador />
+    <app-marcas-teaser />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     HeroComponent,
     MapaTeaserComponent,
-    AboutComponent,
-    ViajeroCreadorComponent,
-    AfiliadosComponent,
     RecursosComponent,
-    UgcComponent,
+    AboutComponent,
+    AfiliadosComponent,
+    ViajeroCreadorComponent,
+    MarcasTeaserComponent,
   ],
 })
 export class LandingComponent {}

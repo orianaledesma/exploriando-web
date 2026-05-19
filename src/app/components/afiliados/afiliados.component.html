@@ -25,10 +25,11 @@
 
           <p class="afiliados__disclaimer">{{ card.disclaimer }}</p>
 
-          <a [href]="card.ctaUrl"
+          <a [href]="affiliateUrl(card)"
              target="_blank"
-             rel="noopener noreferrer sponsored"
+             rel="noopener noreferrer sponsored nofollow"
              class="btn btn--primary afiliados__cta"
+             (click)="onAffiliateClick(card)"
              [attr.aria-label]="card.cta + ' — ' + card.name">
             {{ card.cta }}
           </a>

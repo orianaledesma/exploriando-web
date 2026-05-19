@@ -60,7 +60,7 @@ Lo que la hace especial es la mezcla de historia colonial con energía latinoame
 
 **Evitar:** zonas como Santa Fe, Mártires, Restrepo, Ciudad Bolívar (sur). En La Candelaria, no caminar de noche por calles desiertas.
 
-<!-- VERIFY: hoteles concretos donde te alojaste con USD por noche -->
+
 
 ## Dónde comer
 
@@ -106,7 +106,7 @@ Lo que la hace especial es la mezcla de historia colonial con energía latinoame
 - **Plaza de Mercado de Paloquemao** — el más grande, frutas, flores, carnes, comida casera
 - **Mercado de las Pulgas de Usaquén** (domingos) — artesanía, comida, ambiente
 
-<!-- VERIFY: restaurants concretos donde comiste, opiniones reales -->
+
 
 ## Cómo moverse
 

@@ -1,9 +1,21 @@
 // ─── Page Hero ────────────────────────────────────────────────────────────────
 
 .marcas-hero {
+  // Foto full-bleed de fondo. Fallback sólido si la webp no carga.
   background-color: var(--color-bg-dark);
-  padding: calc(var(--space-3xl) + 64px) 0 var(--space-3xl);
-  min-height: 60vh;
+  // Velo negro encima de la foto para que el texto sea legible (AA).
+  // El rgba es un overlay funcional sobre la foto, no color de marca.
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.65)
+    ),
+    url('/assets/images/marcas-hero.webp');
+  background-size: contain;
+  background-position: top right;
+  background-repeat: no-repeat;
+  // 64px despeja el nav fijo. Hero más bajo → la foto ocupa menos alto.
+  padding: calc(var(--space-md) + 64px) 0 var(--space-lg);
   display: flex;
   align-items: center;
 
@@ -14,9 +26,17 @@
     gap: var(--space-md);
   }
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    max-width: 620px;
+  }
+
   &__back {
     font-size: var(--text-sm);
-    color: rgba(255, 255, 255, 0.60);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     margin-bottom: var(--space-sm);
 
@@ -25,17 +45,30 @@
 
   h1 {
     color: var(--color-text-on-dark);
-    max-width: 640px;
+    max-width: 18ch;
   }
 
   &__sub {
     font-size: var(--text-lg);
-    color: rgba(255, 255, 255, 0.70);
+    color: var(--color-text-on-dark);
+    opacity: 0.85;
     max-width: 540px;
     line-height: 1.6;
   }
 
   .section-label { margin-bottom: 0; }
+
+  // Mobile: la foto ocupa todo el ancho → velo más fuerte para garantizar AA.
+  @media (max-width: 768px) {
+    background-size: contain;
+    background-position: bottom;
+    background-image:
+      linear-gradient(
+        rgba(0, 0, 0, 0.75),
+        rgba(0, 0, 0, 0.75)
+      ),
+      url('/assets/images/marcas-hero.webp');
+  }
 }
 
 // ─── Portfolio ────────────────────────────────────────────────────────────────
@@ -84,13 +117,14 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--color-bg-soft);
-  aspect-ratio: 9 / 16;
+  display: flex;
+  flex-direction: column;
 
   &__chip {
     position: absolute;
     top: var(--space-xs);
     left: var(--space-xs);
-    z-index: 1;
+    z-index: 2;
     background: rgba(0, 0, 0, 0.70);
     color: #fff;
     font-size: var(--text-xs);
@@ -101,11 +135,58 @@
     pointer-events: none;
   }
 
-  &__iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
+  // Reels verticales: override del 16/9 default de lite-youtube.
+  &__player {
     display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+  }
+
+  &__meta {
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  &__title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .vstat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+
+    &__ico {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    &__ext {
+      width: 12px;
+      height: 12px;
+      margin-left: auto;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+
+    span { line-height: 1.3; }
+
+    &:not(&--plain):hover,
+    &:not(&--plain):focus-visible {
+      color: var(--color-accent);
+    }
+
+    &--plain { cursor: default; }
   }
 }
 

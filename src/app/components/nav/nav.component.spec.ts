@@ -111,9 +111,9 @@ describe('NavComponent', () => {
     expect(btn?.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('should have desktop CTA pointing to /#comunidad fragment', () => {
-    // routerLink="/" + fragment="comunidad" + <base href="/"> → /#comunidad
+  it('should have desktop CTA pointing to /#comunidad-form fragment', () => {
+    // routerLink="/" + fragment="comunidad-form" + <base href="/"> → /#comunidad-form
     const cta = compiled.querySelector<HTMLAnchorElement>('.nav__cta');
-    expect(cta?.getAttribute('href')).toBe('/#comunidad');
+    expect(cta?.getAttribute('href')).toBe('/#comunidad-form');
   });
 });

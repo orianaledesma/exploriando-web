@@ -198,11 +198,11 @@ export const GUIA_PAGA_COPY_A: GuiaPagaCopy = {
       'Información desactualizada o de hace 5 años',
     ],
     paid: [
-      'Sistema paso a paso con fechas y ejemplos',
-      'Presupuestos reales por destino, en pesos y euros',
-      'Estrategia de vuelos con capturas y plataformas concretas',
-      'Stack de apps con configuraciones que casi nadie cuenta',
-      'Actualizaciones gratis cuando agrego destinos nuevos',
+      'Sistema paso a paso para armar tu primer viaje, con ejemplos reales',
+      'Stack de apps con las configuraciones que casi nadie te cuenta',
+      'Errores típicos del viajero primerizo latino y cómo evitarlos',
+      'Escrita por alguien que viajó a 40+ países, no copiada de internet',
+      'Acceso a la versión actualizada de la guía',
     ],
   },
   testimonials: [

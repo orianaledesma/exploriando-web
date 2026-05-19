@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ComunidadComponent } from './comunidad.component';
 import { LanguageService } from '../../services/language.service';
+import { TRANSLATIONS } from '../../translations/translations';
 import { signal } from '@angular/core';
 
 const mockLangService = {
@@ -38,7 +39,7 @@ describe('ComunidadComponent', () => {
 
   it('should render the headline', () => {
     const h2 = fixture.nativeElement.querySelector('h2');
-    expect(h2.textContent).toContain('Qué te llevás al sumarte');
+    expect(h2.textContent).toContain(TRANSLATIONS.es.comunidad.headline);
   });
 
   it('should have section aria-labelledby pointing to heading id', () => {

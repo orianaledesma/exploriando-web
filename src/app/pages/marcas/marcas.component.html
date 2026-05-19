@@ -3,14 +3,16 @@
   <!-- Hero de la página -->
   <section class="marcas-hero">
     <div class="container marcas-hero__inner">
-      <a routerLink="/" class="marcas-hero__back">← Volver</a>
-      <span class="section-label hero-enter hero-enter-1">UGC &amp; Contenido de marca</span>
-      <h1 class="hero-enter hero-enter-2">{{ t().headline }}</h1>
-      <p class="marcas-hero__sub hero-enter hero-enter-3">{{ t().subheadline }}</p>
-      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg hero-enter hero-enter-4"
-         (click)="onMarcasFormClick('hero')">
-        Hablemos de tu proyecto ✈
-      </a>
+      <div class="marcas-hero__content">
+        <a routerLink="/" class="marcas-hero__back">← Volver</a>
+        <span class="section-label hero-enter hero-enter-2">UGC &amp; Contenido de marca</span>
+        <h1 class="hero-enter hero-enter-3">{{ t().headline }}</h1>
+        <p class="marcas-hero__sub hero-enter hero-enter-4">{{ t().subheadline }}</p>
+        <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg hero-enter hero-enter-5"
+           (click)="onMarcasFormClick('hero')">
+          Hablemos de tu proyecto ✈
+        </a>
+      </div>
     </div>
   </section>
 
@@ -19,22 +21,59 @@
     <div class="container">
       <h2 id="portfolio-title" appReveal>Portafolio de contenido</h2>
       <p class="marcas-portfolio__sub" appReveal [delay]="80">
-        Videos reales, grabados en destino. Cada pieza tiene historia detrás.
+        Contenido real grabado en destino, no en set. Así performa el estilo que produzco —
+        números públicos de cada pieza.
       </p>
 
       <div class="marcas-video-grid">
         @for (video of portfolioVideos; track video.id; let i = $index) {
           <div class="marcas-video-card" appReveal [delay]="100 + i * 60">
             <span class="marcas-video-card__chip">{{ video.category }}</span>
-            <iframe
-              [src]="video.safeUrl"
-              [title]="'Video de portafolio — ' + video.category"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy"
-              class="marcas-video-card__iframe">
-            </iframe>
+            <app-lite-youtube
+              class="marcas-video-card__player"
+              [videoId]="video.id"
+              [title]="video.title"
+              thumbQuality="maxresdefault" />
+            <div class="marcas-video-card__meta">
+              <p class="marcas-video-card__title">{{ video.title }}</p>
+
+              <a class="vstat" [href]="video.yt.url" target="_blank"
+                 rel="noopener" aria-label="Ver en YouTube (abre en pestaña nueva)">
+                <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/>
+                </svg>
+                <span>{{ video.yt.stats }}</span>
+                <svg class="vstat__ext" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+                </svg>
+              </a>
+
+              @if (video.ig; as ig) {
+                @if (ig.url) {
+                  <a class="vstat" [href]="ig.url" target="_blank"
+                     rel="noopener" aria-label="Ver en Instagram (abre en pestaña nueva)">
+                    <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="none" stroke="currentColor" stroke-width="2" d="M2 8a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6Z"/>
+                      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="17.5" cy="6.5" r="1.4" fill="currentColor"/>
+                    </svg>
+                    <span>{{ ig.stats }}</span>
+                    <svg class="vstat__ext" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+                    </svg>
+                  </a>
+                } @else {
+                  <span class="vstat vstat--plain">
+                    <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="none" stroke="currentColor" stroke-width="2" d="M2 8a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6Z"/>
+                      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="17.5" cy="6.5" r="1.4" fill="currentColor"/>
+                    </svg>
+                    <span>{{ ig.stats }}</span>
+                  </span>
+                }
+              }
+            </div>
           </div>
         }
       </div>
@@ -67,10 +106,10 @@
                 <li class="ugc__include-item">{{ item }}</li>
               }
             </ul>
-            <a [href]="formUrl" target="_blank" rel="noopener"
+            <a [href]="packageBookingUrl(pkg)" target="_blank" rel="noopener"
                (click)="onMarcasFormClick('package', pkg.name)"
                class="btn btn--primary" style="margin-top: auto;">
-              Quiero este paquete
+              Quiero el {{ pkg.name }}
             </a>
           </li>
         }
@@ -82,10 +121,10 @@
   <section class="marcas-cta" appReveal>
     <div class="container marcas-cta__inner">
       <h2>¿Listo para trabajar juntos?</h2>
-      <p>Completá el formulario y te respondemos con una propuesta a medida en 48 hs.</p>
+      <p>Agendá 15 min conmigo y armamos la propuesta a medida en la llamada.</p>
       <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg"
          (click)="onMarcasFormClick('final_cta')">
-        Completar formulario
+        Agendar 15 min
       </a>
       <span class="marcas-cta__sub">Sin compromiso — la primera consulta es gratis</span>
     </div>

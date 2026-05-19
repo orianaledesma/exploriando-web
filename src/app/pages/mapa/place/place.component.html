@@ -31,7 +31,7 @@
 
       <div class="place__months">
         <p class="place__months-label">{{ t().bestMonthsLabel }}</p>
-        <app-best-months-grid [months]="s.place.bestMonths" />
+        <app-best-months-grid [months]="content()?.frontmatter?.bestMonths ?? s.place.bestMonths" />
       </div>
     </header>
 

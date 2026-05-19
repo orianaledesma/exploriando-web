@@ -11,43 +11,9 @@
         una guía que podés leer en una noche.
       </p>
       <p class="guia-hero__author">Por <strong>Ori</strong> · Exploriando</p>
-    </div>
-  </section>
 
-  @if (!unlocked()) {
-    <!-- EMAIL GATE -->
-    <section class="guia-gate" appReveal>
-      <div class="container guia-gate__inner">
-        <p class="guia-gate__eyebrow">Antes de empezar</p>
-        <h2 class="guia-gate__title">Dejá tu email y entrás a leer la guía.</h2>
-        <p class="guia-gate__sub">
-          La leés acá mismo, sin descargas. Y te mando una copia al correo
-          para tenerla guardada cuando estés sin internet.
-        </p>
-
-        <div class="guia-vs" appReveal [delay]="80">
-          <h3 class="guia-vs__title">{{ copy.vsGratuita.vsTitle }}</h3>
-          <div class="guia-vs__grid">
-            <div class="guia-vs__col guia-vs__col--free">
-              <p class="guia-vs__label">{{ copy.vsGratuita.freeLabel }}</p>
-              <ul role="list">
-                @for (item of copy.vsGratuita.free; track item) {
-                  <li class="guia-vs__item guia-vs__item--free">{{ item }}</li>
-                }
-              </ul>
-            </div>
-            <div class="guia-vs__col guia-vs__col--paid">
-              <p class="guia-vs__label">{{ copy.vsGratuita.paidLabel }}</p>
-              <ul role="list">
-                @for (item of copy.vsGratuita.paid; track item) {
-                  <li class="guia-vs__item guia-vs__item--paid">{{ item }}</li>
-                }
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="guia-gate__form">
+      @if (!unlocked()) {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="guia-gate__form guia-hero__form">
           <div class="guia-gate__row">
             <div class="form-field">
               <label for="guia-email" class="visually-hidden">Tu correo electrónico</label>
@@ -86,10 +52,45 @@
             <p class="field-error" role="alert">Demasiados intentos. Esperá unos minutos.</p>
           }
 
-          <p class="guia-gate__privacy">
-            Cero spam. Podés darte de baja cuando quieras.
-          </p>
+          <p class="guia-gate__privacy">Cero spam. Podés darte de baja cuando quieras.</p>
         </form>
+      }
+    </div>
+  </section>
+
+  @if (!unlocked()) {
+    <!-- EMAIL GATE -->
+    <section class="guia-gate" appReveal>
+      <div class="container guia-gate__inner">
+        <p class="guia-gate__eyebrow">Antes de empezar</p>
+        <h2 class="guia-gate__title">Dejá tu email y entrás a leer la guía.</h2>
+        <p class="guia-gate__sub">
+          La leés acá mismo, sin descargas. Y te mando una copia al correo
+          para tenerla guardada cuando estés sin internet.
+        </p>
+
+        <div class="guia-vs" appReveal [delay]="80">
+          <h3 class="guia-vs__title">{{ copy.vsGratuita.vsTitle }}</h3>
+          <div class="guia-vs__grid">
+            <div class="guia-vs__col guia-vs__col--free">
+              <p class="guia-vs__label">{{ copy.vsGratuita.freeLabel }}</p>
+              <ul role="list">
+                @for (item of copy.vsGratuita.free; track item) {
+                  <li class="guia-vs__item guia-vs__item--free">{{ item }}</li>
+                }
+              </ul>
+            </div>
+            <div class="guia-vs__col guia-vs__col--paid">
+              <p class="guia-vs__label">{{ copy.vsGratuita.paidLabel }}</p>
+              <ul role="list">
+                @for (item of copy.vsGratuita.paid; track item) {
+                  <li class="guia-vs__item guia-vs__item--paid">{{ item }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   }

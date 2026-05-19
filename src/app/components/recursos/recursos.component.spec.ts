@@ -16,6 +16,10 @@ describe('RecursosComponent', () => {
       providers: [LanguageService, provideRouter([])],
     }).compileComponents();
 
+    // Karma comparte localStorage entre specs; forzamos 'es' para que el
+    // componente renderice el mismo idioma contra el que asertamos.
+    TestBed.inject(LanguageService).set('es');
+
     fixture = TestBed.createComponent(RecursosComponent);
     fixture.detectChanges();
     compiled = fixture.nativeElement as HTMLElement;
@@ -35,15 +39,28 @@ describe('RecursosComponent', () => {
     expect(h2?.textContent?.trim()).toBe(t.headline);
   });
 
-  it('should render all guide contents', () => {
-    const items = compiled.querySelectorAll('.recursos__contents li');
-    expect(items.length).toBe(t.guideContents.length);
+  it('should render the real guide preview screen (es)', () => {
+    const img = compiled.querySelector<HTMLImageElement>('.recursos__preview img');
+    expect(img).toBeTruthy();
+    expect(img?.getAttribute('src')).toBe('/assets/content/guias/guia_screen_es.png');
   });
 
-  it('should render the CTA pointing to /guia', () => {
-    const cta = compiled.querySelector<HTMLAnchorElement>('.recursos__cta-block a');
+  it('renders the guide value list from translations', () => {
+    const items = compiled.querySelectorAll('.recursos__list li');
+    expect(items.length).toBe(t.guideContents.length);
+    expect(items[0]?.textContent?.trim()).toBe(t.guideContents[0]);
+  });
+
+  it('CTA is a button that scrolls to the hero form (single capture point)', () => {
+    const cta = compiled.querySelector<HTMLButtonElement>('.recursos__cta-block button');
     expect(cta).toBeTruthy();
-    expect(cta?.getAttribute('href')).toBe('/guia');
+    expect(cta?.getAttribute('type')).toBe('button');
+
+    const target = jasmine.createSpyObj('input', ['scrollIntoView', 'focus']);
+    spyOn(document, 'getElementById').and.returnValue(target as unknown as HTMLElement);
+    cta!.click();
+    expect(target.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
+    expect(target.focus).toHaveBeenCalled();
   });
 
   it('should render testimonial quote and citation', () => {

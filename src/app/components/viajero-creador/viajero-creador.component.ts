@@ -3,74 +3,56 @@ import {
   Component,
   computed,
   inject,
-  signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { EmailCaptureService } from '../../services/email-capture.service';
-import { EmailCaptureStatus } from '../../models/email-capture.model';
 
-const WAITLIST_SOURCE = 'viajero-creador' as const;
+// Modelo confirmado por Oriana (auditoría 2026-05-18): el contenido educativo
+// es GRATIS en YouTube a propósito (monetiza el canal vía watch hours). El
+// único producto pago son las sesiones 1:1. Se eliminó la waitlist (un
+// "programa pago" contradecía el modelo de canal gratuito).
+// Playlist del curso gratuito (no el canal a secas) — Ori la quiere apuntada
+// directo al curso para maximizar watch time de esa lista.
+const YOUTUBE_URL =
+  'https://www.youtube.com/watch?v=Ireh_4z2DGc&list=PLjZ30HHREgvqeMNLcj36yBabdMVw_fAwa';
 
-const BOOKING_URL = 'https://calendly.com/orianaledesma/asesoria-exploriando';
+// Calendly: un solo event type para todo (plan pago). El query param `a1`
+// prellena la pregunta custom → Oriana ve EXACTAMENTE qué sesión eligió
+// el usuario en el email de aviso (1 sesión vs pack de 3).
+const BOOKING_BASE = 'https://calendly.com/orianaledesma/asesoria-exploriando';
 
 @Component({
   selector: 'app-viajero-creador',
   templateUrl: './viajero-creador.component.html',
   styleUrl: './viajero-creador.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RevealDirective, ReactiveFormsModule],
+  imports: [RevealDirective],
 })
 export class ViajeroCreadorComponent {
-  private readonly lang         = inject(LanguageService);
-  private readonly fb           = inject(FormBuilder);
-  private readonly emailService = inject(EmailCaptureService);
+  private readonly lang      = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
 
   readonly t          = computed(() => TRANSLATIONS[this.lang.current()].viajeroCreador);
-  readonly status     = signal<EmailCaptureStatus>('idle');
-  readonly bookingUrl = BOOKING_URL;
+  readonly youtubeUrl = YOUTUBE_URL;
 
-  readonly form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    trap:  [''],
-  });
+  /**
+   * URL de Calendly que lleva, en el tag `a1`, qué sesión eligió el usuario
+   * (ej. "Asesoría 1:1 — Sesión individual (USD 150)") para que Oriana lo
+   * sepa antes de la llamada.
+   */
+  bookingUrl(detail: string): string {
+    return `${BOOKING_BASE}?a1=${encodeURIComponent('Asesoría 1:1 — ' + detail)}`;
+  }
 
-  get emailCtrl() { return this.form.controls['email']; }
+  /** Tracking: click al canal de YouTube (objetivo real: watch hours). */
+  onYoutubeClick(): void {
+    this.analytics.track('viajero_creador_youtube_click');
+  }
 
-  onSubmit(): void {
-    if (this.form.value['trap']) {
-      this.status.set('success');
-      return;
-    }
-
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    if (this.emailService.isRateLimited()) {
-      this.status.set('rateLimit');
-      return;
-    }
-
-    if (this.emailService.hasAlreadySubmitted(WAITLIST_SOURCE)) {
-      this.status.set('duplicate');
-      return;
-    }
-
-    this.status.set('loading');
-
-    this.emailService
-      .submit({ email: this.form.value['email'] as string, source: WAITLIST_SOURCE })
-      .subscribe({
-        next: () => {
-          this.emailService.recordSubmission(WAITLIST_SOURCE);
-          this.status.set('success');
-          this.form.reset();
-        },
-        error: () => this.status.set('error'),
-      });
+  /** Tracking: click a reservar sesión 1:1 (único producto pago). */
+  onSessionClick(): void {
+    this.analytics.track('viajero_creador_session_click');
   }
 }

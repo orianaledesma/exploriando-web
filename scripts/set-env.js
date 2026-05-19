@@ -13,8 +13,12 @@ const required = [
   'ANTHROPIC_API_KEY',
 ];
 
+// Secretos que SOLO usan las Netlify Functions (server-side) y NUNCA deben
+// entrar al bundle del browser. No se inyectan en environment.prod.ts.
+const FUNCTIONS_ONLY = ['ANTHROPIC_API_KEY', 'MAILER_API_TOKEN', 'MAILER_GROUP_ID'];
+
 const missing = required
-  .filter(k => k !== 'ANTHROPIC_API_KEY') // solo la usan las Netlify Functions, no el browser bundle
+  .filter(k => !FUNCTIONS_ONLY.includes(k))
   .filter(k => !process.env[k]);
 
 if (missing.length) {

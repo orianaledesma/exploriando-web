@@ -76,6 +76,19 @@ export class WorldMapSvgComponent {
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].mapa);
 
+  /**
+   * aria-label del SVG, derivado de los markers reales (no hardcodeado).
+   * Soporta `{cities}` y `{countries}` en la traducción → nunca se desincroniza
+   * cuando se suman ciudades/países a `data/places.ts`.
+   */
+  readonly mapAriaLabel = computed(() => {
+    const m = this.markers();
+    const countries = new Set(m.map(x => x.countryCode)).size;
+    return this.t().mapAriaLabel
+      .replace('{cities}', String(m.length))
+      .replace('{countries}', String(countries));
+  });
+
   /** Devuelve el tooltip i18n con interpolación `{city}` / `{country}`. */
   tooltip(m: ProjectedMarker): string {
     return this.t().markerTooltip.replace('{city}', m.city).replace('{country}', m.country);

@@ -1,0 +1,12 @@
+<section class="marcas-teaser" id="marcas-teaser" aria-labelledby="marcas-teaser-title">
+  <div class="container marcas-teaser__inner" appReveal>
+    <span class="section-label">{{ t().sectionLabel }}</span>
+    <h2 id="marcas-teaser-title">{{ t().headline }}</h2>
+    <p class="marcas-teaser__text">{{ t().text }}</p>
+    <a routerLink="/marcas"
+       class="btn btn--primary btn--lg"
+       (click)="onCtaClick()">
+      {{ t().cta }} →
+    </a>
+  </div>
+</section>

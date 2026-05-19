@@ -46,19 +46,8 @@ export const AFILIADOS_COPY_A: AfiliadosCopy = {
       ctaUrl:     'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=ENTRADA&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa',
       badge:      'El que yo uso',
     },
-    {
-      id:         'safetywing',
-      logo:       '🌍',
-      name:       'SafetyWing',
-      tagline:    'Para los que viajan más de un mes.',
-      body:
-        'Heymondo es perfecto para viajes cortos. Pero si vas a estar afuera más de un mes, ' +
-        'necesitás algo que funcione como un seguro de salud mensual. ' +
-        'SafetyWing se renueva solo, se cancela cuando querés y cuesta menos de lo que pensás.',
-      disclaimer: 'Desde USD 45/mes. Cancela cuando quieras.',
-      cta:        'Ver planes',
-      ctaUrl:     'https://safetywing.com',  // reemplazar con link de afiliado
-    },
+    // SafetyWing oculto (auditoría 2026-05-18): sin link de afiliado real.
+    // Reactivar este card cuando haya afiliación confirmada.
     {
       id:         'revolut',
       logo:       '💳',
@@ -103,19 +92,7 @@ export const AFILIADOS_COPY_B: AfiliadosCopy = {
       ctaUrl:     'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=ENTRADA&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa',
       badge:      'Recomendado',
     },
-    {
-      id:         'safetywing',
-      logo:       '🌍',
-      name:       'SafetyWing',
-      tagline:    'Seguro de salud para viajes largos.',
-      body:
-        'Diseñado para nómadas y viajeros de largo plazo. ' +
-        'Se activa y cancela online, cubre emergencias médicas en más de 180 países ' +
-        'y cuesta menos que un seguro médico local.',
-      disclaimer: 'Desde USD 45/mes. Sin contrato mínimo.',
-      cta:        'Calcular mi plan',
-      ctaUrl:     'https://safetywing.com',
-    },
+    // SafetyWing oculto (auditoría 2026-05-18): sin link de afiliado real.
     {
       id:         'revolut',
       logo:       '💳',

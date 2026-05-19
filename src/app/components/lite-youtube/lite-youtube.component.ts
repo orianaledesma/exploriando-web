@@ -2,9 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
   signal,
 } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 /**
  * Embed liviano de YouTube. Renderiza el thumbnail (jpg) y sólo carga el
@@ -27,6 +29,8 @@ export class LiteYoutubeComponent {
   /** Calidad del thumbnail. `hqdefault` = 480x360, `maxresdefault` = 1280x720. */
   readonly thumbQuality = input<'hqdefault' | 'maxresdefault'>('hqdefault');
 
+  private readonly sanitizer = inject(DomSanitizer);
+
   private readonly _activated = signal(false);
   readonly activated = this._activated.asReadonly();
 
@@ -34,10 +38,13 @@ export class LiteYoutubeComponent {
     () => `https://i.ytimg.com/vi/${this.videoId()}/${this.thumbQuality()}.jpg`,
   );
 
-  readonly iframeSrc = computed(
-    () =>
+  /** URL del player. Es un resource URL (iframe src) → debe pasar por
+   *  DomSanitizer o Angular lanza NG0904 al activar el video. */
+  readonly iframeSrc = computed<SafeResourceUrl>(() =>
+    this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://www.youtube-nocookie.com/embed/${this.videoId()}` +
-      `?autoplay=1&rel=0&modestbranding=1`,
+        `?autoplay=1&rel=0&modestbranding=1`,
+    ),
   );
 
   /** Activa el iframe y reproduce el video. */
