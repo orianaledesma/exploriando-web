@@ -10,6 +10,7 @@ describe('AboutComponent', () => {
   let compiled: HTMLElement;
 
   beforeEach(async () => {
+    localStorage.removeItem('exploriando_lang');
     await TestBed.configureTestingModule({
       imports: [AboutComponent],
       providers: [provideRouter([])],
