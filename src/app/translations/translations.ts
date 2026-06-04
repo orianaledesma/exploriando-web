@@ -8,6 +8,7 @@ interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
 interface Package        { name: string; price: string; includes: string[]; }
 interface ComunidadItem  { icon: string; title: string; desc: string; }
+interface Testimonial    { quote: string; author: string; }
 
 interface AppTranslations {
   nav: { links: NavLink[]; cta: string; workWithMe: { label: string; href: string; }; };
@@ -41,8 +42,36 @@ interface AppTranslations {
     testimonial: { quote: string; author: string; location: string; };
   };
   ugc: {
-    sectionLabel: string; headline: string; subheadline: string;
-    packages: Package[]; cta: string; ctaSubtext: string;
+    // ─── Hero ──────────────────────────────────────────────────────────
+    heroBack: string; heroLabel: string;
+    headline: string; subheadline: string; heroCta: string;
+    sectionLabel: string;
+    // ─── Quién soy + audiencia ─────────────────────────────────────────
+    quienSoy: {
+      /** Título de la sección (visually-hidden, landmark a11y). */
+      heading: string;
+      /** Párrafo(s) de presentación. */
+      body: string[];
+      howTitle: string; howBody: string;
+      communityTitle: string; community: string;
+    };
+    // ─── Portfolio (antes hardcodeado en el HTML) ──────────────────────
+    portfolioTitle: string; portfolioSubtitle: string;
+    portfolioMoreText: string; portfolioMoreCta: string;
+    // ─── Hoteles & experiencias (entrada de baja fricción) ─────────────
+    hoteles: {
+      title: string; body: string;
+      startTitle: string; startBody: string; cta: string;
+    };
+    // ─── Testimonios (la sección se oculta si `testimonials` está vacío) ─
+    testimonialsTitle: string; testimonials: Testimonial[];
+    // ─── Precios: tarjeta de entrada + 3 tiers ─────────────────────────
+    packagesTitle: string; featuredBadge: string; packageCta: string;
+    entryPackage: { badge: string; name: string; price: string; includes: string[]; cta: string; };
+    packages: Package[];
+    // ─── CTA final (antes hardcodeado en el HTML) ──────────────────────
+    finalCta: { title: string; body: string; cta: string; sub: string; };
+    cta: string; ctaSubtext: string;
     meta: { title: string; description: string; };
   };
   marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
@@ -290,14 +319,56 @@ const es: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Volver',
+    heroLabel:   'UGC & Contenido de marca',
+    headline:    'Contenido que hace que reserven tu lugar.',
+    subheadline: 'Reels y fotos de viaje en pareja, reales, para hoteles y experiencias que quieren llenar su temporada.',
+    heroCta:     'Hablemos de tu proyecto ✈',
     sectionLabel: 'Para marcas',
-    headline:     'Contenido que vende la experiencia, no una escena armada.',
-    subheadline:  'Video real que frena el scroll para marcas de viaje, beauty y lifestyle. Del que la gente cree porque no parece un anuncio.',
+    quienSoy: {
+      heading: 'Quién soy',
+      body: [
+        'Soy Oriana — creadora de viajes argentina 🇦🇷, viviendo en Lituania con mi marido lituano 🇱🇹. Hace 9 años documentamos viajes reales, y nuestro contenido en pareja es lo que más conecta: la escapada romántica, la aventura en familia, el lado humano de un lugar.',
+      ],
+      howTitle:       'Cómo trabajo:',
+      howBody:        'te entrego contenido listo para TUS redes (UGC) — vos sos dueño/a de los videos y fotos. Y si querés, lo comparto también con mi comunidad.',
+      communityTitle: 'Mi comunidad:',
+      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajeros LATAM (25-40) que planean su próximo viaje.',
+    },
+    portfolioTitle:    'Portafolio de contenido',
+    portfolioSubtitle: 'Contenido real grabado en destino, no en set. Así performa el estilo que produzco — números públicos de cada pieza.',
+    portfolioMoreText: '¿Querés ver más trabajos?',
+    portfolioMoreCta:  'Ver canal completo →',
+    hoteles: {
+      title:      '¿Tenés un hotel, glamping o experiencia?',
+      body:       'Creo el contenido que vende tu lugar como lo que es: una escapada que la gente quiere vivir. Reels, fotos y stories listos para tus redes — con el ángulo pareja/familia que más reserva genera.',
+      startTitle: 'Empecemos fácil:',
+      startBody:  'probá con un pack chico desde €120, o una colaboración contenido × estadía. Si funciona, escalamos a un plan mensual.',
+      cta:        'Escribime 📩 · Agendá 15 min',
+    },
+    testimonialsTitle: 'Lo que dicen las marcas con las que trabajé',
+    testimonials: [],
+    packagesTitle: 'Paquetes disponibles',
+    featuredBadge: 'Más elegido',
+    packageCta:    'Lo quiero',
+    entryPackage: {
+      badge:   'Para empezar',
+      name:    'Probá primero',
+      price:   'desde €120',
+      includes: ['Pack chico de contenido, sin riesgo', 'O colaboración contenido × estadía', 'Si funciona, escalamos a un plan mensual'],
+      cta:     'Empezar fácil',
+    },
     packages: [
       { name: 'Probar el agua',       price: '€150',     includes: ['3 reels/TikToks listos para publicar', '3 aperturas por video para frenar el scroll', 'Entrega en 7 días · uso ilimitado en tus redes'] },
       { name: 'Campaña con objetivo', price: '€400',     includes: ['Campaña de 5 videos pensada para UN objetivo (lanzamiento, venta o awareness)', 'Guión y estrategia: yo defino el ángulo, vos publicás', '1 ronda de ajustes · entrega en 14 días'] },
       { name: 'Presencia sostenida',  price: '€700/mes', includes: ['8 videos al mes + estrategia de contenido continua', 'Calendario de publicación + reporte mensual', 'Hasta 2 rondas/mes · canal directo acordado'] },
     ],
+    finalCta: {
+      title: '¿Listo para trabajar juntos?',
+      body:  'Agendá 15 min conmigo y armamos la propuesta a medida en la llamada.',
+      cta:   'Agendar 15 min',
+      sub:   'Sin compromiso — la primera consulta es gratis',
+    },
     cta:       'Hablemos de tu marca',
     ctaSubtext: 'Respondemos en menos de 48hs.',
     meta: {
@@ -564,14 +635,56 @@ const en: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Back',
+    heroLabel:   'UGC & Brand content',
+    headline:    'Content that makes people book your place.',
+    subheadline: 'Real couple-travel reels & photos for hotels and experiences that want to fill their season.',
+    heroCta:     "Let's talk about your project ✈",
     sectionLabel: 'For brands',
-    headline:     'Content that sells the experience — not a staged set.',
-    subheadline:  "Real, scroll-stopping video for travel, beauty and lifestyle brands. The kind people trust because it doesn't look like an ad.",
+    quienSoy: {
+      heading: 'Who I am',
+      body: [
+        "I'm Oriana — an Argentine travel creator 🇦🇷 living in Lithuania with my Lithuanian husband 🇱🇹. For 9 years we've documented real trips, and our couple content is what connects most: the romantic getaway, the family adventure, the human side of a place.",
+      ],
+      howTitle:       'How I work:',
+      howBody:        "I deliver content ready for YOUR channels (UGC) — you own the videos and photos. And if you'd like, I also share it with my community.",
+      communityTitle: 'My community:',
+      community:      '4,400 Instagram · 1,880 YouTube · 800 TikTok · LATAM travelers (25-40) planning their next trip.',
+    },
+    portfolioTitle:    'Content portfolio',
+    portfolioSubtitle: 'Real content shot on location, not on a set. This is how the style I produce performs — public numbers for every piece.',
+    portfolioMoreText: 'Want to see more work?',
+    portfolioMoreCta:  'See the full channel →',
+    hoteles: {
+      title:      'Got a hotel, glamping or experience?',
+      body:       'I create the content that sells your place as what it really is: a getaway people want to live. Reels, photos and stories ready for your channels — with the couple/family angle that drives bookings.',
+      startTitle: "Let's start easy:",
+      startBody:  'try a small pack from €120, or a content-for-stay collaboration. If it works, we scale to a monthly plan.',
+      cta:        'DM me 📩 · Book a 15-min call',
+    },
+    testimonialsTitle: "What the brands I've worked with say",
+    testimonials: [],
+    packagesTitle: 'Available packages',
+    featuredBadge: 'Most chosen',
+    packageCta:    'I want this',
+    entryPackage: {
+      badge:   'To get started',
+      name:    'Try it first',
+      price:   'from €120',
+      includes: ['A small content pack, no risk', 'Or a content-for-stay collaboration', 'If it works, we scale to a monthly plan'],
+      cta:     'Start easy',
+    },
     packages: [
       { name: 'Test the waters',     price: '€150',     includes: ['3 ready-to-post reels/TikToks', '3 hooks per video to stop the scroll', 'Delivered in 7 days · unlimited use on your socials'] },
       { name: 'Campaign with a goal', price: '€400',    includes: ['A 5-video campaign built for ONE goal (launch, sale or awareness)', 'Script & strategy: I set the angle, you post', '1 round of revisions · delivered in 14 days'] },
       { name: 'Sustained presence',  price: '€700/mo',  includes: ['8 videos a month + ongoing content strategy', 'Publishing calendar + monthly performance report', 'Up to 2 revision rounds/mo · direct channel'] },
     ],
+    finalCta: {
+      title: 'Ready to work together?',
+      body:  "Book 15 min with me and we'll shape a tailored proposal together on the call.",
+      cta:   'Book 15 min',
+      sub:   'No commitment — the first call is free',
+    },
     cta:       "Let's talk about your brand",
     ctaSubtext: 'We respond in less than 48hs.',
     meta: {
@@ -838,14 +951,56 @@ const pt: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Voltar',
+    heroLabel:   'UGC & Conteúdo de marca',
+    headline:    'Conteúdo que faz reservarem o seu lugar.',
+    subheadline: 'Reels e fotos de viagem em casal, reais, para hotéis e experiências que querem encher a sua temporada.',
+    heroCta:     'Vamos falar do seu projeto ✈',
     sectionLabel: 'Para marcas',
-    headline:     'Conteúdo que vende a experiência, não uma cena montada.',
-    subheadline:  'Vídeo real que freia o scroll para marcas de viagem, beauty e lifestyle. Do tipo em que as pessoas confiam porque não parece um anúncio.',
+    quienSoy: {
+      heading: 'Quem sou',
+      body: [
+        'Sou a Oriana — criadora de viagens argentina 🇦🇷, morando na Lituânia com meu marido lituano 🇱🇹. Há 9 anos documentamos viagens reais, e nosso conteúdo em casal é o que mais conecta: a escapada romântica, a aventura em família, o lado humano de um lugar.',
+      ],
+      howTitle:       'Como trabalho:',
+      howBody:        'entrego conteúdo pronto para as SUAS redes (UGC) — você é dono(a) dos vídeos e fotos. E se quiser, também compartilho com a minha comunidade.',
+      communityTitle: 'Minha comunidade:',
+      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajantes LATAM (25-40) que planejam a próxima viagem.',
+    },
+    portfolioTitle:    'Portfólio de conteúdo',
+    portfolioSubtitle: 'Conteúdo real gravado no destino, não em estúdio. É assim que o estilo que produzo performa — números públicos de cada peça.',
+    portfolioMoreText: 'Quer ver mais trabalhos?',
+    portfolioMoreCta:  'Ver o canal completo →',
+    hoteles: {
+      title:      'Tem um hotel, glamping ou experiência?',
+      body:       'Crio o conteúdo que vende o seu lugar como ele realmente é: uma escapada que as pessoas querem viver. Reels, fotos e stories prontos para as suas redes — com o ângulo casal/família que mais gera reservas.',
+      startTitle: 'Vamos começar fácil:',
+      startBody:  'experimente um pacote pequeno a partir de €120, ou uma colaboração conteúdo × estadia. Se funcionar, escalamos para um plano mensal.',
+      cta:        'Me escreva 📩 · Agende 15 min',
+    },
+    testimonialsTitle: 'O que dizem as marcas com quem trabalhei',
+    testimonials: [],
+    packagesTitle: 'Pacotes disponíveis',
+    featuredBadge: 'Mais escolhido',
+    packageCta:    'Quero este',
+    entryPackage: {
+      badge:   'Para começar',
+      name:    'Experimente primeiro',
+      price:   'a partir de €120',
+      includes: ['Um pacote pequeno de conteúdo, sem risco', 'Ou colaboração conteúdo × estadia', 'Se funcionar, escalamos para um plano mensal'],
+      cta:     'Começar fácil',
+    },
     packages: [
       { name: 'Testar a água',        price: '€150',      includes: ['3 reels/TikToks prontos para publicar', '3 aberturas por vídeo para frear o scroll', 'Entrega em 7 dias · uso ilimitado nas suas redes'] },
       { name: 'Campanha com objetivo', price: '€400',     includes: ['Uma campanha de 5 vídeos para UM objetivo (lançamento, venda ou awareness)', 'Roteiro e estratégia: eu defino o ângulo, você publica', '1 rodada de ajustes · entrega em 14 dias'] },
       { name: 'Presença contínua',    price: '€700/mês',  includes: ['8 vídeos por mês + estratégia de conteúdo contínua', 'Calendário de publicação + relatório mensal', 'Até 2 rodadas/mês · canal direto combinado'] },
     ],
+    finalCta: {
+      title: 'Pronto para trabalhar juntos?',
+      body:  'Agende 15 min comigo e montamos a proposta sob medida na chamada.',
+      cta:   'Agendar 15 min',
+      sub:   'Sem compromisso — a primeira consulta é grátis',
+    },
     cta:       'Vamos falar sobre sua marca',
     ctaSubtext: 'Respondemos em menos de 48hs.',
     meta: {

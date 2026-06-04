@@ -71,6 +71,48 @@
   }
 }
 
+// ─── Quién soy + audiencia ──────────────────────────────────────────────────
+
+.marcas-about {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  background-color: var(--color-bg-primary);
+
+  &__inner {
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  &__lead {
+    font-size: var(--text-xl);
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  &__note {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+
+    strong { color: var(--color-text); }
+  }
+
+  // Métricas en caja sutil → credibilidad "de un vistazo".
+  &__community {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--color-text);
+    background-color: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+
+    strong { color: var(--color-accent); }
+  }
+}
+
 // ─── Portfolio ────────────────────────────────────────────────────────────────
 
 .marcas-portfolio {
@@ -197,7 +239,45 @@
   padding-bottom: var(--space-3xl);
   background-color: var(--color-bg-soft);
 
-  h2 { margin-bottom: var(--space-2xl); }
+  h2 { margin-bottom: var(--space-xl); }
+
+  // Entrada de baja fricción — banner antes de los 3 tiers.
+  .ugc__entry {
+    background-color: var(--color-bg-primary);
+    border: 1px dashed var(--color-accent);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--space-xl);
+    }
+  }
+
+  .ugc__entry-badge {
+    align-self: flex-start;
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  .ugc__entry-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .ugc__entry .ugc__includes { flex: unset; }
 
   .ugc__packages {
     display: grid;
@@ -278,6 +358,88 @@
       color: var(--color-accent-fresh);
       font-weight: var(--font-weight-bold);
     }
+  }
+}
+
+// ─── Hoteles & experiencias ─────────────────────────────────────────────────
+
+.marcas-hoteles {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  background-color: var(--color-bg-primary);
+
+  &__inner {
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  h2 { max-width: 20ch; }
+
+  &__body {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  // Bloque "Empecemos fácil" — entrada €120 / content × stay.
+  &__start {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--color-text);
+    background-color: var(--color-bg-soft);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-lg);
+
+    strong { color: var(--color-accent); }
+  }
+}
+
+// ─── Testimonios ──────────────────────────────────────────────────────────────
+
+.marcas-testimonios {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  background-color: var(--color-bg-soft);
+
+  h2 { margin-bottom: var(--space-2xl); }
+
+  &__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+.marcas-testimonio {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  &__quote {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text);
+    font-style: italic;
+    margin: 0;
+  }
+
+  &__author {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
   }
 }
 
