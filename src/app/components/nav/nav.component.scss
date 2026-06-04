@@ -34,6 +34,9 @@
   // ─── Logo ────────────────────────────────────────────────────────────────────
 
   &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
     text-decoration: none;
     flex-shrink: 0;
   }
