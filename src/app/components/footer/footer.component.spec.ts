@@ -61,7 +61,8 @@ describe('FooterComponent', () => {
   it('should submit and show success on valid email', () => {
     component.form.controls['email'].setValue('test@test.com');
     component.onSubmit();
-    expect(emailService.submit).toHaveBeenCalledWith({ email: 'test@test.com', source: 'footer' });
+    expect(emailService.submit).toHaveBeenCalledWith(
+      jasmine.objectContaining({ email: 'test@test.com', source: 'footer' }));
     expect(component.status()).toBe('success');
   });
 

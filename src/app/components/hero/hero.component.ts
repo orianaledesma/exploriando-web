@@ -58,7 +58,7 @@ export class HeroComponent {
 
     this.status.set('loading');
 
-    this.emailService.submit({ email: this.form.value['email'] as string, source: 'hero' }).subscribe({
+    this.emailService.submit({ email: this.form.value['email'] as string, source: 'hero', lang: this.lang.current() }).subscribe({
       next: () => {
         this.emailService.recordSubmission();
         this.status.set('success');

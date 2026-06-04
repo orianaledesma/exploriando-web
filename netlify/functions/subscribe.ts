@@ -10,6 +10,8 @@ interface RequestBody {
   /** Honeypot — si viene con valor, es un bot. */
   website?: string;
   source?: string;
+  /** Idioma del visitante (es/en/pt) — se guarda para segmentar campañas. */
+  lang?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,7 +58,10 @@ const handler: Handler = async (event: HandlerEvent) => {
       body: JSON.stringify({
         email,
         groups: [groupId],
-        fields: { source: body.source ?? 'web' },
+        fields: {
+          source: body.source ?? 'web',
+          language: (body.lang ?? '').slice(0, 5),
+        },
       }),
     });
 
