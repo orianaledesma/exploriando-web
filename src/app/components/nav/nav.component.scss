@@ -15,10 +15,13 @@
   }
 
   &--opaque {
-    background: rgba(0, 0, 0, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    // Signature brand gradient — navy → blue → aqua.
+    background: linear-gradient(90deg,
+      #060E24 0%, #071A40 22%, #1376FE 62%, #2EC8A0 84%, #3DD9B3 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 32px rgba(6, 14, 36, 0.5);
   }
 
   &__inner {
@@ -36,14 +39,15 @@
   }
 
   &__logo-text {
+    font-family: var(--font-display);
     font-size: var(--text-xl);
     font-weight: var(--font-weight-black);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     line-height: 1;
   }
 
   &__logo-base { color: var(--color-text-on-dark); }
-  &__logo-ori  { color: var(--color-accent); }
+  &__logo-ori  { color: var(--color-aqua); }   // ORI in aqua — brand signature
 
   // ─── Desktop links ───────────────────────────────────────────────────────────
 
@@ -123,7 +127,7 @@
     top: calc(100% + 8px);
     right: 0;
     min-width: 140px;
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(12, 24, 54, 0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.10);
@@ -156,7 +160,7 @@
 
     &:hover { background: rgba(255, 255, 255, 0.08); }
 
-    &--active { background: rgba(255, 107, 107, 0.15); }
+    &--active { background: rgba(19, 118, 254, 0.15); }
   }
 
   &__lang-code {
@@ -197,7 +201,7 @@
 
     &--active {
       color: var(--color-accent);
-      border-color: rgba(255, 107, 107, 0.35);
+      border-color: rgba(19, 118, 254, 0.35);
     }
   }
 
@@ -244,7 +248,7 @@
     flex-direction: column;
     gap: var(--space-sm);
     padding: var(--space-md);
-    background: rgba(0, 0, 0, 0.96);
+    background: rgba(6, 14, 36, 0.96);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
