@@ -38,18 +38,40 @@ describe('EmailCaptureService', () => {
       httpMock.expectOne('/api/subscribe').flush({ ok: true });
     });
 
-    it('dispara email_capture_error con source en fallo (emailjs)', (done) => {
+    it('un fallo de EmailJS es best-effort: el alta igual tiene éxito', (done) => {
+      // EmailJS es solo la notificación interna a Oriana. Si falla, el alta a
+      // MailerLite (la fuente de verdad) debe seguir adelante sin abortarse.
       spyOn(emailjs, 'send').and.returnValue(Promise.reject(new Error('emailjs down')));
 
       svc.submit({ email: 'a@b.com', source: 'guia' }).subscribe({
+        next:  () => {
+          expect(trackSpy).toHaveBeenCalledWith('email_capture_submit', { source: 'guia' });
+          done();
+        },
+        error: () => done.fail('un fallo de EmailJS no debe romper el alta'),
+      });
+
+      // El request a MailerLite NO debe cancelarse por el fallo de EmailJS.
+      const req = httpMock.expectOne('/api/subscribe');
+      expect(req.cancelled).toBeFalse();
+      req.flush({ ok: true });
+    });
+
+    it('dispara email_capture_error si falla el alta a MailerLite', (done) => {
+      spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
+
+      svc.submit({ email: 'a@b.com', source: 'hero' }).subscribe({
         next:  () => done.fail('should have errored'),
         error: () => {
-          expect(trackSpy).toHaveBeenCalledWith('email_capture_error', { source: 'guia' });
+          expect(trackSpy).toHaveBeenCalledWith('email_capture_error', { source: 'hero' });
           done();
         },
       });
-      // forkJoin cancela el request al errar emailjs; lo drenamos si quedó abierto.
-      httpMock.match('/api/subscribe').forEach((r) => !r.cancelled && r.flush({}));
+
+      httpMock.expectOne('/api/subscribe').flush(
+        { error: 'down' },
+        { status: 502, statusText: 'Bad Gateway' },
+      );
     });
 
     it('mantiene el contrato — el componente sigue recibiendo el error', (done) => {

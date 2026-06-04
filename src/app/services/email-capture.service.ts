@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import emailjs from '@emailjs/browser';
-import { forkJoin, from, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { forkJoin, from, of, Observable } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { EmailCaptureData } from '../models/email-capture.model';
 import { AnalyticsService } from './analytics.service';
@@ -46,7 +46,19 @@ export class EmailCaptureService {
     const { serviceId, notificationTemplateId, publicKey } =
       environment.emailjs;
 
-    // Notificación interna — avisa a Oriana del nuevo suscriptor
+    // Alta en MailerLite (lista + doble opt-in/bienvenida los maneja
+    // MailerLite). El token vive server-side en la Netlify Function.
+    // Es la FUENTE DE VERDAD del éxito de la suscripción.
+    const subscribe$ = this.http.post('/api/subscribe', {
+      email:  data.email,
+      source: data.source,
+    });
+
+    // Notificación interna a Oriana — best-effort. Si EmailJS falla NO debe
+    // abortar ni hacer fallar el alta: antes forkJoin([notify$, subscribe$])
+    // cancelaba la request HTTP en vuelo al rechazar EmailJS, y esa cancelación
+    // (HttpClient con withFetch) era el "AbortError: signal is aborted without
+    // reason" — el usuario veía error aunque el alta hubiera entrado.
     const notify$ = from(
       emailjs.send(
         serviceId,
@@ -57,16 +69,10 @@ export class EmailCaptureService {
         },
         publicKey,
       ),
-    );
+    ).pipe(catchError(() => of(null)));
 
-    // Alta en MailerLite (lista + doble opt-in/bienvenida los maneja
-    // MailerLite). El token vive server-side en la Netlify Function.
-    const subscribe$ = this.http.post('/api/subscribe', {
-      email:  data.email,
-      source: data.source,
-    });
-
-    return forkJoin([notify$, subscribe$]).pipe(
+    return forkJoin([subscribe$, notify$]).pipe(
+      map(([subscribeResult]) => subscribeResult),
       tap({
         next:  () => this.analytics.track('email_capture_submit', { source: data.source }),
         error: () => this.analytics.track('email_capture_error',  { source: data.source }),
