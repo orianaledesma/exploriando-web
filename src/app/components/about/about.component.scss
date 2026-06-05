@@ -1,5 +1,10 @@
 .about {
-  background-color: var(--color-bg-primary);
+  // Signature dark section (navy) per the brand guide.
+  background-color: var(--color-navy);
+  color: var(--color-text-on-dark);
+
+  .section-label { color: var(--color-aqua); }   // eyebrow → aqua on dark
+  p { color: var(--color-white-dim); }
 
   &__grid {
     display: grid;
@@ -46,20 +51,22 @@
   }
 
   &__stat-value {
+    font-family: var(--font-display);
     font-size: var(--text-3xl);
     font-weight: var(--font-weight-black);
-    color: var(--color-text);
+    letter-spacing: -0.02em;
+    color: var(--color-aqua);          // stat numbers pop in aqua on navy
     line-height: 1;
   }
 
   &__stat-label {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--color-white-dim);
   }
 
   &__crosslink {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--color-white-dim);
     margin-top: var(--space-xs);
     line-height: 1.6;
   }
@@ -67,7 +74,7 @@
   &__crosslink-cta {
     display: block;
     margin-top: var(--space-2xs);
-    color: var(--color-accent);
+    color: var(--color-aqua);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
     transition: opacity var(--transition);
