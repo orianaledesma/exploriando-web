@@ -133,7 +133,7 @@ export class MarcasComponent {
   }
 
   /** Tracking: click outbound al Google Form. `location` distingue de qué CTA salió. */
-  onMarcasFormClick(location: 'hero' | 'package' | 'final_cta', packageName?: string): void {
+  onMarcasFormClick(location: 'hero' | 'package' | 'final_cta' | 'hoteles', packageName?: string): void {
     const params: Record<string, string> = { location };
     if (packageName) params['package'] = packageName;
     this.analytics.track('marcas_form_click', params);
