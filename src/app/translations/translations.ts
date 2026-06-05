@@ -7,12 +7,10 @@ interface FooterLink     { label: string; href: string; }
 interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
 interface Package        { name: string; price: string; includes: string[]; }
-interface ComunidadItem  { icon: string; title: string; desc: string; }
 
 interface AppTranslations {
   nav: { links: NavLink[]; cta: string; workWithMe: { label: string; href: string; }; };
   hero: { eyebrow: string; headline: string; subheadline: string; cta: string; ctaSubtext: string; socialProof: string; };
-  comunidad: { sectionLabel: string; headline: string; items: ComunidadItem[]; cta: string; };
   about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; crossSellCta: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
@@ -25,13 +23,6 @@ interface AppTranslations {
       session2Name: string; session2Duration: string; session2Badge: string;
       cta: string; ctaNote: string;
     };
-  };
-  documentacion: {
-    sectionLabel: string; headline: string; subheadline: string;
-    form: { title: string; nationalityLabel: string; nationalityPlaceholder: string; originLabel: string; originPlaceholder: string; destinationLabel: string; destinationPlaceholder: string; submitBtn: string; submitBtnLoading: string; };
-    result: { documentsTitle: string; migrationTitle: string; disclaimer: string; disclaimerLinkText: string; };
-    postResultCta: { text: string; subtext: string; cta: string; };
-    errors: { apiError: string; noData: string; offline: string; rateLimit: string; retry: string; };
   };
   recursos: {
     sectionLabel: string; headline: string; subheadline: string; guideTitle: string;
@@ -162,17 +153,6 @@ const es: AppTranslations = {
     ctaSubtext:  'Sin costo. Sin spam. Solo información que funciona.',
     socialProof: '+2.000 viajeros · 54 ciudades · 9 años viajando',
   },
-  comunidad: {
-    sectionLabel: 'La comunidad',
-    headline:     'Qué ganás sumándote',
-    items: [
-      { icon: '📺', title: 'Videos semanales',    desc: 'Cada semana un video nuevo en YouTube: un destino, cómo viajar con presupuesto ajustado o cómo crear contenido en el camino.' },
-      { icon: '📥', title: 'Guía de bienvenida',  desc: 'Al dejar tu correo recibís la guía básica del viajero: documentos, apps, dinero y tips de quién ya lo vivió.' },
-      { icon: '🎥', title: 'Lives mensuales',     desc: 'El primer domingo de cada mes, en vivo a las 9PM (hora de Lituania). Preguntas, respuestas y novedades de Exploriando.' },
-      { icon: '🤝', title: 'Comunidad activa',    desc: 'Miles de latinos viajando y compartiendo en YouTube e Instagram. Puro contenido útil, sin grupos de Facebook.' },
-    ],
-    cta: 'Quiero estar adentro →',
-  },
   about: {
     sectionLabel: 'Quiénes somos',
     headline:     'Una argentina que dejó de esperar el momento perfecto.',
@@ -224,40 +204,6 @@ const es: AppTranslations = {
       session2Badge:    'Ahorrás USD 50',
       cta:              'Reservar sesión',
       ctaNote:          'Te respondo en menos de 48hs con disponibilidad.',
-    },
-  },
-  documentacion: {
-    sectionLabel: 'Documentación de viaje',
-    headline:     'Sabé exactamente qué necesitás antes de hacer las valijas.',
-    subheadline:  'Burocracia, visas, formularios de migración: lo más aburrido del viaje, resuelto en segundos. Contanos de dónde sos, a dónde vas, y te decimos todo.',
-    form: {
-      title:                    '¿Qué necesito para viajar?',
-      nationalityLabel:         'Tu nacionalidad',
-      nationalityPlaceholder:   'Ej: Argentina',
-      originLabel:              'País de origen del viaje',
-      originPlaceholder:        'Ej: México',
-      destinationLabel:         'Destino',
-      destinationPlaceholder:   'Ej: Portugal',
-      submitBtn:                'Ver qué necesito',
-      submitBtnLoading:         'Consultando requisitos...',
-    },
-    result: {
-      documentsTitle:     'Documentos para viajar',
-      migrationTitle:     'Qué te van a pedir al llegar',
-      disclaimer:         '⚠ Esta información es orientativa. Siempre verificá con la embajada o consulado correspondiente antes de viajar, ya que los requisitos pueden cambiar sin previo aviso.',
-      disclaimerLinkText: 'Fuentes oficiales de cancillería',
-    },
-    postResultCta: {
-      text:    '¿Querés más recursos como este?',
-      subtext: 'En la comunidad tenemos guías de más de 30 destinos, consejos de viajeros y actualizaciones de requisitos.',
-      cta:     'Unirme gratis',
-    },
-    errors: {
-      apiError:  'No pudimos consultar los requisitos en este momento. Intentá de nuevo o escribinos a la comunidad y te ayudamos.',
-      noData:    'No tenemos información suficiente sobre esta combinación todavía. Unite a la comunidad y te respondemos directamente.',
-      offline:   'Parece que no tenés conexión. Revisá tu internet e intentá de nuevo.',
-      rateLimit: 'Hiciste varias consultas seguidas. Esperá unos minutos e intentá de nuevo.',
-      retry:     'Intentar de nuevo',
     },
   },
   recursos: {
@@ -436,17 +382,6 @@ const en: AppTranslations = {
     ctaSubtext:  'Free. No spam. Just information that works.',
     socialProof: '+2,000 travelers · 54 cities · 9 years traveling',
   },
-  comunidad: {
-    sectionLabel: 'The community',
-    headline:     'What you gain by joining',
-    items: [
-      { icon: '📺', title: 'Weekly videos',        desc: 'A new YouTube video every week: a destination, how to travel on a budget, or how to create content on the road.' },
-      { icon: '📥', title: 'Welcome guide',        desc: "Leave your email and get the traveler's starter guide: documents, apps, money and tips from someone who's already done it." },
-      { icon: '🎥', title: 'Monthly live sessions', desc: 'Every first Sunday of the month, live at 9PM (Lithuania time). Q&A and Exploriando updates.' },
-      { icon: '🤝', title: 'Active community',     desc: 'Thousands of Latinos traveling and sharing on YouTube and Instagram. Useful content only — no Facebook groups.' },
-    ],
-    cta: 'I want in →',
-  },
   about: {
     sectionLabel: 'Who we are',
     headline:     'An Argentine woman who stopped waiting for the perfect moment.',
@@ -498,40 +433,6 @@ const en: AppTranslations = {
       session2Badge:    'Save USD 50',
       cta:              'Book a session',
       ctaNote:          'I reply in under 48h with availability.',
-    },
-  },
-  documentacion: {
-    sectionLabel: 'Travel documentation',
-    headline:     'Know exactly what you need before packing your bags.',
-    subheadline:  'Bureaucracy, visas, migration forms: the most boring part of travel, solved in seconds. Tell us where you\'re from, where you\'re going, and we\'ll tell you everything.',
-    form: {
-      title:                  'What do I need to travel?',
-      nationalityLabel:       'Your nationality',
-      nationalityPlaceholder: 'e.g. Argentina',
-      originLabel:            'Country of origin',
-      originPlaceholder:      'e.g. Mexico',
-      destinationLabel:       'Destination',
-      destinationPlaceholder: 'e.g. Portugal',
-      submitBtn:              'See what I need',
-      submitBtnLoading:       'Checking requirements...',
-    },
-    result: {
-      documentsTitle:     'Documents to travel',
-      migrationTitle:     "What they'll ask you upon arrival",
-      disclaimer:         '⚠ This information is for guidance only. Always verify with the corresponding embassy or consulate before traveling, as requirements may change without notice.',
-      disclaimerLinkText: 'Official government sources',
-    },
-    postResultCta: {
-      text:    'Want more resources like this?',
-      subtext: 'In the community we have guides for over 30 destinations, traveler tips, and updated requirements.',
-      cta:     'Join for free',
-    },
-    errors: {
-      apiError:  "We couldn't check the requirements at this time. Try again or write to the community and we'll help you.",
-      noData:    "We don't have enough information about this combination yet. Join the community and we'll answer directly.",
-      offline:   "It seems you don't have a connection. Check your internet and try again.",
-      rateLimit: "You've made several queries in a row. Wait a few minutes and try again.",
-      retry:     'Try again',
     },
   },
   recursos: {
@@ -710,17 +611,6 @@ const pt: AppTranslations = {
     ctaSubtext:  'Grátis. Sem spam. Apenas informação que funciona.',
     socialProof: '+2.000 viajantes · 54 cidades · 9 anos viajando',
   },
-  comunidad: {
-    sectionLabel: 'A comunidade',
-    headline:     'O que você ganha entrando',
-    items: [
-      { icon: '📺', title: 'Vídeos semanais',       desc: 'Um vídeo novo no YouTube toda semana: um destino, como viajar com orçamento ajustado ou como criar conteúdo pelo caminho.' },
-      { icon: '📥', title: 'Guia de boas-vindas',   desc: 'Ao deixar seu email você recebe o guia básico do viajante: documentos, apps, dinheiro e dicas de quem já viveu isso.' },
-      { icon: '🎥', title: 'Lives mensais',         desc: 'Todo primeiro domingo do mês, ao vivo às 21h (horário da Lituânia). Perguntas, respostas e novidades do Exploriando.' },
-      { icon: '🤝', title: 'Comunidade ativa',      desc: 'Milhares de latinos viajando e compartilhando no YouTube e Instagram. Conteúdo útil, sem grupos de Facebook.' },
-    ],
-    cta: 'Quero entrar →',
-  },
   about: {
     sectionLabel: 'Quem somos',
     headline:     'Uma argentina que parou de esperar o momento perfeito.',
@@ -772,40 +662,6 @@ const pt: AppTranslations = {
       session2Badge:    'Economize USD 50',
       cta:              'Reservar sessão',
       ctaNote:          'Respondo em menos de 48h com disponibilidade.',
-    },
-  },
-  documentacion: {
-    sectionLabel: 'Documentação de viagem',
-    headline:     'Saiba exatamente o que você precisa antes de fazer as malas.',
-    subheadline:  'Burocracia, vistos, formulários de migração: a parte mais chata da viagem, resolvida em segundos. Nos diga de onde você é, para onde vai, e te dizemos tudo.',
-    form: {
-      title:                  'O que preciso para viajar?',
-      nationalityLabel:       'Sua nacionalidade',
-      nationalityPlaceholder: 'Ex: Argentina',
-      originLabel:            'País de origem da viagem',
-      originPlaceholder:      'Ex: México',
-      destinationLabel:       'Destino',
-      destinationPlaceholder: 'Ex: Portugal',
-      submitBtn:              'Ver o que preciso',
-      submitBtnLoading:       'Consultando requisitos...',
-    },
-    result: {
-      documentsTitle:     'Documentos para viajar',
-      migrationTitle:     'O que vão pedir ao chegar',
-      disclaimer:         '⚠ Esta informação é orientativa. Sempre verifique com a embaixada ou consulado correspondente antes de viajar, pois os requisitos podem mudar sem aviso prévio.',
-      disclaimerLinkText: 'Fontes oficiais do governo',
-    },
-    postResultCta: {
-      text:    'Quer mais recursos como este?',
-      subtext: 'Na comunidade temos guias de mais de 30 destinos, dicas de viajantes e atualizações de requisitos.',
-      cta:     'Entrar de graça',
-    },
-    errors: {
-      apiError:  'Não pudemos consultar os requisitos no momento. Tente novamente ou escreva para a comunidade e te ajudamos.',
-      noData:    'Não temos informação suficiente sobre essa combinação ainda. Entre na comunidade e te respondemos diretamente.',
-      offline:   'Parece que você não tem conexão. Verifique sua internet e tente novamente.',
-      rateLimit: 'Você fez várias consultas seguidas. Espere alguns minutos e tente novamente.',
-      retry:     'Tentar novamente',
     },
   },
   recursos: {
