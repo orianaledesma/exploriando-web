@@ -1,6 +1,5 @@
 export const environment = {
   production: false,
-  documentacionApiUrl: '/api/documentacion',
   emailjs: {
     serviceId:              'service_qxt6hzt',
     notificationTemplateId: 'template_8j6e714',  // template_XXXXXXX — aviso a Oriana

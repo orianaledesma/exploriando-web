@@ -3,15 +3,16 @@
   min-height: clamp(560px, 90svh, 720px);
   display: flex;
   align-items: center;
+  overflow: hidden;
   background:
-    linear-gradient(to bottom, rgba(0,0,0,0.70), rgba(0,74,173,0.35)),
+    linear-gradient(135deg, rgba(6,14,36,0.82) 0%, rgba(11,31,74,0.62) 45%, rgba(19,118,254,0.30) 100%),
     url('/assets/images/hero.webp') center / cover no-repeat;
   color: var(--color-text-on-dark);
 
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(225deg, rgba(78,206,197,0.25) 0%, transparent 60%);
+    background: linear-gradient(225deg, rgba(61,217,179,0.22) 0%, transparent 60%);
     pointer-events: none;
   }
 
@@ -87,8 +88,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-    background: rgba(78, 206, 197, 0.15);
-    border: 1px solid rgba(78, 206, 197, 0.40);
+    background: rgba(61, 217, 179, 0.15);
+    border: 1px solid rgba(61, 217, 179, 0.40);
     border-radius: var(--radius-lg);
     padding: var(--space-md) var(--space-lg);
     color: var(--color-text-on-dark);
@@ -107,7 +108,7 @@
     flex-direction: column;
     gap: var(--space-xs);
     padding-top: var(--space-sm);
-    border-top: 1px solid rgba(78, 206, 197, 0.30);
+    border-top: 1px solid rgba(61, 217, 179, 0.30);
   }
 
   &__gift-label {

@@ -11,7 +11,7 @@
 
     <div class="about__content">
       <span class="section-label" appReveal [delay]="80">{{ t().sectionLabel }}</span>
-      <h2 id="about-title" appReveal [delay]="160">{{ t().headline }}</h2>
+      <h2 id="about-title" class="text-metal-white" appReveal [delay]="160">{{ t().headline }}</h2>
 
       @for (paragraph of t().body; track paragraph; let i = $index) {
         <p appReveal [delay]="240 + i * 80">{{ paragraph }}</p>

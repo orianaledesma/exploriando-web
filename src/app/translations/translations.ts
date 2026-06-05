@@ -7,12 +7,11 @@ interface FooterLink     { label: string; href: string; }
 interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
 interface Package        { name: string; price: string; includes: string[]; }
-interface ComunidadItem  { icon: string; title: string; desc: string; }
+interface Testimonial    { quote: string; author: string; }
 
 interface AppTranslations {
   nav: { links: NavLink[]; cta: string; workWithMe: { label: string; href: string; }; };
   hero: { eyebrow: string; headline: string; subheadline: string; cta: string; ctaSubtext: string; socialProof: string; };
-  comunidad: { sectionLabel: string; headline: string; items: ComunidadItem[]; cta: string; };
   about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; crossSellCta: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
@@ -26,13 +25,6 @@ interface AppTranslations {
       cta: string; ctaNote: string;
     };
   };
-  documentacion: {
-    sectionLabel: string; headline: string; subheadline: string;
-    form: { title: string; nationalityLabel: string; nationalityPlaceholder: string; originLabel: string; originPlaceholder: string; destinationLabel: string; destinationPlaceholder: string; submitBtn: string; submitBtnLoading: string; };
-    result: { documentsTitle: string; migrationTitle: string; disclaimer: string; disclaimerLinkText: string; };
-    postResultCta: { text: string; subtext: string; cta: string; };
-    errors: { apiError: string; noData: string; offline: string; rateLimit: string; retry: string; };
-  };
   recursos: {
     sectionLabel: string; headline: string; subheadline: string; guideTitle: string;
     guideContents: string[]; videoLabel: string;
@@ -41,8 +33,36 @@ interface AppTranslations {
     testimonial: { quote: string; author: string; location: string; };
   };
   ugc: {
-    sectionLabel: string; headline: string; subheadline: string;
-    packages: Package[]; cta: string; ctaSubtext: string;
+    // ─── Hero ──────────────────────────────────────────────────────────
+    heroBack: string; heroLabel: string;
+    headline: string; subheadline: string; heroCta: string;
+    sectionLabel: string;
+    // ─── Quién soy + audiencia ─────────────────────────────────────────
+    quienSoy: {
+      /** Título de la sección (visually-hidden, landmark a11y). */
+      heading: string;
+      /** Párrafo(s) de presentación. */
+      body: string[];
+      howTitle: string; howBody: string;
+      communityTitle: string; community: string;
+    };
+    // ─── Portfolio (antes hardcodeado en el HTML) ──────────────────────
+    portfolioTitle: string; portfolioSubtitle: string;
+    portfolioMoreText: string; portfolioMoreCta: string;
+    // ─── Hoteles & experiencias (entrada de baja fricción) ─────────────
+    hoteles: {
+      title: string; body: string;
+      startTitle: string; startBody: string; cta: string;
+    };
+    // ─── Testimonios (la sección se oculta si `testimonials` está vacío) ─
+    testimonialsTitle: string; testimonials: Testimonial[];
+    // ─── Precios: tarjeta de entrada + 3 tiers ─────────────────────────
+    packagesTitle: string; featuredBadge: string; packageCta: string;
+    entryPackage: { badge: string; name: string; price: string; includes: string[]; cta: string; };
+    packages: Package[];
+    // ─── CTA final (antes hardcodeado en el HTML) ──────────────────────
+    finalCta: { title: string; body: string; cta: string; sub: string; };
+    cta: string; ctaSubtext: string;
     meta: { title: string; description: string; };
   };
   marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
@@ -162,17 +182,6 @@ const es: AppTranslations = {
     ctaSubtext:  'Sin costo. Sin spam. Solo información que funciona.',
     socialProof: '+2.000 viajeros · 54 ciudades · 9 años viajando',
   },
-  comunidad: {
-    sectionLabel: 'La comunidad',
-    headline:     'Qué ganás sumándote',
-    items: [
-      { icon: '📺', title: 'Videos semanales',    desc: 'Cada semana un video nuevo en YouTube: un destino, cómo viajar con presupuesto ajustado o cómo crear contenido en el camino.' },
-      { icon: '📥', title: 'Guía de bienvenida',  desc: 'Al dejar tu correo recibís la guía básica del viajero: documentos, apps, dinero y tips de quién ya lo vivió.' },
-      { icon: '🎥', title: 'Lives mensuales',     desc: 'El primer domingo de cada mes, en vivo a las 9PM (hora de Lituania). Preguntas, respuestas y novedades de Exploriando.' },
-      { icon: '🤝', title: 'Comunidad activa',    desc: 'Miles de latinos viajando y compartiendo en YouTube e Instagram. Puro contenido útil, sin grupos de Facebook.' },
-    ],
-    cta: 'Quiero estar adentro →',
-  },
   about: {
     sectionLabel: 'Quiénes somos',
     headline:     'Una argentina que dejó de esperar el momento perfecto.',
@@ -226,40 +235,6 @@ const es: AppTranslations = {
       ctaNote:          'Te respondo en menos de 48hs con disponibilidad.',
     },
   },
-  documentacion: {
-    sectionLabel: 'Documentación de viaje',
-    headline:     'Sabé exactamente qué necesitás antes de hacer las valijas.',
-    subheadline:  'Burocracia, visas, formularios de migración: lo más aburrido del viaje, resuelto en segundos. Contanos de dónde sos, a dónde vas, y te decimos todo.',
-    form: {
-      title:                    '¿Qué necesito para viajar?',
-      nationalityLabel:         'Tu nacionalidad',
-      nationalityPlaceholder:   'Ej: Argentina',
-      originLabel:              'País de origen del viaje',
-      originPlaceholder:        'Ej: México',
-      destinationLabel:         'Destino',
-      destinationPlaceholder:   'Ej: Portugal',
-      submitBtn:                'Ver qué necesito',
-      submitBtnLoading:         'Consultando requisitos...',
-    },
-    result: {
-      documentsTitle:     'Documentos para viajar',
-      migrationTitle:     'Qué te van a pedir al llegar',
-      disclaimer:         '⚠ Esta información es orientativa. Siempre verificá con la embajada o consulado correspondiente antes de viajar, ya que los requisitos pueden cambiar sin previo aviso.',
-      disclaimerLinkText: 'Fuentes oficiales de cancillería',
-    },
-    postResultCta: {
-      text:    '¿Querés más recursos como este?',
-      subtext: 'En la comunidad tenemos guías de más de 30 destinos, consejos de viajeros y actualizaciones de requisitos.',
-      cta:     'Unirme gratis',
-    },
-    errors: {
-      apiError:  'No pudimos consultar los requisitos en este momento. Intentá de nuevo o escribinos a la comunidad y te ayudamos.',
-      noData:    'No tenemos información suficiente sobre esta combinación todavía. Unite a la comunidad y te respondemos directamente.',
-      offline:   'Parece que no tenés conexión. Revisá tu internet e intentá de nuevo.',
-      rateLimit: 'Hiciste varias consultas seguidas. Esperá unos minutos e intentá de nuevo.',
-      retry:     'Intentar de nuevo',
-    },
-  },
   recursos: {
     sectionLabel:  'Recursos gratuitos',
     headline:      'La guía que hubiéramos querido tener antes de nuestro primer viaje.',
@@ -290,14 +265,56 @@ const es: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Volver',
+    heroLabel:   'UGC & Contenido de marca',
+    headline:    'Contenido que hace que reserven tu lugar.',
+    subheadline: 'Reels y fotos de viaje en pareja, reales, para hoteles y experiencias que quieren llenar su temporada.',
+    heroCta:     'Hablemos de tu proyecto ✈',
     sectionLabel: 'Para marcas',
-    headline:     'Contenido que vende la experiencia, no una escena armada.',
-    subheadline:  'Video real que frena el scroll para marcas de viaje, beauty y lifestyle. Del que la gente cree porque no parece un anuncio.',
+    quienSoy: {
+      heading: 'Quién soy',
+      body: [
+        'Soy Oriana — creadora de viajes argentina 🇦🇷, viviendo en Lituania con mi marido lituano 🇱🇹. Hace 9 años documentamos viajes reales, y nuestro contenido en pareja es lo que más conecta: la escapada romántica, la aventura en familia, el lado humano de un lugar.',
+      ],
+      howTitle:       'Cómo trabajo:',
+      howBody:        'te entrego contenido listo para TUS redes (UGC) — vos sos dueño/a de los videos y fotos. Y si querés, lo comparto también con mi comunidad.',
+      communityTitle: 'Mi comunidad:',
+      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajeros LATAM (25-40) que planean su próximo viaje.',
+    },
+    portfolioTitle:    'Portafolio de contenido',
+    portfolioSubtitle: 'Contenido real grabado en destino, no en set. Así performa el estilo que produzco — números públicos de cada pieza.',
+    portfolioMoreText: '¿Querés ver más trabajos?',
+    portfolioMoreCta:  'Ver canal completo →',
+    hoteles: {
+      title:      '¿Tenés un hotel, glamping o experiencia?',
+      body:       'Creo el contenido que vende tu lugar como lo que es: una escapada que la gente quiere vivir. Reels, fotos y stories listos para tus redes — con el ángulo pareja/familia que más reserva genera.',
+      startTitle: 'Empecemos fácil:',
+      startBody:  'probá con un pack chico desde €120, o una colaboración contenido × estadía. Si funciona, escalamos a un plan mensual.',
+      cta:        'Escribime 📩 · Agendá 15 min',
+    },
+    testimonialsTitle: 'Lo que dicen las marcas con las que trabajé',
+    testimonials: [],
+    packagesTitle: 'Paquetes disponibles',
+    featuredBadge: 'Más elegido',
+    packageCta:    'Lo quiero',
+    entryPackage: {
+      badge:   'Para empezar',
+      name:    'Probá primero',
+      price:   'desde €120',
+      includes: ['Pack chico de contenido, sin riesgo', 'O colaboración contenido × estadía', 'Si funciona, escalamos a un plan mensual'],
+      cta:     'Empezar fácil',
+    },
     packages: [
       { name: 'Probar el agua',       price: '€150',     includes: ['3 reels/TikToks listos para publicar', '3 aperturas por video para frenar el scroll', 'Entrega en 7 días · uso ilimitado en tus redes'] },
       { name: 'Campaña con objetivo', price: '€400',     includes: ['Campaña de 5 videos pensada para UN objetivo (lanzamiento, venta o awareness)', 'Guión y estrategia: yo defino el ángulo, vos publicás', '1 ronda de ajustes · entrega en 14 días'] },
       { name: 'Presencia sostenida',  price: '€700/mes', includes: ['8 videos al mes + estrategia de contenido continua', 'Calendario de publicación + reporte mensual', 'Hasta 2 rondas/mes · canal directo acordado'] },
     ],
+    finalCta: {
+      title: '¿Listo para trabajar juntos?',
+      body:  'Agendá 15 min conmigo y armamos la propuesta a medida en la llamada.',
+      cta:   'Agendar 15 min',
+      sub:   'Sin compromiso — la primera consulta es gratis',
+    },
     cta:       'Hablemos de tu marca',
     ctaSubtext: 'Respondemos en menos de 48hs.',
     meta: {
@@ -436,17 +453,6 @@ const en: AppTranslations = {
     ctaSubtext:  'Free. No spam. Just information that works.',
     socialProof: '+2,000 travelers · 54 cities · 9 years traveling',
   },
-  comunidad: {
-    sectionLabel: 'The community',
-    headline:     'What you gain by joining',
-    items: [
-      { icon: '📺', title: 'Weekly videos',        desc: 'A new YouTube video every week: a destination, how to travel on a budget, or how to create content on the road.' },
-      { icon: '📥', title: 'Welcome guide',        desc: "Leave your email and get the traveler's starter guide: documents, apps, money and tips from someone who's already done it." },
-      { icon: '🎥', title: 'Monthly live sessions', desc: 'Every first Sunday of the month, live at 9PM (Lithuania time). Q&A and Exploriando updates.' },
-      { icon: '🤝', title: 'Active community',     desc: 'Thousands of Latinos traveling and sharing on YouTube and Instagram. Useful content only — no Facebook groups.' },
-    ],
-    cta: 'I want in →',
-  },
   about: {
     sectionLabel: 'Who we are',
     headline:     'An Argentine woman who stopped waiting for the perfect moment.',
@@ -500,40 +506,6 @@ const en: AppTranslations = {
       ctaNote:          'I reply in under 48h with availability.',
     },
   },
-  documentacion: {
-    sectionLabel: 'Travel documentation',
-    headline:     'Know exactly what you need before packing your bags.',
-    subheadline:  'Bureaucracy, visas, migration forms: the most boring part of travel, solved in seconds. Tell us where you\'re from, where you\'re going, and we\'ll tell you everything.',
-    form: {
-      title:                  'What do I need to travel?',
-      nationalityLabel:       'Your nationality',
-      nationalityPlaceholder: 'e.g. Argentina',
-      originLabel:            'Country of origin',
-      originPlaceholder:      'e.g. Mexico',
-      destinationLabel:       'Destination',
-      destinationPlaceholder: 'e.g. Portugal',
-      submitBtn:              'See what I need',
-      submitBtnLoading:       'Checking requirements...',
-    },
-    result: {
-      documentsTitle:     'Documents to travel',
-      migrationTitle:     "What they'll ask you upon arrival",
-      disclaimer:         '⚠ This information is for guidance only. Always verify with the corresponding embassy or consulate before traveling, as requirements may change without notice.',
-      disclaimerLinkText: 'Official government sources',
-    },
-    postResultCta: {
-      text:    'Want more resources like this?',
-      subtext: 'In the community we have guides for over 30 destinations, traveler tips, and updated requirements.',
-      cta:     'Join for free',
-    },
-    errors: {
-      apiError:  "We couldn't check the requirements at this time. Try again or write to the community and we'll help you.",
-      noData:    "We don't have enough information about this combination yet. Join the community and we'll answer directly.",
-      offline:   "It seems you don't have a connection. Check your internet and try again.",
-      rateLimit: "You've made several queries in a row. Wait a few minutes and try again.",
-      retry:     'Try again',
-    },
-  },
   recursos: {
     sectionLabel:  'Free resources',
     headline:      "The guide we wish we'd had before our first trip.",
@@ -564,14 +536,56 @@ const en: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Back',
+    heroLabel:   'UGC & Brand content',
+    headline:    'Content that makes people book your place.',
+    subheadline: 'Real couple-travel reels & photos for hotels and experiences that want to fill their season.',
+    heroCta:     "Let's talk about your project ✈",
     sectionLabel: 'For brands',
-    headline:     'Content that sells the experience — not a staged set.',
-    subheadline:  "Real, scroll-stopping video for travel, beauty and lifestyle brands. The kind people trust because it doesn't look like an ad.",
+    quienSoy: {
+      heading: 'Who I am',
+      body: [
+        "I'm Oriana — an Argentine travel creator 🇦🇷 living in Lithuania with my Lithuanian husband 🇱🇹. For 9 years we've documented real trips, and our couple content is what connects most: the romantic getaway, the family adventure, the human side of a place.",
+      ],
+      howTitle:       'How I work:',
+      howBody:        "I deliver content ready for YOUR channels (UGC) — you own the videos and photos. And if you'd like, I also share it with my community.",
+      communityTitle: 'My community:',
+      community:      '4,400 Instagram · 1,880 YouTube · 800 TikTok · LATAM travelers (25-40) planning their next trip.',
+    },
+    portfolioTitle:    'Content portfolio',
+    portfolioSubtitle: 'Real content shot on location, not on a set. This is how the style I produce performs — public numbers for every piece.',
+    portfolioMoreText: 'Want to see more work?',
+    portfolioMoreCta:  'See the full channel →',
+    hoteles: {
+      title:      'Got a hotel, glamping or experience?',
+      body:       'I create the content that sells your place as what it really is: a getaway people want to live. Reels, photos and stories ready for your channels — with the couple/family angle that drives bookings.',
+      startTitle: "Let's start easy:",
+      startBody:  'try a small pack from €120, or a content-for-stay collaboration. If it works, we scale to a monthly plan.',
+      cta:        'DM me 📩 · Book a 15-min call',
+    },
+    testimonialsTitle: "What the brands I've worked with say",
+    testimonials: [],
+    packagesTitle: 'Available packages',
+    featuredBadge: 'Most chosen',
+    packageCta:    'I want this',
+    entryPackage: {
+      badge:   'To get started',
+      name:    'Try it first',
+      price:   'from €120',
+      includes: ['A small content pack, no risk', 'Or a content-for-stay collaboration', 'If it works, we scale to a monthly plan'],
+      cta:     'Start easy',
+    },
     packages: [
       { name: 'Test the waters',     price: '€150',     includes: ['3 ready-to-post reels/TikToks', '3 hooks per video to stop the scroll', 'Delivered in 7 days · unlimited use on your socials'] },
       { name: 'Campaign with a goal', price: '€400',    includes: ['A 5-video campaign built for ONE goal (launch, sale or awareness)', 'Script & strategy: I set the angle, you post', '1 round of revisions · delivered in 14 days'] },
       { name: 'Sustained presence',  price: '€700/mo',  includes: ['8 videos a month + ongoing content strategy', 'Publishing calendar + monthly performance report', 'Up to 2 revision rounds/mo · direct channel'] },
     ],
+    finalCta: {
+      title: 'Ready to work together?',
+      body:  "Book 15 min with me and we'll shape a tailored proposal together on the call.",
+      cta:   'Book 15 min',
+      sub:   'No commitment — the first call is free',
+    },
     cta:       "Let's talk about your brand",
     ctaSubtext: 'We respond in less than 48hs.',
     meta: {
@@ -710,17 +724,6 @@ const pt: AppTranslations = {
     ctaSubtext:  'Grátis. Sem spam. Apenas informação que funciona.',
     socialProof: '+2.000 viajantes · 54 cidades · 9 anos viajando',
   },
-  comunidad: {
-    sectionLabel: 'A comunidade',
-    headline:     'O que você ganha entrando',
-    items: [
-      { icon: '📺', title: 'Vídeos semanais',       desc: 'Um vídeo novo no YouTube toda semana: um destino, como viajar com orçamento ajustado ou como criar conteúdo pelo caminho.' },
-      { icon: '📥', title: 'Guia de boas-vindas',   desc: 'Ao deixar seu email você recebe o guia básico do viajante: documentos, apps, dinheiro e dicas de quem já viveu isso.' },
-      { icon: '🎥', title: 'Lives mensais',         desc: 'Todo primeiro domingo do mês, ao vivo às 21h (horário da Lituânia). Perguntas, respostas e novidades do Exploriando.' },
-      { icon: '🤝', title: 'Comunidade ativa',      desc: 'Milhares de latinos viajando e compartilhando no YouTube e Instagram. Conteúdo útil, sem grupos de Facebook.' },
-    ],
-    cta: 'Quero entrar →',
-  },
   about: {
     sectionLabel: 'Quem somos',
     headline:     'Uma argentina que parou de esperar o momento perfeito.',
@@ -774,40 +777,6 @@ const pt: AppTranslations = {
       ctaNote:          'Respondo em menos de 48h com disponibilidade.',
     },
   },
-  documentacion: {
-    sectionLabel: 'Documentação de viagem',
-    headline:     'Saiba exatamente o que você precisa antes de fazer as malas.',
-    subheadline:  'Burocracia, vistos, formulários de migração: a parte mais chata da viagem, resolvida em segundos. Nos diga de onde você é, para onde vai, e te dizemos tudo.',
-    form: {
-      title:                  'O que preciso para viajar?',
-      nationalityLabel:       'Sua nacionalidade',
-      nationalityPlaceholder: 'Ex: Argentina',
-      originLabel:            'País de origem da viagem',
-      originPlaceholder:      'Ex: México',
-      destinationLabel:       'Destino',
-      destinationPlaceholder: 'Ex: Portugal',
-      submitBtn:              'Ver o que preciso',
-      submitBtnLoading:       'Consultando requisitos...',
-    },
-    result: {
-      documentsTitle:     'Documentos para viajar',
-      migrationTitle:     'O que vão pedir ao chegar',
-      disclaimer:         '⚠ Esta informação é orientativa. Sempre verifique com a embaixada ou consulado correspondente antes de viajar, pois os requisitos podem mudar sem aviso prévio.',
-      disclaimerLinkText: 'Fontes oficiais do governo',
-    },
-    postResultCta: {
-      text:    'Quer mais recursos como este?',
-      subtext: 'Na comunidade temos guias de mais de 30 destinos, dicas de viajantes e atualizações de requisitos.',
-      cta:     'Entrar de graça',
-    },
-    errors: {
-      apiError:  'Não pudemos consultar os requisitos no momento. Tente novamente ou escreva para a comunidade e te ajudamos.',
-      noData:    'Não temos informação suficiente sobre essa combinação ainda. Entre na comunidade e te respondemos diretamente.',
-      offline:   'Parece que você não tem conexão. Verifique sua internet e tente novamente.',
-      rateLimit: 'Você fez várias consultas seguidas. Espere alguns minutos e tente novamente.',
-      retry:     'Tentar novamente',
-    },
-  },
   recursos: {
     sectionLabel:  'Recursos gratuitos',
     headline:      'O guia que gostaríamos de ter tido antes da nossa primeira viagem.',
@@ -838,14 +807,56 @@ const pt: AppTranslations = {
     },
   },
   ugc: {
+    heroBack:    '← Voltar',
+    heroLabel:   'UGC & Conteúdo de marca',
+    headline:    'Conteúdo que faz reservarem o seu lugar.',
+    subheadline: 'Reels e fotos de viagem em casal, reais, para hotéis e experiências que querem encher a sua temporada.',
+    heroCta:     'Vamos falar do seu projeto ✈',
     sectionLabel: 'Para marcas',
-    headline:     'Conteúdo que vende a experiência, não uma cena montada.',
-    subheadline:  'Vídeo real que freia o scroll para marcas de viagem, beauty e lifestyle. Do tipo em que as pessoas confiam porque não parece um anúncio.',
+    quienSoy: {
+      heading: 'Quem sou',
+      body: [
+        'Sou a Oriana — criadora de viagens argentina 🇦🇷, morando na Lituânia com meu marido lituano 🇱🇹. Há 9 anos documentamos viagens reais, e nosso conteúdo em casal é o que mais conecta: a escapada romântica, a aventura em família, o lado humano de um lugar.',
+      ],
+      howTitle:       'Como trabalho:',
+      howBody:        'entrego conteúdo pronto para as SUAS redes (UGC) — você é dono(a) dos vídeos e fotos. E se quiser, também compartilho com a minha comunidade.',
+      communityTitle: 'Minha comunidade:',
+      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajantes LATAM (25-40) que planejam a próxima viagem.',
+    },
+    portfolioTitle:    'Portfólio de conteúdo',
+    portfolioSubtitle: 'Conteúdo real gravado no destino, não em estúdio. É assim que o estilo que produzo performa — números públicos de cada peça.',
+    portfolioMoreText: 'Quer ver mais trabalhos?',
+    portfolioMoreCta:  'Ver o canal completo →',
+    hoteles: {
+      title:      'Tem um hotel, glamping ou experiência?',
+      body:       'Crio o conteúdo que vende o seu lugar como ele realmente é: uma escapada que as pessoas querem viver. Reels, fotos e stories prontos para as suas redes — com o ângulo casal/família que mais gera reservas.',
+      startTitle: 'Vamos começar fácil:',
+      startBody:  'experimente um pacote pequeno a partir de €120, ou uma colaboração conteúdo × estadia. Se funcionar, escalamos para um plano mensal.',
+      cta:        'Me escreva 📩 · Agende 15 min',
+    },
+    testimonialsTitle: 'O que dizem as marcas com quem trabalhei',
+    testimonials: [],
+    packagesTitle: 'Pacotes disponíveis',
+    featuredBadge: 'Mais escolhido',
+    packageCta:    'Quero este',
+    entryPackage: {
+      badge:   'Para começar',
+      name:    'Experimente primeiro',
+      price:   'a partir de €120',
+      includes: ['Um pacote pequeno de conteúdo, sem risco', 'Ou colaboração conteúdo × estadia', 'Se funcionar, escalamos para um plano mensal'],
+      cta:     'Começar fácil',
+    },
     packages: [
       { name: 'Testar a água',        price: '€150',      includes: ['3 reels/TikToks prontos para publicar', '3 aberturas por vídeo para frear o scroll', 'Entrega em 7 dias · uso ilimitado nas suas redes'] },
       { name: 'Campanha com objetivo', price: '€400',     includes: ['Uma campanha de 5 vídeos para UM objetivo (lançamento, venda ou awareness)', 'Roteiro e estratégia: eu defino o ângulo, você publica', '1 rodada de ajustes · entrega em 14 dias'] },
       { name: 'Presença contínua',    price: '€700/mês',  includes: ['8 vídeos por mês + estratégia de conteúdo contínua', 'Calendário de publicação + relatório mensal', 'Até 2 rodadas/mês · canal direto combinado'] },
     ],
+    finalCta: {
+      title: 'Pronto para trabalhar juntos?',
+      body:  'Agende 15 min comigo e montamos a proposta sob medida na chamada.',
+      cta:   'Agendar 15 min',
+      sub:   'Sem compromisso — a primeira consulta é grátis',
+    },
     cta:       'Vamos falar sobre sua marca',
     ctaSubtext: 'Respondemos em menos de 48hs.',
     meta: {

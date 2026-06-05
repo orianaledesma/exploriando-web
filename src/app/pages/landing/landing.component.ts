@@ -11,11 +11,8 @@ import { MarcasTeaserComponent } from '../../components/marcas-teaser/marcas-tea
 // captura → prueba de valor → promesa gratis → confianza → herramientas →
 // creador (YouTube + 1:1) → derivación B2B a /marcas.
 //
-// La sección UGC completa se removió del landing: vive en /marcas. Acá solo
-// queda un teaser que deriva al B2B sin contaminar el funnel del viajero.
-//
-// "Comunidad" fue reemplazada por MapaTeaser (decisión 2026-04-30).
-// DocumentacionComponent sigue oculto — consume créditos de Anthropic API.
+// La sección UGC completa vive en /marcas; acá solo queda el teaser que deriva
+// al B2B sin contaminar el funnel del viajero.
 
 @Component({
   selector: 'app-landing',
