@@ -16,6 +16,10 @@ const SUBMITTED_KEY     = 'email_submitted';
 export const GIFT_DRIVE_URL =
   'https://drive.google.com/file/d/1E0U4zTIWCXmZjXQdV8zAFAj95HQ6MsJ5/view';
 
+/** Página privada de la guía (visor + descarga, PDF por idioma). El email de
+ *  bienvenida linkea acá con `?lang=` para forzar el idioma del suscriptor. */
+const GUIDE_PAGE_URL = 'https://exploriando.page/guia-acceso';
+
 const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
   'hero':               'Hero — Comunidad',
   'recursos':           'Recursos — Guía gratuita',
@@ -84,7 +88,7 @@ export class EmailCaptureService {
         confirmTemplateId,
         {
           to_email:     data.email,        // destinatario = el suscriptor ({{to_email}})
-          gift_url:     GIFT_DRIVE_URL,    // link a la guía gratis
+          gift_url:     `${GUIDE_PAGE_URL}?lang=${data.lang === 'en' ? 'en' : 'es'}`, // página de la guía en su idioma
           source_label: SOURCE_LABELS[data.source] ?? data.source,
         },
         publicKey,

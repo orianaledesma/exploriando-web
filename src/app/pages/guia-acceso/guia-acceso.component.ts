@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { DomSanitizer, Meta, SafeResourceUrl } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
+import { Lang, SUPPORTED_LANGS } from '../../models/language.model';
 
 /**
  * `/guia-acceso` — página privada de la guía. El link se entrega SOLO en el
@@ -97,6 +98,14 @@ export class GuiaAccesoComponent {
   );
 
   constructor() {
+    // El email de bienvenida linkea con `?lang=es|en` para forzar el idioma del
+    // PDF, así un suscriptor EN que abre el mail en otro dispositivo igual ve la
+    // guía en inglés (sin depender del idioma guardado en ese navegador).
+    const langParam = inject(ActivatedRoute).snapshot.queryParamMap.get('lang') as Lang | null;
+    if (langParam && SUPPORTED_LANGS.includes(langParam)) {
+      this.lang.set(langParam);
+    }
+
     // Página privada: nunca indexar ni seguir.
     inject(Meta).updateTag({ name: 'robots', content: 'noindex, nofollow' });
   }
