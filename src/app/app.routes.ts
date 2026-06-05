@@ -38,5 +38,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/guia-acceso/guia-acceso.component').then(m => m.GuiaAccesoComponent),
   },
 
+  // Baja de la lista — link en el footer del email de bienvenida (EmailJS).
+  {
+    path: 'baja',
+    loadComponent: () => import('./pages/baja/baja.component').then(m => m.BajaComponent),
+  },
+
   { path: '**', redirectTo: '' },
 ];

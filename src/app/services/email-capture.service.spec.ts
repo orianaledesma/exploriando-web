@@ -101,6 +101,8 @@ describe('EmailCaptureService', () => {
           .find(a => (a[2] as Record<string, unknown>)?.['to_email'] === 'lead@b.com');
         expect(confirmCall).withContext('welcome email to subscriber').toBeTruthy();
         expect((confirmCall![2] as Record<string, unknown>)['gift_url']).toBeTruthy();
+        // …con su link de baja (one-click unsubscribe)…
+        expect((confirmCall![2] as Record<string, unknown>)['unsubscribe_url']).toBeTruthy();
         // …usando la plantilla EN porque lang === 'en'.
         expect(confirmCall![1]).toBe(environment.emailjs.confirmationTemplate.en);
         done();

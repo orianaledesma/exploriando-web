@@ -20,6 +20,10 @@ export const GIFT_DRIVE_URL =
  *  bienvenida linkea acá con `?lang=` para forzar el idioma del suscriptor. */
 const GUIDE_PAGE_URL = 'https://exploriando.page/guia-acceso';
 
+/** Página de baja. El email de bienvenida la linkea con `?email=&lang=`; pide
+ *  confirmación y llama a la función `/api/unsubscribe` (MailerLite). */
+const UNSUBSCRIBE_PAGE_URL = 'https://exploriando.page/baja';
+
 const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
   'hero':               'Hero — Comunidad',
   'recursos':           'Recursos — Guía gratuita',
@@ -87,9 +91,10 @@ export class EmailCaptureService {
         serviceId,
         confirmTemplateId,
         {
-          to_email:     data.email,        // destinatario = el suscriptor ({{to_email}})
-          gift_url:     `${GUIDE_PAGE_URL}?lang=${data.lang === 'en' ? 'en' : 'es'}`, // página de la guía en su idioma
-          source_label: SOURCE_LABELS[data.source] ?? data.source,
+          to_email:        data.email,     // destinatario = el suscriptor ({{to_email}})
+          gift_url:        `${GUIDE_PAGE_URL}?lang=${data.lang === 'en' ? 'en' : 'es'}`, // guía en su idioma
+          unsubscribe_url: `${UNSUBSCRIBE_PAGE_URL}?email=${encodeURIComponent(data.email)}&lang=${data.lang === 'en' ? 'en' : 'es'}`,
+          source_label:    SOURCE_LABELS[data.source] ?? data.source,
         },
         publicKey,
       ),
