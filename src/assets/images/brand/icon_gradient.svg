@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <defs>
+    <linearGradient id="aqua-mg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A8F2DC"/><stop offset="32%" stop-color="#74E2C0"/>
+      <stop offset="58%" stop-color="#52CEA6"/><stop offset="100%" stop-color="#34A382"/>
+    </linearGradient>
+    <linearGradient id="face-hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#060E24"/><stop offset="25%" stop-color="#0B1F4A"/>
+      <stop offset="60%" stop-color="#1376FE"/><stop offset="85%" stop-color="#2EC8A0"/>
+      <stop offset="100%" stop-color="#3DD9B3"/>
+    </linearGradient>
+    <radialGradient id="pdotg" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FF90B8"/><stop offset="50%" stop-color="#E8427A"/><stop offset="100%" stop-color="#B01A4A"/>
+    </radialGradient>
+    <linearGradient id="glossg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/><stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="fclipg"><rect x="10" y="10" width="200" height="200" rx="30"/></clipPath>
+  </defs>
+  <rect x="15" y="17" width="200" height="200" rx="30" fill="#0A2255"/>
+  <rect x="13" y="14" width="200" height="200" rx="30" fill="#0C3074"/>
+  <rect x="11" y="11" width="200" height="200" rx="30" fill="#0F4296"/>
+  <rect x="10" y="10" width="200" height="200" rx="30" fill="url(#face-hero)"/>
+  <rect x="10" y="10" width="200" height="200" rx="30" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+  <rect x="10" y="10" width="200" height="95" rx="30" fill="url(#glossg)" clip-path="url(#fclipg)"/>
+  <text x="30" y="86" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="40" letter-spacing="-2" fill="#0B1F4A" opacity="0.4">EXPL</text>
+  <text x="30" y="84" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="40" letter-spacing="-2" fill="#FAFDFF">EXPL</text>
+  <text x="14" y="176" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="106" letter-spacing="-5" fill="#155C46">ORI</text>
+  <text x="14" y="173" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="106" letter-spacing="-5" fill="#1C6E54">ORI</text>
+  <text x="14" y="170" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="106" letter-spacing="-5" fill="#258062">ORI</text>
+  <text x="14" y="167" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="106" letter-spacing="-5" fill="url(#aqua-mg)">ORI</text>
+  <text x="76" y="212" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="40" letter-spacing="-2" fill="#0B1F4A" opacity="0.4">ANDO</text>
+  <text x="76" y="210" font-family="'Montserrat','Arial Black',sans-serif" font-weight="900" font-size="40" letter-spacing="-2" fill="#FAFDFF">ANDO</text>
+  <circle cx="198" cy="202" r="9" fill="url(#pdotg)"/>
+</svg>
