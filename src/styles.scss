@@ -190,9 +190,7 @@ p { line-height: 1.7; }
 // Section vertical padding (hero manages its own)
 .about,
 .viajero-creador,
-.documentacion,
-.recursos,
-.ugc {
+.recursos {
   padding-top: var(--space-2xl);
   padding-bottom: var(--space-2xl);
 

@@ -2,7 +2,6 @@
 // Este archivo SÍ está en git. environment.ts NO está en git.
 export const environment = {
   production: false,
-  documentacionApiUrl: '/api/documentacion',
   emailjs: {
     serviceId:              '',  // EmailJS → Email Services → Service ID
     notificationTemplateId: '',  // EmailJS → Templates → template de notificación a Oriana

@@ -20,7 +20,6 @@ const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
   'hero':               'Hero — Comunidad',
   'recursos':           'Recursos — Guía gratuita',
   'footer':             'Footer — CTA final',
-  'post-documentacion': 'Post documentación IA',
   'viajero-creador':    'Viajero Creador — Waitlist',
   'guia':               'Página /guia — Lectura completa',
 };
