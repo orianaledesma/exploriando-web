@@ -1,0 +1,10 @@
+# El deploy sube dist/.../browser con --dir, así que netlify.toml NO se procesa
+# (sus [[redirects]] no se aplican). Estas reglas son la fuente de verdad.
+
+# Proxy de las llamadas del front a las Netlify Functions.
+# Sin esto, POST /api/subscribe nunca llega a la function → el alta falla.
+/api/*  /.netlify/functions/:splat  200
+
+# SPA fallback del router Angular — debe ir ÚLTIMO. Netlify sirve primero el
+# archivo estático prerenderizado (p.ej. /marcas/index.html) si existe.
+/*      /index.html                 200
