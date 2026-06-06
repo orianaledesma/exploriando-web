@@ -34,7 +34,6 @@
     "@angular-devkit/build-angular": "19.2.24",
     "@angular/cli": "19.2.24",
     "@angular/compiler-cli": "19.2.22",
-    "@anthropic-ai/sdk": "^0.37.0",
     "@netlify/functions": "^2.0.0",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",

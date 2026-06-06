@@ -9,6 +9,10 @@ describe('CountryListComponent', () => {
   let component: CountryListComponent;
 
   beforeEach(async () => {
+    // Idioma determinista: sin esto el spec depende del orden (otro spec puede
+    // dejar 'en' en localStorage) y las aserciones en español fallan en CI.
+    localStorage.removeItem('exploriando_lang');
+
     await TestBed.configureTestingModule({
       imports: [CountryListComponent],
       providers: [provideRouter([])],

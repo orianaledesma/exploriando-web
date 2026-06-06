@@ -11,12 +11,11 @@ const required = [
   'EMAILJS_CONFIRMATION_TEMPLATE_ID_ES',
   'EMAILJS_CONFIRMATION_TEMPLATE_ID_EN',
   'EMAILJS_PUBLIC_KEY',
-  'ANTHROPIC_API_KEY',
 ];
 
 // Secretos que SOLO usan las Netlify Functions (server-side) y NUNCA deben
 // entrar al bundle del browser. No se inyectan en environment.prod.ts.
-const FUNCTIONS_ONLY = ['ANTHROPIC_API_KEY', 'MAILER_API_TOKEN', 'MAILER_GROUP_ID'];
+const FUNCTIONS_ONLY = ['MAILER_API_TOKEN', 'MAILER_GROUP_ID'];
 
 const missing = required
   .filter(k => !FUNCTIONS_ONLY.includes(k))
@@ -32,7 +31,6 @@ const target = path.resolve(__dirname, '../src/environments/environment.prod.ts'
 const content = `// Generado automáticamente por scripts/set-env.js — NO editar a mano.
 export const environment = {
   production: true,
-  documentacionApiUrl: '/api/documentacion',
   emailjs: {
     serviceId:              '${process.env['EMAILJS_SERVICE_ID'] ?? ''}',
     notificationTemplateId: '${process.env['EMAILJS_NOTIFICATION_TEMPLATE_ID'] ?? ''}',

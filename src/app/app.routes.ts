@@ -1,11 +1,15 @@
 import { Routes } from '@angular/router';
 import { LandingComponent } from './pages/landing/landing.component';
-import { MarcasComponent } from './pages/marcas/marcas.component';
 import { GuiaComponent } from './pages/guia/guia.component';
 
 export const routes: Routes = [
   { path: '',       component: LandingComponent },
-  { path: 'marcas', component: MarcasComponent  },
+  // /marcas es lazy: media-kit pesado (portfolio + secciones) que el visitante
+  // de la home casi nunca abre. Prerendera igual (SSG soporta lazy routes).
+  {
+    path: 'marcas',
+    loadComponent: () => import('./pages/marcas/marcas.component').then(m => m.MarcasComponent),
+  },
   { path: 'guia',   component: GuiaComponent    },
 
   // Mapa + listado por país + blog post por ciudad — lazy para no inflar la landing.
