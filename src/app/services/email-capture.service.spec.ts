@@ -7,6 +7,7 @@ import {
 import emailjs from '@emailjs/browser';
 import { EmailCaptureService } from './email-capture.service';
 import { AnalyticsService } from './analytics.service';
+import { environment } from '../../environments/environment';
 
 describe('EmailCaptureService', () => {
   let svc: EmailCaptureService;
@@ -29,7 +30,7 @@ describe('EmailCaptureService', () => {
     it('dispara email_capture_submit con source en éxito', (done) => {
       spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
 
-      svc.submit({ email: 'a@b.com', source: 'hero' }).subscribe(() => {
+      svc.submit({ email: 'a@b.com', source: 'hero', lang: 'es' }).subscribe(() => {
         expect(trackSpy).toHaveBeenCalledWith('email_capture_submit', { source: 'hero' });
         done();
       });
@@ -43,7 +44,7 @@ describe('EmailCaptureService', () => {
       // MailerLite (la fuente de verdad) debe seguir adelante sin abortarse.
       spyOn(emailjs, 'send').and.returnValue(Promise.reject(new Error('emailjs down')));
 
-      svc.submit({ email: 'a@b.com', source: 'guia' }).subscribe({
+      svc.submit({ email: 'a@b.com', source: 'guia', lang: 'es' }).subscribe({
         next:  () => {
           expect(trackSpy).toHaveBeenCalledWith('email_capture_submit', { source: 'guia' });
           done();
@@ -60,7 +61,7 @@ describe('EmailCaptureService', () => {
     it('dispara email_capture_error si falla el alta a MailerLite', (done) => {
       spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
 
-      svc.submit({ email: 'a@b.com', source: 'hero' }).subscribe({
+      svc.submit({ email: 'a@b.com', source: 'hero', lang: 'es' }).subscribe({
         next:  () => done.fail('should have errored'),
         error: () => {
           expect(trackSpy).toHaveBeenCalledWith('email_capture_error', { source: 'hero' });
@@ -77,7 +78,7 @@ describe('EmailCaptureService', () => {
     it('mantiene el contrato — el componente sigue recibiendo el error', (done) => {
       spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
 
-      svc.submit({ email: 'a@b.com', source: 'footer' }).subscribe({
+      svc.submit({ email: 'a@b.com', source: 'footer', lang: 'es' }).subscribe({
         next:  () => done.fail('should not emit next'),
         error: (err: { status?: number }) => {
           expect(err.status).toBe(502);
@@ -89,6 +90,28 @@ describe('EmailCaptureService', () => {
         { error: 'down' },
         { status: 502, statusText: 'Bad Gateway' },
       );
+    });
+
+    it('manda la bienvenida (guía gratis) al suscriptor en su idioma y pasa el idioma a MailerLite', (done) => {
+      const sendSpy = spyOn(emailjs, 'send').and.returnValue(Promise.resolve({ status: 200, text: 'OK' }));
+
+      svc.submit({ email: 'lead@b.com', source: 'hero', lang: 'en' }).subscribe(() => {
+        // El email de bienvenida va al suscriptor (to_email) con el link de la guía…
+        const confirmCall = sendSpy.calls.allArgs()
+          .find(a => (a[2] as Record<string, unknown>)?.['to_email'] === 'lead@b.com');
+        expect(confirmCall).withContext('welcome email to subscriber').toBeTruthy();
+        expect((confirmCall![2] as Record<string, unknown>)['gift_url']).toBeTruthy();
+        // …con su link de baja (one-click unsubscribe)…
+        expect((confirmCall![2] as Record<string, unknown>)['unsubscribe_url']).toBeTruthy();
+        // …usando la plantilla EN porque lang === 'en'.
+        expect(confirmCall![1]).toBe(environment.emailjs.confirmationTemplate.en);
+        done();
+      });
+
+      // El idioma viaja a MailerLite para poder segmentar.
+      const req = httpMock.expectOne('/api/subscribe');
+      expect((req.request.body as { lang?: string }).lang).toBe('en');
+      req.flush({ ok: true });
     });
   });
 

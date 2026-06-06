@@ -11,6 +11,7 @@ import { RevealDirective } from '../../directives/reveal.directive';
 import { GUIA_PAGA_COPY_A } from '../../copy/guia-paga.copy';
 import { EmailCaptureService } from '../../services/email-capture.service';
 import { EmailCaptureStatus } from '../../models/email-capture.model';
+import { LanguageService } from '../../services/language.service';
 
 const HEYMONDO_URL =
   'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=EXPLORINADO&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa&redirect=TEMPORAL';
@@ -28,6 +29,7 @@ const REVOLUT_URL =
 export class GuiaComponent implements OnInit {
   private readonly fb           = inject(FormBuilder);
   private readonly emailService = inject(EmailCaptureService);
+  private readonly lang         = inject(LanguageService);
 
   readonly copy        = GUIA_PAGA_COPY_A;
   readonly heymondoUrl = HEYMONDO_URL;
@@ -57,7 +59,7 @@ export class GuiaComponent implements OnInit {
     this.status.set('loading');
 
     this.emailService
-      .submit({ email: this.form.value['email'] as string, source: 'guia' })
+      .submit({ email: this.form.value['email'] as string, source: 'guia', lang: this.lang.current() })
       .subscribe({
         next: () => {
           this.emailService.recordSubmission();

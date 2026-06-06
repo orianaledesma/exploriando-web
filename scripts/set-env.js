@@ -8,7 +8,8 @@ const path = require('path');
 const required = [
   'EMAILJS_SERVICE_ID',
   'EMAILJS_NOTIFICATION_TEMPLATE_ID',
-  'EMAILJS_CONFIRMATION_TEMPLATE_ID',
+  'EMAILJS_CONFIRMATION_TEMPLATE_ID_ES',
+  'EMAILJS_CONFIRMATION_TEMPLATE_ID_EN',
   'EMAILJS_PUBLIC_KEY',
 ];
 
@@ -33,7 +34,10 @@ export const environment = {
   emailjs: {
     serviceId:              '${process.env['EMAILJS_SERVICE_ID'] ?? ''}',
     notificationTemplateId: '${process.env['EMAILJS_NOTIFICATION_TEMPLATE_ID'] ?? ''}',
-    confirmationTemplateId: '${process.env['EMAILJS_CONFIRMATION_TEMPLATE_ID'] ?? ''}',
+    confirmationTemplate: {
+      es: '${process.env['EMAILJS_CONFIRMATION_TEMPLATE_ID_ES'] ?? ''}',
+      en: '${process.env['EMAILJS_CONFIRMATION_TEMPLATE_ID_EN'] ?? ''}',
+    },
     publicKey:              '${process.env['EMAILJS_PUBLIC_KEY'] ?? ''}',
   },
 };

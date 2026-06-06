@@ -44,7 +44,7 @@ export class FooterComponent {
     if (this.emailService.hasAlreadySubmitted()) { this.status.set('duplicate'); return; }
 
     this.status.set('loading');
-    this.emailService.submit({ email: this.form.value['email'] as string, source: 'footer' }).subscribe({
+    this.emailService.submit({ email: this.form.value['email'] as string, source: 'footer', lang: this.lang.current() }).subscribe({
       next: () => { this.emailService.recordSubmission(); this.status.set('success'); this.form.reset(); },
       error: () => this.status.set('error'),
     });

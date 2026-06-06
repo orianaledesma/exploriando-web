@@ -16,6 +16,14 @@ const SUBMITTED_KEY     = 'email_submitted';
 export const GIFT_DRIVE_URL =
   'https://drive.google.com/file/d/1E0U4zTIWCXmZjXQdV8zAFAj95HQ6MsJ5/view';
 
+/** Página privada de la guía (visor + descarga, PDF por idioma). El email de
+ *  bienvenida linkea acá con `?lang=` para forzar el idioma del suscriptor. */
+const GUIDE_PAGE_URL = 'https://exploriando.page/guia-acceso';
+
+/** Página de baja. El email de bienvenida la linkea con `?email=&lang=`; pide
+ *  confirmación y llama a la función `/api/unsubscribe` (MailerLite). */
+const UNSUBSCRIBE_PAGE_URL = 'https://exploriando.page/baja';
+
 const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
   'hero':               'Hero — Comunidad',
   'recursos':           'Recursos — Guía gratuita',
@@ -42,15 +50,16 @@ export class EmailCaptureService {
   }
 
   submit(data: EmailCaptureData): Observable<unknown> {
-    const { serviceId, notificationTemplateId, publicKey } =
+    const { serviceId, notificationTemplateId, confirmationTemplate, publicKey } =
       environment.emailjs;
 
-    // Alta en MailerLite (lista + doble opt-in/bienvenida los maneja
-    // MailerLite). El token vive server-side en la Netlify Function.
-    // Es la FUENTE DE VERDAD del éxito de la suscripción.
+    // Alta en MailerLite. El token vive server-side en la Netlify Function.
+    // Es la FUENTE DE VERDAD del éxito de la suscripción. Guardamos también el
+    // idioma para poder segmentar futuras campañas.
     const subscribe$ = this.http.post('/api/subscribe', {
       email:  data.email,
       source: data.source,
+      lang:   data.lang,
     });
 
     // Notificación interna a Oriana — best-effort. Si EmailJS falla NO debe
@@ -65,12 +74,32 @@ export class EmailCaptureService {
         {
           subscriber_email: data.email,
           source_label:     SOURCE_LABELS[data.source] ?? data.source,
+          lang:             data.lang,
         },
         publicKey,
       ),
     ).pipe(catchError(() => of(null)));
 
-    return forkJoin([subscribe$, notify$]).pipe(
+    // Bienvenida + guía gratis al suscriptor, en su idioma. Una sola acción para
+    // "unirse a la comunidad" y "guía gratis". Best-effort: no debe romper el
+    // alta. pt usa la plantilla ES (mismo público LATAM).
+    const confirmTemplateId =
+      data.lang === 'en' ? confirmationTemplate.en : confirmationTemplate.es;
+    const confirm$ = from(
+      emailjs.send(
+        serviceId,
+        confirmTemplateId,
+        {
+          to_email:        data.email,     // destinatario = el suscriptor ({{to_email}})
+          gift_url:        `${GUIDE_PAGE_URL}?lang=${data.lang === 'en' ? 'en' : 'es'}`, // guía en su idioma
+          unsubscribe_url: `${UNSUBSCRIBE_PAGE_URL}?email=${encodeURIComponent(data.email)}&lang=${data.lang === 'en' ? 'en' : 'es'}`,
+          source_label:    SOURCE_LABELS[data.source] ?? data.source,
+        },
+        publicKey,
+      ),
+    ).pipe(catchError(() => of(null)));
+
+    return forkJoin([subscribe$, notify$, confirm$]).pipe(
       map(([subscribeResult]) => subscribeResult),
       tap({
         next:  () => this.analytics.track('email_capture_submit', { source: data.source }),

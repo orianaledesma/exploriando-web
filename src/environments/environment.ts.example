@@ -5,7 +5,11 @@ export const environment = {
   emailjs: {
     serviceId:              '',  // EmailJS → Email Services → Service ID
     notificationTemplateId: '',  // EmailJS → Templates → template de notificación a Oriana
-    confirmationTemplateId: '',  // EmailJS → Templates → template de confirmación al suscriptor
+    // Bienvenida + guía gratis al suscriptor, una plantilla por idioma (ES / EN).
+    confirmationTemplate: {
+      es: '',  // EmailJS → Templates → confirmación al suscriptor (ES)
+      en: '',  // EmailJS → Templates → confirmación al suscriptor (EN)
+    },
     publicKey:              '',  // EmailJS → Account → Public Key
   },
 };
