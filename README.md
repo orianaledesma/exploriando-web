@@ -125,5 +125,6 @@ componentes (forms, tracking, render por idioma).
 
 - `lite-youtube` tiene un warning de CSP (NG0904) pre-existente en prerender;
   es un facade ya optimizado, se salda aparte.
-- Migración de hosting **Netlify → Cloudflare Pages** en evaluación (mantiene
-  las funciones serverless y el deploy desde GitHub).
+- Para que el alta/baja de email funcione en prod faltan las env vars del lado
+  de Netlify (`MAILER_API_TOKEN`, `MAILER_GROUP_ID`) y las plantillas EmailJS
+  ES/EN configuradas.
