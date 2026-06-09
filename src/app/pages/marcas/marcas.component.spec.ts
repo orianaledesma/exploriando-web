@@ -53,7 +53,8 @@ describe('MarcasComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.marcas-about')).withContext('quién soy + audiencia').toBeTruthy();
     expect(compiled.querySelector('.marcas-hoteles')).withContext('hoteles & experiencias').toBeTruthy();
-    expect(compiled.querySelector('.ugc__entry')).withContext('entrada de baja fricción €120').toBeTruthy();
+    expect(compiled.querySelector('.ugc__packages')).withContext('grilla de precios').toBeTruthy();
+    expect(compiled.querySelectorAll('.ugc__package').length).withContext('3 tiers').toBe(3);
   });
 
   it('oculta la sección de testimonios mientras no haya items', () => {
