@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <base href="/" />
-    <title>Exploriando — Viajá sin excusas</title>
-    <meta name="description" content="Comunidad de viajeros latinoamericanos. Información concreta sobre documentación, vuelos baratos y cómo viajar más por menos. Gratis." />
+    <title>Exploriando — Viajar es la mejor inversión</title>
+    <meta name="description" content="Viajar es la mejor inversión que podés hacer. Guías reales, documentación y destinos —de una argentina que vive en la ruta hace 9 años." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Exploriando — Viajá sin excusas" />
-    <meta property="og:description" content="Información concreta para latinoamericanos que quieren viajar más y gastar menos." />
+    <meta property="og:title" content="Exploriando — Viajar es la mejor inversión" />
+    <meta property="og:description" content="Viajar es la mejor inversión que podés hacer. Guías reales, documentación y destinos —de una argentina que vive en la ruta hace 9 años." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://exploriando.page" />
     <meta property="og:image" content="https://exploriando.page/assets/images/og-image.jpeg" />
@@ -19,8 +19,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Exploriando — Viajá sin excusas" />
-    <meta name="twitter:description" content="Información concreta para latinoamericanos que quieren viajar más y gastar menos." />
+    <meta name="twitter:title" content="Exploriando — Viajar es la mejor inversión" />
+    <meta name="twitter:description" content="Viajar es la mejor inversión que podés hacer. Guías reales, documentación y destinos —de una argentina que vive en la ruta hace 9 años." />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://exploriando.page" />
@@ -58,19 +58,16 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window,document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
+      // GDPR: sin tracking hasta que el usuario acepte. CookieConsentService
+      // hace fbq('consent','grant') al aceptar; mientras, el PageView queda en cola.
+      fbq('consent', 'revoke');
       fbq('init', '2412417925847339');
       fbq('track', 'PageView');
     </script>
 
-    <!-- Emerald affiliate tracker (527817) -->
-    <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
-      (function () {
-          var script = document.createElement("script");
-          script.async = 1;
-          script.src = 'https://emrldtp.cc/NTI3ODE3.js?t=527817';
-          document.head.appendChild(script);
-      })();
-    </script>
+    <!-- Emerald affiliate tracker (527817) — NO se carga acá. CookieConsentService
+         inyecta el script solo tras el consentimiento (GDPR). -->
+
 
     <!-- Fonts — Montserrat (display) + DM Sans (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

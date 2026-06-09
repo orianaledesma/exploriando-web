@@ -17,6 +17,7 @@ const STORAGE_KEY = 'exploriando_cookie_consent';
 export class CookieConsentService {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly doc = inject(DOCUMENT);
+  private emeraldLoaded = false;
 
   readonly status = signal<ConsentStatus>(this.read());
 
@@ -30,6 +31,7 @@ export class CookieConsentService {
   accept(): void {
     this.set('granted');
     this.updateGtagConsent('granted');
+    this.grantMarketing();
   }
 
   reject(): void {
@@ -61,7 +63,10 @@ export class CookieConsentService {
   /** Re-applies a previously granted choice on app start (Consent Mode update). */
   applyStoredConsent(): void {
     const s = this.read();
-    if (s === 'granted') this.updateGtagConsent('granted');
+    if (s === 'granted') {
+      this.updateGtagConsent('granted');
+      this.grantMarketing();
+    }
   }
 
   private updateGtagConsent(state: 'granted' | 'denied'): void {
@@ -78,6 +83,38 @@ export class CookieConsentService {
       });
     } catch {
       /* gtag not loaded (adblock/SSR) — no-op */
+    }
+  }
+
+  /**
+   * Trackers de marketing (Meta Pixel + Emerald) — se activan SOLO tras el
+   * consentimiento. El Pixel arranca con `consent: revoke` (index.html) y acá
+   * se le hace `grant`; Emerald no se carga hasta este momento.
+   */
+  private grantMarketing(): void {
+    if (!this.isBrowser) return;
+    const w = this.doc.defaultView as (Window & {
+      fbq?: (...args: unknown[]) => void;
+    }) | null;
+    try {
+      w?.fbq?.('consent', 'grant');
+    } catch {
+      /* pixel no cargado (adblock) — no-op */
+    }
+    this.loadEmerald();
+  }
+
+  /** Inyecta el tracker de afiliados Emerald una sola vez, tras el consentimiento. */
+  private loadEmerald(): void {
+    if (this.emeraldLoaded || !this.isBrowser) return;
+    this.emeraldLoaded = true;
+    try {
+      const s = this.doc.createElement('script');
+      s.async = true;
+      s.src = 'https://emrldtp.cc/NTI3ODE3.js?t=527817';
+      this.doc.head.appendChild(s);
+    } catch {
+      /* no-op */
     }
   }
 }
