@@ -1,0 +1,11 @@
+# El deploy sube dist/.../browser con --dir, así que netlify.toml NO se procesa
+# (sus [[headers]] no se aplican). Estos headers son la fuente de verdad.
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
