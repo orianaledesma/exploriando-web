@@ -1,0 +1,108 @@
+:host {
+  display: block;
+}
+
+// Bloque del vivo diario. Sin imagen es una sección centrada, igual que
+// .marcas-teaser. Con imagen pasa a dos columnas en desktop (imagen al lado
+// del texto) y se apila en mobile, con la imagen arriba.
+.en-vivo {
+  padding: var(--space-xl) 0;   // mobile
+  background: var(--color-bg-soft);
+  border-top: 1px solid var(--color-border);
+
+  @media (min-width: 768px) {
+    padding: var(--space-3xl) 0;
+  }
+
+  &__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  // Con frame: mobile-first sigue apilado (imagen arriba), y a partir de
+  // 900px pasa a dos columnas. El corte es más tardío que el 768px habitual
+  // porque abajo de eso las dos columnas dejan el texto demasiado angosto.
+  &__inner--with-frame {
+    @media (min-width: 900px) {
+      max-width: 1040px;
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: var(--space-2xl);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+
+    @media (min-width: 900px) {
+      align-items: flex-start;
+      flex: 1;
+    }
+  }
+
+  // La imagen es 1:1 y viene con fondo blanco, así que no lleva borde: se
+  // recorta en redondeado y apoya sobre el fondo con una sombra suave, como
+  // el resto de las piezas gráficas del sitio.
+  &__frame {
+    width: 100%;
+    max-width: 340px;
+    margin: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+
+    @media (min-width: 900px) {
+      max-width: 400px;
+      flex-shrink: 0;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  // Nombre del programa + horario. Misma jerarquía que una bajada corta.
+  &__programa {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  &__programa-name {
+    color: var(--color-accent);
+  }
+
+  &__text {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-sm);
+    max-width: 56ch;
+  }
+
+  &__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+}

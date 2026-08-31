@@ -1,0 +1,39 @@
+<section class="en-vivo" id="en-vivo" aria-labelledby="en-vivo-title">
+  <div class="container en-vivo__inner" [class.en-vivo__inner--with-frame]="frameSrc" appReveal>
+
+    <!-- Frame de un vivo real. En desktop va al lado del texto; en mobile,
+         arriba. Sin imagen el bloque vuelve a ser una columna centrada. -->
+    @if (frameSrc) {
+      <figure class="en-vivo__frame">
+        <picture>
+          <source [srcset]="frameSrc + '.webp'" type="image/webp" />
+          <img [src]="frameSrc + '.jpg'" [alt]="t().imageAlt"
+               width="1200" height="1200" loading="lazy" decoding="async" />
+        </picture>
+      </figure>
+    }
+
+    <div class="en-vivo__body">
+      <span class="section-label">{{ t().sectionLabel }}</span>
+      <h2 id="en-vivo-title">{{ t().headline }}</h2>
+
+      <!-- Nombre del programa y horario: se rinden sólo cuando Oriana los
+           define (hoy son strings vacíos en las traducciones). -->
+      @if (t().programName || t().schedule) {
+        <p class="en-vivo__programa">
+          @if (t().programName) { <span class="en-vivo__programa-name">{{ t().programName }}</span> }
+          @if (t().programName && t().schedule) { <span aria-hidden="true"> · </span> }
+          @if (t().schedule) { <span>{{ t().schedule }}</span> }
+        </p>
+      }
+
+      <p class="en-vivo__text">{{ t().text }}</p>
+      <a [href]="channelUrl" target="_blank" rel="noopener"
+         class="btn btn--primary btn--lg"
+         (click)="onCtaClick()">
+        {{ t().cta }} →
+      </a>
+      <p class="en-vivo__note">{{ t().note }}</p>
+    </div>
+  </div>
+</section>
