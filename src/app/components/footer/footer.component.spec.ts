@@ -49,8 +49,9 @@ describe('FooterComponent', () => {
   });
 
   it('should render all footer columns', () => {
+    // La columna "Diseño web" se quitó junto con las menciones a desarrollo web.
     const cols = compiled.querySelectorAll('.footer__col');
-    expect(cols.length).toBe(4);
+    expect(cols.length).toBe(3);
   });
 
   it('should render footer legal text', () => {

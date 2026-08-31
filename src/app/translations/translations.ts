@@ -6,15 +6,33 @@ interface NavLink        { label: string; href: string; }
 interface FooterLink     { label: string; href: string; }
 interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
-interface Package        { badge: string; name: string; desc: string; price: string; delivery: string; includes: string[]; }
+interface Package        { badge: string; name: string; desc?: string; price?: string; delivery: string; includes: string[]; }
 interface Testimonial    { quote: string; author: string; }
+interface PremiumGuide   { title: string; place: string; price: string; cta: string; url: string; }
+/** Un paso de la línea de tiempo "Cómo trabajo" de /marcas. */
+interface ProcessStep    { title: string; items: string[]; }
 
 interface AppTranslations {
-  nav: { links: NavLink[]; cta: string; workWithMe: { label: string; href: string; }; };
+  nav: { links: NavLink[]; cta: string; };
   hero: { eyebrow: string; headline: string; subheadline: string; cta: string; ctaSubtext: string; socialProof: string; };
-  about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; crossSellCta: string; };
+  about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
+    /** Teaser de la home. El contenido completo vive en /viajero-creador. */
+    teaser: { headline: string; text: string; cta: string; };
+    /** Hero de la página /viajero-creador. */
+    hero: { sectionLabel: string; headline: string; text: string; cta: string; };
+    /** Sección "Aprendé gratis": playlist embebida + grilla de videos. */
+    free: { title: string; subtitle: string; cta: string; };
+    /** El curso completo. Hoy en lista de espera; los campos de venta ya están
+     *  para que pasar a `MODO = 'venta'` no requiera rediseñar el bloque. */
+    curso: {
+      sectionLabel: string; title: string; text: string;
+      emailLabel: string; waitlistCta: string; note: string; success: string;
+      errorEmail: string; errorGeneric: string; errorRate: string;
+      price: string; salesCta: string; includes: string[];
+    };
+    meta: { title: string; description: string; };
     topics: Topic[];
     youtube: { badge: string; text: string; cta: string; };
     sessions: {
@@ -35,7 +53,7 @@ interface AppTranslations {
   ugc: {
     // ─── Hero ──────────────────────────────────────────────────────────
     heroBack: string; heroLabel: string;
-    headline: string; subheadline: string; heroCta: string;
+    headline: string; subheadline: string;
     sectionLabel: string;
     // ─── Quién soy + audiencia ─────────────────────────────────────────
     quienSoy: {
@@ -44,25 +62,68 @@ interface AppTranslations {
       /** Párrafo(s) de presentación. */
       body: string[];
       howTitle: string; howBody: string;
-      communityTitle: string; community: string;
     };
+    /** Franja de specs bajo el hero: capacidades de PRODUCCIÓN, no alcance. */
+    specs: string[];
+    /** Alts de los dos frames que van como naipes en el hero. */
+    heroCardAlts: string[];
     // ─── Portfolio (antes hardcodeado en el HTML) ──────────────────────
     portfolioTitle: string; portfolioSubtitle: string;
+    portfolioExpandCta: string;
     portfolioMoreText: string; portfolioMoreCta: string;
     // ─── Hoteles & experiencias (entrada de baja fricción) ─────────────
     hoteles: {
       title: string; body: string;
-      startTitle: string; startBody: string; cta: string;
+      startTitle: string; startBody: string;
     };
     // ─── Testimonios (la sección se oculta si `testimonials` está vacío) ─
     testimonialsTitle: string; testimonials: Testimonial[];
     // ─── Precios: tarjeta de entrada + 3 tiers ─────────────────────────
-    packagesTitle: string; packageCta: string;
+    packagesTitle: string;
     packages: Package[];
+    /** Los 3 servicios que aparecen al desplegar "Ver más servicios". */
+    packagesExtra: Package[];
+    packagesExpandCta: string; packagesCollapseCta: string;
+    /** Nota de derechos de uso, debajo de las dos grillas. */
+    rightsNote: string;
+    /** CTA "3 datos para cotizar" que cierra la sección de servicios. */
+    quote: { title: string; items: string[]; closing: string; };
+    /** Línea de tiempo "Cómo trabajo": 4 pasos, entre los servicios y el CTA. */
+    proceso: { title: string; subtitle: string; steps: ProcessStep[]; };
+    /** Puente al taller: preparado pero OCULTO — la página todavía no existe. */
+    taller: { title: string; text: string; cta: string; };
     // ─── CTA final (antes hardcodeado en el HTML) ──────────────────────
-    finalCta: { title: string; body: string; cta: string; sub: string; };
+    /** Par de botones de contacto directo, reutilizado en toda la página. */
+    contact: {
+      instagram: string; mail: string; mailFull: string;
+      /** Checklist que reemplaza a la llamada de descubrimiento. */
+      briefTitle: string; briefItems: string[]; briefNote: string;
+    };
+    finalCta: { title: string; body: string; sub: string; };
     cta: string; ctaSubtext: string;
     meta: { title: string; description: string; };
+  };
+  /** Bloque "En vivo" — programa diario de cocina en YouTube. */
+  enVivo: {
+    /** Etiqueta y título quedan editables: falta definir nombre y horario. */
+    sectionLabel: string; headline: string; text: string;
+    cta: string; note: string;
+    /** Nombre del programa y horario exacto — vacíos hasta que Oriana los defina.
+     *  Se rinden sólo si tienen contenido, así el bloque no muestra huecos. */
+    programName: string; schedule: string;
+    /** Alt del frame de un vivo real (la imagen la provee Oriana). */
+    imageAlt: string;
+  };
+  /** Guías premium de pago. Convive con el mapa de guías gratis. */
+  guiasPremium: {
+    sectionLabel: string; headline: string; text: string;
+    /** Lista de espera — el modo publicado hoy. */
+    emailLabel: string; waitlistCta: string; note: string; success: string;
+    errorEmail: string; errorGeneric: string; errorRate: string;
+    /** Modo venta (apagado hasta que la primera guía esté publicada). */
+    price: string; cta: string;
+    /** 1-3 guías, sólo se rinden en modo venta. */
+    guias: PremiumGuide[];
   };
   marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
   mapaTeaser: {
@@ -144,7 +205,6 @@ interface AppTranslations {
         explore:   { title: string; links: FooterLink[]; };
         community: { title: string; links: FooterLink[]; };
         brands:    { title: string; links: FooterLink[]; };
-        work:      { title: string; links: FooterLink[]; };
       };
       legal: string; disclaimer: string; madeIn: string;
     };
@@ -166,12 +226,11 @@ const es: AppTranslations = {
   nav: {
     links: [
       { label: 'Nosotros',        href: '#about' },
-      { label: 'Viajero Creador', href: '#viajero-creador' },
+      { label: 'Viajero Creador', href: '/viajero-creador' },
       { label: 'Marcas',          href: '/marcas' },
       { label: 'Recursos',        href: '#recursos' },
     ],
     cta: 'Unirme a la comunidad',
-    workWithMe: { label: 'Trabajá conmigo ↗', href: 'https://orianaledesma.dev' },
   },
   hero: {
     eyebrow:     'Comunidad de viajeros latinos',
@@ -194,14 +253,55 @@ const es: AppTranslations = {
       { value: '9',   label: 'años viajando full time' },
       { value: '3',   label: 'continentes desde cero' },
     ],
-    crossSell:    'Exploriando lo construí yo, de punta a punta. Si tu proyecto necesita una web propia, eso también lo hago.',
-    crossSellCta: 'orianaledesma.dev →',
+    crossSell:    'Exploriando lo construí yo, de punta a punta — el sitio, las guías y hasta el sistema de IA que lo opera por detrás. Soy creadora de contenido e ingeniera de software: por eso acá todo funciona, se mide y mejora.',
   },
   viajeroCreador: {
     sectionLabel:    'Viajero Creador',
     headline:        'Viajar y crear contenido no son dos caminos distintos.',
     subheadline:     'Cada vez más personas pagan sus viajes creando contenido en el camino. No necesitás millones de seguidores. Necesitás saber cómo empezar.',
     intro:           'Esta sección es para los que quieren más que fotos lindas: quieren que viajar sea sostenible. Acá vas a aprender cómo convertir tu cámara, tu historia y tus destinos en algo que te financie.',
+    teaser: {
+      headline: 'Viajar y crear contenido no son dos caminos distintos.',
+      text:     'Cada vez más personas pagan sus viajes creando contenido en el camino. No necesitás millones de seguidores: necesitás saber cómo empezar. Todo lo que aprendí en 9 años, ordenado en una sola página.',
+      cta:      'Entrar',
+    },
+    hero: {
+      sectionLabel: 'VIAJERO CREADOR',
+      headline:     'Documentá tus viajes con criterio, no con suerte.',
+      text:         'Todo lo que aprendí en 9 años grabando con el celular: cómo contar un viaje para que la gente se quede, qué grabar antes de que se te pase, y cómo editar sin volverte loca. Primero gratis. Y cuando quieras ir más a fondo, el curso completo.',
+      cta:          'Empezar por lo gratis',
+    },
+    free: {
+      title:    'Aprendé gratis',
+      subtitle: 'La playlist completa, en orden, en YouTube.',
+      cta:      'Ver toda la playlist en YouTube',
+    },
+    curso: {
+      sectionLabel: 'EL CURSO',
+      title:        'El curso completo está en camino.',
+      text:         'Todo lo de la playlist, ordenado en un método: guion, grabación con el celular, edición y cómo distribuirlo. Con ejercicios y mis plantillas. Anotate y te aviso cuando salga.',
+      emailLabel:   'Tu correo',
+      waitlistCta:  'Avisame cuando salga',
+      note:         'Cero spam. Solo el aviso.',
+      success:      '¡Listo! Te aviso apenas salga.',
+      errorEmail:   'Ingresá un correo válido.',
+      errorGeneric: 'Algo falló. Intentá de nuevo.',
+      errorRate:    'Demasiados intentos. Probá en un rato.',
+      // Modo venta (apagado): precio, CTA y bullets ya listos.
+      price:        '',
+      salesCta:     'Comprar el curso',
+      includes: [
+        'Guion: cómo se cuenta un viaje',
+        'Grabación con el celular, sin equipo extra',
+        'Edición: el método rápido',
+        'Distribución: dónde y cuándo publicar',
+        'Ejercicios y mis plantillas',
+      ],
+    },
+    meta: {
+      title:       'Viajero Creador — Aprendé a documentar tus viajes | Exploriando',
+      description: 'Cómo contar un viaje para que la gente se quede, qué grabar y cómo editar sin volverte loca. Playlist gratis en YouTube y el curso completo en camino.',
+    },
     topics: [
       { title: 'Cómo empezar desde cero',    description: 'Qué equipo necesitás (spoiler: probablemente ya lo tenés), qué plataformas funcionan y cómo dar el primer paso sin audiencia.' },
       { title: 'Contenido que monetiza',      description: 'La diferencia entre postear y construir. Qué formatos pagan, qué marcas buscan, y cómo no depender de un solo ingreso.' },
@@ -229,7 +329,7 @@ const es: AppTranslations = {
       session1Duration: '45 min',
       session2Name:     'Pack 3 sesiones',
       session2Duration: '45 min cada una',
-      session2Badge:    'Ahorrás USD 50',
+      session2Badge:    'Tu viaje planificado de punta a punta',
       cta:              'Reservar sesión',
       ctaNote:          'Te respondo en menos de 48hs con disponibilidad.',
     },
@@ -268,84 +368,181 @@ const es: AppTranslations = {
     heroLabel:   'UGC & Contenido de marca',
     headline:    'Contenido real que hace desear lo que vendés.',
     subheadline: 'Reels y fotos de viaje en pareja, reales, para marcas de viaje y lifestyle: hoteles, experiencias y productos.',
-    heroCta:     'Hablemos de tu proyecto ✈',
     sectionLabel: 'Para marcas',
     quienSoy: {
       heading: 'Quién soy',
       body: [
-        'Soy Oriana — creadora de viajes argentina 🇦🇷, viviendo en Lituania con mi marido lituano 🇱🇹. Hace 9 años documentamos viajes reales, y nuestro contenido en pareja es lo que más conecta: la escapada romántica, la aventura en familia, el lado humano de un lugar.',
+        'Soy Oriana — creadora argentina de lifestyle y viajes 🇦🇷, viviendo en Lituania con mi marido lituano 🇱🇹. Hace 9 años documentamos viajes reales, y nuestro contenido en pareja es lo que más conecta: la escapada romántica, la aventura en familia, el lado humano de un lugar.',
       ],
       howTitle:       'Cómo trabajo:',
       howBody:        'te entrego contenido listo para TUS redes (UGC) — vos sos dueño/a de los videos y fotos. Y si querés, lo comparto también con mi comunidad.',
-      communityTitle: 'Mi comunidad:',
-      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajeros LATAM (25-40) que reservan lo que recomiendo, no solo lo miran.',
     },
+    specs: [
+      'Contenido en español nativo e inglés',
+      'Grabación en destino — base en Lituania',
+      '9 años documentando viajes con el celular',
+    ],
+    heroCardAlts: [
+      'Frame de un video: Oriana en la entrada del hotel Parrotel, Sharm el Sheikh',
+      'Frame de un video: pareja en un domo de cristal mirando al bosque',
+    ],
     portfolioTitle:    'Portafolio de contenido',
-    portfolioSubtitle: 'Contenido real grabado en destino, no en set. Así performa el estilo que produzco — números públicos de cada pieza.',
-    portfolioMoreText: '¿Querés ver más trabajos?',
+    portfolioSubtitle: 'Contenido real grabado en destino, no en set. Así se ve el estilo que produzco — cada pieza linkea a su posteo original.',
+    portfolioExpandCta: 'Ver más trabajos',
+    portfolioMoreText: '¿Querés ver todo lo que produzco?',
     portfolioMoreCta:  'Ver canal completo →',
     hoteles: {
       title:      '¿Tenés un hotel, una experiencia o un producto que mostrar?',
       body:       'Creo el contenido que vende lo que ofrecés como lo que es: algo que la gente quiere vivir o tener. Reels, fotos y stories listos para tus redes — con el ángulo pareja/familia que más conecta.',
       startTitle: 'Empecemos fácil:',
-      startBody:  'probá con un pack chico desde €120, o una colaboración por canje (estadía o producto). Si funciona, escalamos a un plan mensual.',
-      cta:        'Escribime 📩 · Agendá 15 min',
+      startBody:  'probá el formato con un video suelto. Si funciona, escalamos a campaña o a un plan mensual.',
     },
     testimonialsTitle: 'Lo que dicen las marcas con las que trabajé',
     testimonials: [],
     packagesTitle: 'Paquetes disponibles',
-    packageCta:    'Agendá una llamada de 20 min',
     packages: [
       {
-        badge:    'Para empezar',
-        name:     'Video UGC suelto',
-        desc:     'Para marcas que quieren probar el formato con una pieza pensada para frenar el scroll.',
-        price:    'desde €200',
-        delivery: 'listo en 1 semana',
+        badge:    'PRUEBA CHICA',
+        name:     'Video UGC Suelto',
+        delivery: 'entrega en 1 semana',
         includes: [
-          '1 video vertical (15-60s) listo para Reels, TikTok y Shorts',
-          'Hook que frena el scroll + CTA claro — para convertir, no solo verse lindo',
-          'Grabado por mí, en destino, con tu producto o experiencia',
-          '1 ronda de ajustes + subtítulos incluidos',
-          'Licencia de uso orgánico (90 días) · derechos para ads a medida',
+          '1 video vertical (15-60s), en español o inglés',
+          'Hook + CTA definidos antes de grabar',
+          '1 ronda de ajustes + subtítulos',
+          'Licencia de uso orgánico 90 días · derechos para ads aparte',
         ],
       },
       {
-        badge:    'El más pedido',
-        name:     'Pack Campaña',
-        desc:     'Para marcas que necesitan contenido para una campaña completa, no una sola pieza.',
-        price:    'desde €650',
-        delivery: 'listo en 2 semanas',
+        badge:    'EL RECOMENDADO',
+        name:     'Piloto Medido',
+        delivery: '2 semanas + medición 60 días',
         includes: [
-          '3 videos verticales + 5 fotos lifestyle',
-          'Distintos ángulos y hooks para testear qué convierte (A/B)',
-          'Mezcla de testimonial a cámara + plano aspiracional de destino',
-          'Pensado para el recorrido del cliente: del "soñar el viaje" al "reservar"',
-          '1 ronda de ajustes por pieza + subtítulos',
-          'Licencia orgánica (90 días) · derechos para ads y material en crudo a medida',
+          '3 videos verticales con 3 hooks distintos para testear + 5 fotos, grabados en tu propiedad',
+          'Objetivos por escrito antes de grabar — qué querés que pase',
+          'Medición de 3 métricas a 30 y 60 días, con reporte simple',
+          'Todo en horizontal y vertical (redes + web/OTAs)',
+          'Si funciona, seguimos. Si no, el contenido queda para vos igual',
         ],
       },
       {
-        badge:    'Máximo impacto',
-        name:     'Librería de contenido',
-        desc:     'Para marcas que quieren alimentar sus redes y ads por meses con una sola producción.',
-        price:    'desde €1.400',
-        delivery: 'listo en 3-4 semanas',
+        badge:    'GRUPOS Y OPERADORES',
+        name:     'Librería de Contenido',
+        delivery: '3-4 semanas',
         includes: [
-          '5 videos verticales + 10 fotos',
-          'Material suficiente para remixar por temporadas y campañas',
-          'Set completo de formatos: testimonial, experiencia, aspiracional y oferta',
-          'Hooks y CTAs variados listos para paid social',
-          'Guion y concepto incluidos si no traés brief',
-          '1 ronda de ajustes + subtítulos en todas las piezas',
-          'Licencia orgánica (6 meses) · derechos para ads, perpetuidad y raw a medida',
+          '6 videos verticales + 10 clips de historias derivados',
+          '10 fotos lifestyle para web, redes y OTAs',
+          'Set completo de formatos (testimonial, experiencia, aspiracional, oferta)',
+          'Para grupos, cadenas y operadores que alimentan varias propiedades',
+          'Guion y concepto incluidos',
         ],
       },
     ],
+    packagesExtra: [
+      {
+        badge:    'PUERTA DE ENTRADA',
+        name:     'Auditoría Express',
+        price:    '€200',
+        delivery: 'entrega en 1 semana',
+        includes: [
+          'Revisión de tu Instagram y tus fichas (60-90 min)',
+          'Documento con lo que está frenando tu contenido y qué haría primero',
+          'Se descuenta entero si avanzamos con un piloto o taller',
+        ],
+      },
+      {
+        badge:    'SOLO LITUANIA',
+        name:     'Refresh Estacional',
+        delivery: '4 sesiones al año',
+        includes: [
+          'Una sesión por temporada: tu propiedad en sus 4 estaciones',
+          'Contenido fresco para redes, web y OTAs todo el año',
+          'Sin costo de viaje: estoy acá',
+        ],
+      },
+      {
+        badge:    'REMOTO · SIN VIAJE',
+        name:     'Servicios de Escritorio',
+        delivery: 'según pieza',
+        includes: [
+          'Edición de material que tu marca ya tiene',
+          'Localización español↔inglés de contenido existente',
+          'Pack de 10 guiones/hooks sin producción',
+        ],
+      },
+    ],
+    packagesExpandCta:   'Ver más servicios (3) ↓',
+    packagesCollapseCta: 'Ver menos ↑',
+    rightsNote: 'Todos los paquetes incluyen licencia de uso orgánico por 90 días. Derechos para publicidad paga, whitelisting, perpetuidad, material en crudo y exclusividad se cotizan como línea aparte en cada propuesta.',
+    quote: {
+      title: 'Para cotizarte necesito 3 datos',
+      items: [
+        'Qué querés lograr con el contenido (más reservas, más consultas, mejores fichas)',
+        'Dónde lo vas a usar (orgánico, publicidad paga, web/OTAs)',
+        'Tu fecha ideal',
+      ],
+      closing: 'Mandámelos por DM o mail y en 24-48h tenés propuesta con precio cerrado.',
+    },
+    // Línea de tiempo del proceso: va entre los servicios y el CTA de cotización.
+    proceso: {
+      title:    'Cómo trabajo',
+      subtitle: 'Un proceso claro de punta a punta — para que sepas qué pasa, cuándo, y qué recibís.',
+      steps: [
+        {
+          title: 'Visión creativa',
+          items: [
+            'Brief creativo: qué querés lograr y para qué canal',
+            'Entregables, formatos y requisitos definidos',
+            'Ideas de contenido y hooks propuestos antes de grabar',
+            'En el Piloto Medido: objetivos por escrito, firmados',
+          ],
+        },
+        {
+          title: 'Contrato + seña',
+          items: [
+            '50% del pago al firmar el contrato',
+            'Licencia de uso definida por escrito (orgánico 90 días incluido; ads, whitelisting y perpetuidad como línea aparte)',
+            'Fecha de grabación o de recepción del producto',
+          ],
+        },
+        {
+          title: 'Producción',
+          items: [
+            'Grabación en destino, en horizontal y vertical',
+            'Primer corte hasta 7 días después de grabar (o de recibir el producto)',
+            'Una ronda de ajustes incluida',
+          ],
+        },
+        {
+          title: 'Entrega',
+          items: [
+            '50% restante al aprobar el material final',
+            'Archivos por WeTransfer o Google Drive, listos para publicar',
+            'En el Piloto Medido: medición a 30 y 60 días + reporte simple',
+          ],
+        },
+      ],
+    },
+    // Puente al taller: la página todavía no existe → el bloque está OCULTO.
+    taller: {
+      title: 'También lo enseño',
+      text:  'Si preferís que tu equipo aprenda a producir este contenido en casa, doy un taller práctico de un día.',
+      cta:   'Ver el taller',
+    },
+    contact: {
+      instagram: 'Escribime por Instagram',
+      mail:      'O por mail',
+      mailFull:  'exploriando.info@gmail.com',
+      briefTitle: 'Con estos tres datos ya puedo cotizarte',
+      briefItems: [
+        'Qué querés mostrar: alojamiento, experiencia o producto.',
+        'Dónde vas a usar el contenido: orgánico, ads, web o todo.',
+        'Destino y fechas, si ya los tenés definidos.',
+      ],
+      briefNote: 'Respondo en 24-48 h · Español e inglés · Sin compromiso',
+    },
     finalCta: {
       title: '¿Listo para trabajar juntos?',
-      body:  'Agendá 15 min conmigo y armamos la propuesta a medida en la llamada.',
-      cta:   'Agendar 15 min',
+      body:  'Contame qué querés mostrar y te paso una propuesta a medida.',
       sub:   'Sin compromiso — la primera consulta es gratis',
     },
     cta:       'Hablemos de tu marca',
@@ -354,6 +551,41 @@ const es: AppTranslations = {
       title:       'UGC para marcas de viaje — Exploriando',
       description: 'Contenido UGC en destino para hospitality y travel-tech. 9 años recorriendo, videos reales grabados en ruta, entrega en 7-14 días.',
     },
+  },
+  enVivo: {
+    sectionLabel: 'EN VIVO · LUNES A VIERNES',
+    headline:     'Todos los días cocinamos juntos.',
+    text:         'De lunes a viernes prendo la cámara y cocino en vivo: recetas argentinas con lo que se consigue en Lituania. No es un programa de cocina — es la hora en que charlamos, nos reímos de la fricción de vivir afuera y conectamos de verdad. Vení a cocinar conmigo.',
+    cta:          'Sumarte al vivo de hoy',
+    note:         'Todos los episodios quedan en el canal.',
+    // Vacíos a propósito: Oriana todavía no definió nombre ni horario exacto.
+    // El template los rinde sólo si tienen contenido.
+    programName:  '',
+    schedule:     '',
+    imageAlt:     'Oriana cocinando en vivo desde su cocina en Lituania',
+  },
+  guiasPremium: {
+    sectionLabel: 'GUÍAS PREMIUM',
+    headline:     'Para cuando el viaje va en serio.',
+    text:         'Las guías del mapa son gratis y lo van a seguir siendo. Estas son otra cosa: el destino completo en un solo PDF — ruta día por día, presupuesto real, documentación según tu pasaporte y los errores que no vas a tener que comerte vos. La primera está en camino.',
+    emailLabel:   'Tu correo',
+    waitlistCta:  'Avisame cuando salga',
+    note:         'Cero spam. Solo el aviso cuando esté lista.',
+    success:      '¡Listo! Te aviso apenas salga la primera.',
+    errorEmail:   'Ingresá un correo válido.',
+    errorGeneric: 'Algo falló. Intentá de nuevo.',
+    errorRate:    'Demasiados intentos. Probá en un rato.',
+    price:        'Desde €12 · descarga inmediata',
+    cta:          'Ver las guías',
+    guias: [
+      {
+        title: 'Lituania y el Báltico en español',
+        place: 'Lituania · Letonia · Estonia',
+        price: 'Desde €12',
+        cta:   'Comprar',
+        url:   '/guias-premium',
+      },
+    ],
   },
   marcasTeaser: {
     sectionLabel: '¿Sos una marca?',
@@ -444,11 +676,6 @@ const es: AppTranslations = {
           { label: 'Contenido UGC', href: '/marcas' },
           { label: 'Contacto',      href: 'mailto:exploriando.info@gmail.com' },
         ]},
-        work: { title: 'Diseño web', links: [
-          { label: 'Portfolio',            href: 'https://orianaledesma.dev/#work' },
-          { label: 'Servicios',            href: 'https://orianaledesma.dev/#services' },
-          { label: 'orianaledesma.dev ↗',  href: 'https://orianaledesma.dev' },
-        ]},
       },
       legal:      '© 2026 Exploriando.',
       disclaimer: 'La información de documentación es orientativa. Siempre verificá con fuentes oficiales antes de viajar.',
@@ -471,12 +698,11 @@ const en: AppTranslations = {
   nav: {
     links: [
       { label: 'About',            href: '#about' },
-      { label: 'Creator Traveler', href: '#viajero-creador' },
+      { label: 'Creator Traveler', href: '/viajero-creador' },
       { label: 'Brands',           href: '/marcas' },
       { label: 'Resources',        href: '#recursos' },
     ],
     cta: 'Join the community',
-    workWithMe: { label: 'Work with me ↗', href: 'https://orianaledesma.dev' },
   },
   hero: {
     eyebrow:     'Latin traveler community',
@@ -499,14 +725,55 @@ const en: AppTranslations = {
       { value: '9',   label: 'years traveling full time' },
       { value: '3',   label: 'continents from scratch' },
     ],
-    crossSell:    'I built Exploriando end to end myself. If your project needs its own website, I do that too.',
-    crossSellCta: 'orianaledesma.dev →',
+    crossSell:    'I built Exploriando end to end — the site, the guides, and even the AI system running it behind the scenes. I am a content creator and a software engineer: that is why everything here works, gets measured and improves.',
   },
   viajeroCreador: {
     sectionLabel:    'Creator Traveler',
     headline:        "Traveling and creating content aren't two different paths.",
     subheadline:     "More and more people pay for their trips by creating content along the way. You don't need millions of followers. You need to know how to start.",
     intro:           "This section is for those who want more than pretty photos: they want travel to be sustainable. Here you'll learn how to turn your camera, your story, and your destinations into something that funds you.",
+    teaser: {
+      headline: "Traveling and creating content aren't two different paths.",
+      text:     "More and more people pay for their trips by creating content along the way. You don't need millions of followers: you need to know how to start. Everything I learned in 9 years, laid out on one page.",
+      cta:      'Enter',
+    },
+    hero: {
+      sectionLabel: 'CREATOR TRAVELER',
+      headline:     'Document your trips with judgement, not luck.',
+      text:         "Everything I learned in 9 years filming on my phone: how to tell a trip so people stay, what to film before the moment is gone, and how to edit without losing your mind. Free first. And when you want to go deeper, the full course.",
+      cta:          'Start with the free stuff',
+    },
+    free: {
+      title:    'Learn for free',
+      subtitle: 'The full playlist, in order, on YouTube.',
+      cta:      'See the whole playlist on YouTube',
+    },
+    curso: {
+      sectionLabel: 'THE COURSE',
+      title:        'The full course is on its way.',
+      text:         'Everything in the playlist, organised into a method: script, filming on your phone, editing and how to distribute it. With exercises and my templates. Sign up and I will let you know when it is out.',
+      emailLabel:   'Your email',
+      waitlistCta:  'Tell me when it is out',
+      note:         'Zero spam. Just the heads-up.',
+      success:      'Done! I will let you know as soon as it is out.',
+      errorEmail:   'Enter a valid email.',
+      errorGeneric: 'Something went wrong. Try again.',
+      errorRate:    'Too many attempts. Try again in a bit.',
+      // Modo venta (apagado): precio, CTA y bullets ya listos.
+      price:        '',
+      salesCta:     'Buy the course',
+      includes: [
+        'Script: how a trip gets told',
+        'Filming on your phone, no extra gear',
+        'Editing: the fast method',
+        'Distribution: where and when to publish',
+        'Exercises and my templates',
+      ],
+    },
+    meta: {
+      title:       'Creator Traveler — Learn to document your trips | Exploriando',
+      description: 'How to tell a trip so people stay, what to film and how to edit without losing your mind. Free playlist on YouTube and the full course on its way.',
+    },
     topics: [
       { title: 'How to start from scratch',  description: "What equipment you need (spoiler: you probably already have it), which platforms work, and how to take the first step without an audience." },
       { title: 'Content that monetizes',     description: "The difference between posting and building. What formats pay, what brands look for, and how not to depend on a single income." },
@@ -534,7 +801,7 @@ const en: AppTranslations = {
       session1Duration: '45 min',
       session2Name:     'Pack of 3 sessions',
       session2Duration: '45 min each',
-      session2Badge:    'Save USD 50',
+      session2Badge:    'Your trip planned end to end',
       cta:              'Book a session',
       ctaNote:          'I reply in under 48h with availability.',
     },
@@ -573,85 +840,182 @@ const en: AppTranslations = {
     heroLabel:   'UGC & Brand content',
     headline:    'Real content that makes people want what you sell.',
     subheadline: 'Real couple-travel reels & photos for travel & lifestyle brands: hotels, experiences and products.',
-    heroCta:     "Let's talk about your project ✈",
     sectionLabel: 'For brands',
     quienSoy: {
       heading: 'Who I am',
       body: [
-        "I'm Oriana — an Argentine travel creator 🇦🇷 living in Lithuania with my Lithuanian husband 🇱🇹. For 9 years we've documented real trips, and our couple content is what connects most: the romantic getaway, the family adventure, the human side of a place.",
+        "I'm Oriana — an Argentine lifestyle and travel creator 🇦🇷 living in Lithuania with my Lithuanian husband 🇱🇹. For 9 years we've documented real trips, and our couple content is what connects most: the romantic getaway, the family adventure, the human side of a place.",
       ],
       howTitle:       'How I work:',
       howBody:        "I deliver content ready for YOUR channels (UGC) — you own the videos and photos. And if you'd like, I also share it with my community.",
-      communityTitle: 'My community:',
-      community:      '4,400 Instagram · 1,880 YouTube · 800 TikTok · LATAM travelers (25-40) who book what I recommend, not just watch it.',
     },
+    specs: [
+      'Native Spanish, plus English',
+      'Filming on location — based in Lithuania',
+      '9 years documenting travel on a phone',
+    ],
+    heroCardAlts: [
+      'Video frame: Oriana at the entrance of the Parrotel hotel, Sharm el Sheikh',
+      'Video frame: a couple in a glass dome looking out at the forest',
+    ],
     portfolioTitle:    'Content portfolio',
-    portfolioSubtitle: 'Real content shot on location, not on a set. This is how the style I produce performs — public numbers for every piece.',
-    portfolioMoreText: 'Want to see more work?',
+    portfolioSubtitle: 'Real content shot on location, not on a set. This is what the style I produce looks like — every piece links to its original post.',
+    portfolioExpandCta: 'See more work',
+    portfolioMoreText: 'Want to see everything I produce?',
     portfolioMoreCta:  'See the full channel →',
     hoteles: {
       title:      'Got a hotel, an experience or a product to show?',
       body:       'I create the content that sells what you offer as what it really is: something people want to live or own. Reels, photos and stories ready for your channels — with the couple/family angle that connects.',
       startTitle: "Let's start easy:",
-      startBody:  'try a small pack from €120, or a content barter (a stay or your product). If it works, we scale to a monthly plan.',
-      cta:        'DM me 📩 · Book a 15-min call',
+      startBody:  'try the format with a single video. If it works, we scale to a campaign or a monthly plan.',
     },
     testimonialsTitle: "What the brands I've worked with say",
     testimonials: [],
     packagesTitle: 'Available packages',
-    packageCta:    'Book a 20-min call',
     packages: [
       {
-        badge:    'To start',
-        name:     'Single UGC video',
-        desc:     'For brands that want to test the format with one scroll-stopping piece.',
-        price:    'from €200',
-        delivery: 'ready in 1 week',
+        badge:    'SMALL TEST',
+        name:     'Single UGC Video',
+        delivery: 'delivered in 1 week',
         includes: [
-          '1 vertical video (15-60s) ready for Reels, TikTok and Shorts',
-          'Scroll-stopping hook + clear CTA — built to convert, not just look pretty',
-          'Shot by me, on location, with your product or experience',
-          '1 round of revisions + subtitles included',
-          'Organic usage license (90 days) · custom ad rights available',
+          '1 vertical video (15-60s), in Spanish or English',
+          'Hook + CTA agreed before we shoot',
+          '1 round of revisions + captions',
+          '90-day organic usage licence · paid-ads rights quoted separately',
         ],
       },
       {
-        badge:    'Most requested',
-        name:     'Campaign Pack',
-        desc:     'For brands that need content for a full campaign, not a single piece.',
-        price:    'from €650',
-        delivery: 'ready in 2 weeks',
+        badge:    'RECOMMENDED',
+        name:     'Measured Pilot',
+        delivery: '2 weeks + 60-day measurement',
         includes: [
-          '3 vertical videos + 5 lifestyle photos',
-          'Different angles and hooks to test what converts (A/B)',
-          'A mix of to-camera testimonial + aspirational destination shots',
-          "Built for the customer journey: from 'dreaming the trip' to 'booking'",
-          '1 round of revisions per piece + subtitles',
-          'Organic license (90 days) · custom ad + raw footage rights available',
+          '3 vertical videos with 3 different hooks to test + 5 photos, shot at your property',
+          'Goals written down before we shoot — what you want to happen',
+          '3 metrics measured at 30 and 60 days, with a simple report',
+          'Everything in horizontal and vertical (social + web/OTAs)',
+          "If it works, we continue. If not, the content is yours anyway",
         ],
       },
       {
-        badge:    'Maximum impact',
+        badge:    'GROUPS AND OPERATORS',
         name:     'Content Library',
-        desc:     'For brands that want to feed their socials and ads for months from one shoot.',
-        price:    'from €1,400',
-        delivery: 'ready in 3-4 weeks',
+        delivery: '3-4 weeks',
         includes: [
-          '5 vertical videos + 10 photos',
-          'Enough material to remix across seasons and campaigns',
-          'Full set of formats: testimonial, experience, aspirational and offer',
-          'Varied hooks and CTAs ready for paid social',
-          "Script and concept included if you don't bring a brief",
-          '1 round of revisions + subtitles on every piece',
-          'Organic license (6 months) · custom ad, perpetuity + raw rights available',
+          '6 vertical videos + 10 derived story clips',
+          '10 lifestyle photos for web, social and OTAs',
+          'Full set of formats (testimonial, experience, aspirational, offer)',
+          'For groups, chains and operators feeding several properties',
+          'Script and concept included',
         ],
       },
     ],
+    packagesExtra: [
+      {
+        badge:    'ENTRY POINT',
+        name:     'Express Audit',
+        price:    '€200',
+        delivery: 'delivered in 1 week',
+        includes: [
+          'A review of your Instagram and your listings (60-90 min)',
+          "A document with what's holding your content back and what I'd fix first",
+          'Fully credited if we move ahead with a pilot or a workshop',
+        ],
+      },
+      {
+        badge:    'LITHUANIA ONLY',
+        name:     'Seasonal Refresh',
+        delivery: '4 sessions a year',
+        includes: [
+          'One session per season: your property across all four',
+          'Fresh content for social, web and OTAs all year round',
+          "No travel costs: I'm based here",
+        ],
+      },
+      {
+        badge:    'REMOTE · NO TRAVEL',
+        name:     'Desk Services',
+        delivery: 'per piece',
+        includes: [
+          'Editing footage your brand already has',
+          'Spanish↔English localisation of existing content',
+          'A pack of 10 scripts/hooks with no production',
+        ],
+      },
+    ],
+    packagesExpandCta:   'See more services (3) ↓',
+    packagesCollapseCta: 'See less ↑',
+    rightsNote: 'Every package includes a 90-day organic usage licence. Paid-advertising rights, whitelisting, perpetuity, raw footage and exclusivity are quoted as a separate line in each proposal.',
+    quote: {
+      title: 'To quote you I need 3 things',
+      items: [
+        'What you want the content to achieve (more bookings, more enquiries, better listings)',
+        "Where you'll use it (organic, paid ads, web/OTAs)",
+        'Your ideal date',
+      ],
+      closing: 'Send them over by DM or email and within 24-48h you get a proposal with a closed price.',
+    },
+    // Línea de tiempo del proceso: va entre los servicios y el CTA de cotización.
+    proceso: {
+      title:    'How I work',
+      subtitle: 'A clear process end to end — so you know what happens, when, and what you get.',
+      steps: [
+        {
+          title: 'Creative vision',
+          items: [
+            'Creative brief: what you want to achieve and for which channel',
+            'Deliverables, formats and requirements defined',
+            'Content ideas and hooks proposed before filming',
+            'On the Measured Pilot: objectives in writing, signed',
+          ],
+        },
+        {
+          title: 'Contract + deposit',
+          items: [
+            '50% of the payment on signing the contract',
+            'Usage licence defined in writing (90 days organic included; ads, whitelisting and perpetuity quoted separately)',
+            'Filming date, or date the product is received',
+          ],
+        },
+        {
+          title: 'Production',
+          items: [
+            'Filming on location, both horizontal and vertical',
+            'First cut within 7 days of filming (or of receiving the product)',
+            'One round of revisions included',
+          ],
+        },
+        {
+          title: 'Delivery',
+          items: [
+            'Remaining 50% once you approve the final material',
+            'Files via WeTransfer or Google Drive, ready to publish',
+            'On the Measured Pilot: 30- and 60-day measurement + a simple report',
+          ],
+        },
+      ],
+    },
+    // Puente al taller: la página todavía no existe → el bloque está OCULTO.
+    taller: {
+      title: 'I also teach it',
+      text:  'If you would rather your team learned to produce this content in-house, I run a one-day hands-on workshop.',
+      cta:   'See the workshop',
+    },
+    contact: {
+      instagram: 'Message me on Instagram',
+      mail:      'Or by email',
+      mailFull:  'exploriando.info@gmail.com',
+      briefTitle: 'With these three things I can already quote you',
+      briefItems: [
+        'What you want to show: a stay, an experience or a product.',
+        'Where the content will run: organic, ads, web — or all of them.',
+        'Destination and dates, if you already have them.',
+      ],
+      briefNote: 'I reply within 24-48 h · Spanish and English · No commitment',
+    },
     finalCta: {
       title: 'Ready to work together?',
-      body:  "Book 15 min with me and we'll shape a tailored proposal together on the call.",
-      cta:   'Book 15 min',
-      sub:   'No commitment — the first call is free',
+      body:  "Tell me what you want to show and I'll send you a tailored proposal.",
+      sub:   'No commitment — the first consultation is free',
     },
     cta:       "Let's talk about your brand",
     ctaSubtext: 'We respond in less than 48hs.',
@@ -659,6 +1023,40 @@ const en: AppTranslations = {
       title:       'Travel UGC for brands — Exploriando',
       description: 'On-location UGC for hospitality and travel-tech brands. 9 years on the road, real videos shot on the way, 7-14 day delivery.',
     },
+  },
+  enVivo: {
+    sectionLabel: 'LIVE · MONDAY TO FRIDAY',
+    headline:     'Every day we cook together.',
+    text:         'Monday to Friday I turn the camera on and cook live: Argentine recipes made with whatever you can find in Lithuania. It is not a cooking show — it is the hour when we chat, laugh at the friction of living abroad and actually connect. Come cook with me.',
+    cta:          'Join today\'s live',
+    note:         'Every episode stays up on the channel.',
+    // Vacíos a propósito: Oriana todavía no definió nombre ni horario exacto.
+    programName:  '',
+    schedule:     '',
+    imageAlt:     'Oriana cooking live from her kitchen in Lithuania',
+  },
+  guiasPremium: {
+    sectionLabel: 'PREMIUM GUIDES',
+    headline:     'For when the trip gets serious.',
+    text:         'The guides on the map are free and always will be. These are something else: a whole destination in a single PDF — a day-by-day route, a real budget, paperwork based on your passport, and the mistakes you will not have to make yourself. The first one is on its way.',
+    emailLabel:   'Your email',
+    waitlistCta:  'Let me know when it is out',
+    note:         'Zero spam. Just the heads-up when it is ready.',
+    success:      'Done! I will let you know as soon as the first one is out.',
+    errorEmail:   'Enter a valid email.',
+    errorGeneric: 'Something went wrong. Try again.',
+    errorRate:    'Too many attempts. Try again in a bit.',
+    price:        'From €12 · instant download',
+    cta:          'See the guides',
+    guias: [
+      {
+        title: 'Lithuania and the Baltics, in Spanish',
+        place: 'Lithuania · Latvia · Estonia',
+        price: 'From €12',
+        cta:   'Buy',
+        url:   '/guias-premium',
+      },
+    ],
   },
   marcasTeaser: {
     sectionLabel: 'Are you a brand?',
@@ -749,11 +1147,6 @@ const en: AppTranslations = {
           { label: 'UGC Content', href: '/marcas' },
           { label: 'Contact',     href: 'mailto:exploriando.info@gmail.com' },
         ]},
-        work: { title: 'Web design', links: [
-          { label: 'Portfolio',            href: 'https://orianaledesma.dev/#work' },
-          { label: 'Services',             href: 'https://orianaledesma.dev/#services' },
-          { label: 'orianaledesma.dev ↗',  href: 'https://orianaledesma.dev' },
-        ]},
       },
       legal:      '© 2026 Exploriando.',
       disclaimer: 'Documentation information is indicative. Always verify with official sources before traveling.',
@@ -776,12 +1169,11 @@ const pt: AppTranslations = {
   nav: {
     links: [
       { label: 'Sobre nós',        href: '#about' },
-      { label: 'Viajante Criador', href: '#viajero-creador' },
+      { label: 'Viajante Criador', href: '/viajero-creador' },
       { label: 'Marcas',           href: '/marcas' },
       { label: 'Recursos',         href: '#recursos' },
     ],
     cta: 'Entrar na comunidade',
-    workWithMe: { label: 'Trabalhe comigo ↗', href: 'https://orianaledesma.dev' },
   },
   hero: {
     eyebrow:     'Comunidade de viajantes latinos',
@@ -804,14 +1196,55 @@ const pt: AppTranslations = {
       { value: '9',   label: 'anos viajando em tempo integral' },
       { value: '3',   label: 'continentes do zero' },
     ],
-    crossSell:    'Eu construí o Exploriando inteiro, de ponta a ponta. Se o seu projeto precisa de um site próprio, isso também faço eu.',
-    crossSellCta: 'orianaledesma.dev →',
+    crossSell:    'O Exploriando fui eu que construí, de ponta a ponta — o site, os guias e até o sistema de IA que opera tudo por trás. Sou criadora de conteúdo e engenheira de software: por isso aqui tudo funciona, se mede e melhora.',
   },
   viajeroCreador: {
     sectionLabel:    'Viajante Criador',
     headline:        'Viajar e criar conteúdo não são dois caminhos diferentes.',
     subheadline:     'Cada vez mais pessoas pagam suas viagens criando conteúdo pelo caminho. Você não precisa de milhões de seguidores. Precisa saber como começar.',
     intro:           'Esta seção é para quem quer mais do que fotos bonitas: quer que viajar seja sustentável. Aqui você vai aprender como transformar sua câmera, sua história e seus destinos em algo que te financia.',
+    teaser: {
+      headline: 'Viajar e criar conteúdo não são dois caminhos diferentes.',
+      text:     'Cada vez mais pessoas pagam suas viagens criando conteúdo pelo caminho. Você não precisa de milhões de seguidores: precisa saber como começar. Tudo o que aprendi em 9 anos, reunido numa página só.',
+      cta:      'Entrar',
+    },
+    hero: {
+      sectionLabel: 'VIAJANTE CRIADOR',
+      headline:     'Documente suas viagens com critério, não com sorte.',
+      text:         'Tudo o que aprendi em 9 anos gravando com o celular: como contar uma viagem para as pessoas ficarem, o que gravar antes que passe, e como editar sem enlouquecer. Primeiro de graça. E quando quiser ir mais fundo, o curso completo.',
+      cta:          'Começar pelo que é grátis',
+    },
+    free: {
+      title:    'Aprenda de graça',
+      subtitle: 'A playlist completa, em ordem, no YouTube.',
+      cta:      'Ver a playlist inteira no YouTube',
+    },
+    curso: {
+      sectionLabel: 'O CURSO',
+      title:        'O curso completo está a caminho.',
+      text:         'Tudo o que está na playlist, organizado num método: roteiro, gravação com o celular, edição e como distribuir. Com exercícios e os meus modelos. Se inscreva que eu te aviso quando sair.',
+      emailLabel:   'Seu e-mail',
+      waitlistCta:  'Me avise quando sair',
+      note:         'Zero spam. Só o aviso.',
+      success:      'Pronto! Te aviso assim que sair.',
+      errorEmail:   'Digite um e-mail válido.',
+      errorGeneric: 'Algo falhou. Tente de novo.',
+      errorRate:    'Tentativas demais. Tente daqui a pouco.',
+      // Modo venta (apagado): precio, CTA y bullets ya listos.
+      price:        '',
+      salesCta:     'Comprar o curso',
+      includes: [
+        'Roteiro: como se conta uma viagem',
+        'Gravação com o celular, sem equipamento extra',
+        'Edição: o método rápido',
+        'Distribuição: onde e quando publicar',
+        'Exercícios e os meus modelos',
+      ],
+    },
+    meta: {
+      title:       'Viajante Criador — Aprenda a documentar suas viagens | Exploriando',
+      description: 'Como contar uma viagem para as pessoas ficarem, o que gravar e como editar sem enlouquecer. Playlist grátis no YouTube e o curso completo a caminho.',
+    },
     topics: [
       { title: 'Como começar do zero',    description: 'Que equipamento você precisa (spoiler: provavelmente já tem), quais plataformas funcionam e como dar o primeiro passo sem audiência.' },
       { title: 'Conteúdo que monetiza',   description: 'A diferença entre postar e construir. Que formatos pagam, que marcas procuram e como não depender de uma única renda.' },
@@ -839,7 +1272,7 @@ const pt: AppTranslations = {
       session1Duration: '45 min',
       session2Name:     'Pack 3 sessões',
       session2Duration: '45 min cada',
-      session2Badge:    'Economize USD 50',
+      session2Badge:    'Sua viagem planejada de ponta a ponta',
       cta:              'Reservar sessão',
       ctaNote:          'Respondo em menos de 48h com disponibilidade.',
     },
@@ -878,84 +1311,181 @@ const pt: AppTranslations = {
     heroLabel:   'UGC & Conteúdo de marca',
     headline:    'Conteúdo real que faz desejar o que você vende.',
     subheadline: 'Reels e fotos de viagem em casal, reais, para marcas de viagem e lifestyle: hotéis, experiências e produtos.',
-    heroCta:     'Vamos falar do seu projeto ✈',
     sectionLabel: 'Para marcas',
     quienSoy: {
       heading: 'Quem sou',
       body: [
-        'Sou a Oriana — criadora de viagens argentina 🇦🇷, morando na Lituânia com meu marido lituano 🇱🇹. Há 9 anos documentamos viagens reais, e nosso conteúdo em casal é o que mais conecta: a escapada romântica, a aventura em família, o lado humano de um lugar.',
+        'Sou a Oriana — criadora argentina de lifestyle e viagens 🇦🇷, morando na Lituânia com meu marido lituano 🇱🇹. Há 9 anos documentamos viagens reais, e nosso conteúdo em casal é o que mais conecta: a escapada romântica, a aventura em família, o lado humano de um lugar.',
       ],
       howTitle:       'Como trabalho:',
       howBody:        'entrego conteúdo pronto para as SUAS redes (UGC) — você é dono(a) dos vídeos e fotos. E se quiser, também compartilho com a minha comunidade.',
-      communityTitle: 'Minha comunidade:',
-      community:      '4.400 Instagram · 1.880 YouTube · 800 TikTok · viajantes LATAM (25-40) que reservam o que eu recomendo, não só assistem.',
     },
+    specs: [
+      'Conteúdo em espanhol nativo e inglês',
+      'Gravação no destino — base na Lituânia',
+      '9 anos documentando viagens com o celular',
+    ],
+    heroCardAlts: [
+      'Frame de um vídeo: Oriana na entrada do hotel Parrotel, Sharm el Sheikh',
+      'Frame de um vídeo: casal num domo de vidro olhando a floresta',
+    ],
     portfolioTitle:    'Portfólio de conteúdo',
-    portfolioSubtitle: 'Conteúdo real gravado no destino, não em estúdio. É assim que o estilo que produzo performa — números públicos de cada peça.',
-    portfolioMoreText: 'Quer ver mais trabalhos?',
+    portfolioSubtitle: 'Conteúdo real gravado no destino, não em estúdio. É assim que o estilo que produzo se vê — cada peça linka para o post original.',
+    portfolioExpandCta: 'Ver mais trabalhos',
+    portfolioMoreText: 'Quer ver tudo o que eu produzo?',
     portfolioMoreCta:  'Ver o canal completo →',
     hoteles: {
       title:      'Tem um hotel, uma experiência ou um produto pra mostrar?',
       body:       'Crio o conteúdo que vende o que você oferece como ele realmente é: algo que as pessoas querem viver ou ter. Reels, fotos e stories prontos para as suas redes — com o ângulo casal/família que mais conecta.',
       startTitle: 'Vamos começar fácil:',
-      startBody:  'experimente um pacote pequeno a partir de €120, ou uma colaboração por permuta (estadia ou produto). Se funcionar, escalamos para um plano mensal.',
-      cta:        'Me escreva 📩 · Agende 15 min',
+      startBody:  'experimente o formato com um vídeo avulso. Se funcionar, escalamos para uma campanha ou um plano mensal.',
     },
     testimonialsTitle: 'O que dizem as marcas com quem trabalhei',
     testimonials: [],
     packagesTitle: 'Pacotes disponíveis',
-    packageCta:    'Agende uma ligação de 20 min',
     packages: [
       {
-        badge:    'Para começar',
-        name:     'Vídeo UGC avulso',
-        desc:     'Para marcas que querem testar o formato com uma peça pensada para frear o scroll.',
-        price:    'a partir de €200',
-        delivery: 'pronto em 1 semana',
+        badge:    'TESTE PEQUENO',
+        name:     'Vídeo UGC Avulso',
+        delivery: 'entrega em 1 semana',
         includes: [
-          '1 vídeo vertical (15-60s) pronto para Reels, TikTok e Shorts',
-          'Hook que freia o scroll + CTA claro — para converter, não só ficar bonito',
-          'Gravado por mim, no destino, com seu produto ou experiência',
-          '1 rodada de ajustes + legendas incluídas',
-          'Licença de uso orgânico (90 dias) · direitos para ads sob medida',
+          '1 vídeo vertical (15-60s), em espanhol ou inglês',
+          'Hook + CTA definidos antes de gravar',
+          '1 rodada de ajustes + legendas',
+          'Licença de uso orgânico 90 dias · direitos para ads à parte',
         ],
       },
       {
-        badge:    'O mais pedido',
-        name:     'Pack Campanha',
-        desc:     'Para marcas que precisam de conteúdo para uma campanha completa, não uma só peça.',
-        price:    'a partir de €650',
-        delivery: 'pronto em 2 semanas',
+        badge:    'O RECOMENDADO',
+        name:     'Piloto Medido',
+        delivery: '2 semanas + medição 60 dias',
         includes: [
-          '3 vídeos verticais + 5 fotos lifestyle',
-          'Diferentes ângulos e hooks para testar o que converte (A/B)',
-          'Mistura de depoimento à câmera + plano aspiracional de destino',
-          'Pensado para a jornada do cliente: do "sonhar a viagem" ao "reservar"',
-          '1 rodada de ajustes por peça + legendas',
-          'Licença orgânica (90 dias) · direitos para ads e material bruto sob medida',
+          '3 vídeos verticais com 3 hooks diferentes para testar + 5 fotos, gravados na sua propriedade',
+          'Objetivos por escrito antes de gravar — o que você quer que aconteça',
+          'Medição de 3 métricas aos 30 e 60 dias, com relatório simples',
+          'Tudo em horizontal e vertical (redes + site/OTAs)',
+          'Se funcionar, seguimos. Se não, o conteúdo fica com você do mesmo jeito',
         ],
       },
       {
-        badge:    'Máximo impacto',
-        name:     'Biblioteca de conteúdo',
-        desc:     'Para marcas que querem alimentar suas redes e ads por meses com uma só produção.',
-        price:    'a partir de €1.400',
-        delivery: 'pronto em 3-4 semanas',
+        badge:    'GRUPOS E OPERADORES',
+        name:     'Biblioteca de Conteúdo',
+        delivery: '3-4 semanas',
         includes: [
-          '5 vídeos verticais + 10 fotos',
-          'Material suficiente para remixar por temporadas e campanhas',
-          'Set completo de formatos: depoimento, experiência, aspiracional e oferta',
-          'Hooks e CTAs variados prontos para paid social',
-          'Roteiro e conceito incluídos se você não trouxer brief',
-          '1 rodada de ajustes + legendas em todas as peças',
-          'Licença orgânica (6 meses) · direitos para ads, perpetuidade e bruto sob medida',
+          '6 vídeos verticais + 10 clipes de stories derivados',
+          '10 fotos lifestyle para site, redes e OTAs',
+          'Set completo de formatos (depoimento, experiência, aspiracional, oferta)',
+          'Para grupos, redes e operadores que alimentam várias propriedades',
+          'Roteiro e conceito incluídos',
         ],
       },
     ],
+    packagesExtra: [
+      {
+        badge:    'PORTA DE ENTRADA',
+        name:     'Auditoria Express',
+        price:    '€200',
+        delivery: 'entrega em 1 semana',
+        includes: [
+          'Revisão do seu Instagram e das suas fichas (60-90 min)',
+          'Documento com o que está travando o seu conteúdo e o que eu faria primeiro',
+          'Descontado integralmente se avançarmos com um piloto ou workshop',
+        ],
+      },
+      {
+        badge:    'SÓ LITUÂNIA',
+        name:     'Refresh Sazonal',
+        delivery: '4 sessões por ano',
+        includes: [
+          'Uma sessão por temporada: sua propriedade nas 4 estações',
+          'Conteúdo fresco para redes, site e OTAs o ano todo',
+          'Sem custo de viagem: eu moro aqui',
+        ],
+      },
+      {
+        badge:    'REMOTO · SEM VIAGEM',
+        name:     'Serviços de Escritório',
+        delivery: 'por peça',
+        includes: [
+          'Edição de material que a sua marca já tem',
+          'Localização espanhol↔inglês de conteúdo existente',
+          'Pack de 10 roteiros/hooks sem produção',
+        ],
+      },
+    ],
+    packagesExpandCta:   'Ver mais serviços (3) ↓',
+    packagesCollapseCta: 'Ver menos ↑',
+    rightsNote: 'Todos os pacotes incluem licença de uso orgânico por 90 dias. Direitos para publicidade paga, whitelisting, perpetuidade, material bruto e exclusividade são orçados como linha à parte em cada proposta.',
+    quote: {
+      title: 'Para te orçar preciso de 3 dados',
+      items: [
+        'O que você quer alcançar com o conteúdo (mais reservas, mais consultas, fichas melhores)',
+        'Onde vai usar (orgânico, publicidade paga, site/OTAs)',
+        'Sua data ideal',
+      ],
+      closing: 'Me mande por DM ou e-mail e em 24-48h você tem proposta com preço fechado.',
+    },
+    // Línea de tiempo del proceso: va entre los servicios y el CTA de cotización.
+    proceso: {
+      title:    'Como trabalho',
+      subtitle: 'Um processo claro de ponta a ponta — para você saber o que acontece, quando, e o que recebe.',
+      steps: [
+        {
+          title: 'Visão criativa',
+          items: [
+            'Briefing criativo: o que você quer alcançar e para qual canal',
+            'Entregáveis, formatos e requisitos definidos',
+            'Ideias de conteúdo e hooks propostos antes de gravar',
+            'No Piloto Medido: objetivos por escrito, assinados',
+          ],
+        },
+        {
+          title: 'Contrato + sinal',
+          items: [
+            '50% do pagamento na assinatura do contrato',
+            'Licença de uso definida por escrito (orgânico 90 dias incluído; ads, whitelisting e perpetuidade como linha à parte)',
+            'Data de gravação ou de recebimento do produto',
+          ],
+        },
+        {
+          title: 'Produção',
+          items: [
+            'Gravação no destino, na horizontal e na vertical',
+            'Primeiro corte em até 7 dias depois de gravar (ou de receber o produto)',
+            'Uma rodada de ajustes incluída',
+          ],
+        },
+        {
+          title: 'Entrega',
+          items: [
+            '50% restante ao aprovar o material final',
+            'Arquivos por WeTransfer ou Google Drive, prontos para publicar',
+            'No Piloto Medido: medição aos 30 e 60 dias + relatório simples',
+          ],
+        },
+      ],
+    },
+    // Puente al taller: la página todavía no existe → el bloque está OCULTO.
+    taller: {
+      title: 'Também ensino isso',
+      text:  'Se você prefere que sua equipe aprenda a produzir esse conteúdo internamente, dou um workshop prático de um dia.',
+      cta:   'Ver o workshop',
+    },
+    contact: {
+      instagram: 'Me escreva no Instagram',
+      mail:      'Ou por e-mail',
+      mailFull:  'exploriando.info@gmail.com',
+      briefTitle: 'Com estes três dados já consigo te orçar',
+      briefItems: [
+        'O que você quer mostrar: hospedagem, experiência ou produto.',
+        'Onde o conteúdo vai rodar: orgânico, ads, site ou tudo.',
+        'Destino e datas, se você já tiver.',
+      ],
+      briefNote: 'Respondo em 24-48 h · Espanhol e inglês · Sem compromisso',
+    },
     finalCta: {
       title: 'Pronto para trabalhar juntos?',
-      body:  'Agende 15 min comigo e montamos a proposta sob medida na chamada.',
-      cta:   'Agendar 15 min',
+      body:  'Me conte o que você quer mostrar e te mando uma proposta sob medida.',
       sub:   'Sem compromisso — a primeira consulta é grátis',
     },
     cta:       'Vamos falar sobre sua marca',
@@ -964,6 +1494,40 @@ const pt: AppTranslations = {
       title:       'UGC para marcas de viagem — Exploriando',
       description: 'Conteúdo UGC no destino para marcas de hospitalidade e travel-tech. 9 anos na estrada, vídeos reais gravados em rota, entrega em 7-14 dias.',
     },
+  },
+  enVivo: {
+    sectionLabel: 'AO VIVO · DE SEGUNDA A SEXTA',
+    headline:     'Todos os dias cozinhamos juntos.',
+    text:         'De segunda a sexta eu ligo a câmera e cozinho ao vivo: receitas argentinas com o que dá pra achar na Lituânia. Não é um programa de culinária — é a hora em que a gente conversa, ri da fricção de viver fora e se conecta de verdade. Vem cozinhar comigo.',
+    cta:          'Entrar no ao vivo de hoje',
+    note:         'Todos os episódios ficam no canal.',
+    // Vacíos a propósito: Oriana todavía no definió nombre ni horario exacto.
+    programName:  '',
+    schedule:     '',
+    imageAlt:     'Oriana cozinhando ao vivo da sua cozinha na Lituânia',
+  },
+  guiasPremium: {
+    sectionLabel: 'GUIAS PREMIUM',
+    headline:     'Para quando a viagem é séria.',
+    text:         'Os guias do mapa são grátis e vão continuar sendo. Estes são outra coisa: o destino inteiro num único PDF — roteiro dia a dia, orçamento real, documentação conforme o seu passaporte e os erros que você não vai precisar cometer. O primeiro está a caminho.',
+    emailLabel:   'Seu e-mail',
+    waitlistCta:  'Me avise quando sair',
+    note:         'Zero spam. Só o aviso quando estiver pronto.',
+    success:      'Pronto! Te aviso assim que o primeiro sair.',
+    errorEmail:   'Digite um e-mail válido.',
+    errorGeneric: 'Algo falhou. Tente de novo.',
+    errorRate:    'Tentativas demais. Tente daqui a pouco.',
+    price:        'A partir de €12 · download imediato',
+    cta:          'Ver os guias',
+    guias: [
+      {
+        title: 'Lituânia e o Báltico em espanhol',
+        place: 'Lituânia · Letônia · Estônia',
+        price: 'A partir de €12',
+        cta:   'Comprar',
+        url:   '/guias-premium',
+      },
+    ],
   },
   marcasTeaser: {
     sectionLabel: 'Você é uma marca?',
@@ -1053,11 +1617,6 @@ const pt: AppTranslations = {
         brands: { title: 'Para marcas', links: [
           { label: 'Conteúdo UGC', href: '/marcas' },
           { label: 'Contato',      href: 'mailto:exploriando.info@gmail.com' },
-        ]},
-        work: { title: 'Design web', links: [
-          { label: 'Portfólio',            href: 'https://orianaledesma.dev/#work' },
-          { label: 'Serviços',             href: 'https://orianaledesma.dev/#services' },
-          { label: 'orianaledesma.dev ↗',  href: 'https://orianaledesma.dev' },
         ]},
       },
       legal:      '© 2026 Exploriando.',

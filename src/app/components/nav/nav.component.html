@@ -92,15 +92,6 @@
       }
     }
 
-    <a [href]="t().workWithMe.href"
-       target="_blank"
-       rel="noopener"
-       class="nav__mobile-link nav__mobile-link--external"
-       (click)="closeMenu()"
-       [attr.aria-label]="t().workWithMe.label + ' (abre en nueva pestaña)'">
-      {{ t().workWithMe.label }}
-    </a>
-
     <!-- Idioma en mobile -->
     <div class="nav__lang-mobile" role="group" aria-label="Cambiar idioma">
       @for (opt of langOptions; track opt.code) {

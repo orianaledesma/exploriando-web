@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
@@ -6,66 +6,128 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { LiteYoutubeComponent } from '../../components/lite-youtube/lite-youtube.component';
+import { ProcesoTimelineComponent } from '../../components/proceso-timeline/proceso-timeline.component';
+import { HeroCardsComponent } from '../../components/hero-cards/hero-cards.component';
 
-// Calendly: un solo event type (plan pago). `a1` prellena la pregunta custom
-// → Oriana ve en el email de aviso si es UGC y, si vino de un paquete,
-// EXACTAMENTE cuál (Probar el agua €150 / Campaña €400 / Presencia €700).
-const CALENDLY_BASE = 'https://calendly.com/orianaledesma/asesoria-exploriando';
-const CALENDLY_UGC_URL =
-  `${CALENDLY_BASE}?a1=` + encodeURIComponent('UGC - Marca');
+// Contacto directo. Decisión Ori 2026-08-29: casi todas las respuestas de
+// marcas llegan por DM, así que sacamos el paso intermedio de agendar llamada.
+// `ig.me/m/` abre la conversación directa, no el perfil.
+const INSTAGRAM_DM_URL = 'https://ig.me/m/exploriando';
+const CONTACT_MAIL_URL =
+  'mailto:exploriando.info@gmail.com?subject=Colaboraci%C3%B3n%20UGC';
+/** Mismo buzón, asunto propio del bloque de cotización de servicios. */
+const QUOTE_MAIL_URL =
+  'mailto:exploriando.info@gmail.com?subject=Cotizaci%C3%B3n%20de%20contenido';
 
 const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@exploriando';
 
-interface PlatformStat {
-  /** Link público al posteo real. Si falta, se muestra el dato sin redirección. */
-  url?: string;
-  /** Métricas públicas verificables (views/likes/coment.). */
-  stats: string;
+/**
+ * Los dos frames en abanico del hero. Rutas sin extensión: se sirve `.webp`
+ * con fallback `.jpg`. El primero queda atrás y el segundo adelante.
+ */
+const HERO_CARDS = [
+  '/assets/images/portfolio/parrotel',
+  '/assets/images/marcas-card-dome',
+];
+
+/**
+ * Puente al taller. En false hasta que exista la página /taller: el bloque ya
+ * está escrito (markup + copy ES/EN/PT) y sólo hay que dar vuelta la constante.
+ */
+const MOSTRAR_TALLER = false;
+
+interface PlatformLink {
+  /** Link público al posteo real, para que la marca pueda verificarlo. */
+  url: string;
 }
 
 /**
- * Portafolio. Cada pieza muestra sus métricas PÚBLICAS reales por plataforma
- * (YT + IG) con icono de redirección al posteo, para que la marca pueda
- * VERIFICAR los números. Decisión Ori 2026-05-18: son piezas demostrativas
- * (no campañas de cliente) → se vende capacidad probada, sin inventar nada.
+ * Portafolio. Piezas demostrativas (no campañas de cliente) → se vende
+ * capacidad probada, sin inventar nada. Decisión Ori 2026-08-29: la página
+ * vende PRODUCCIÓN, no alcance, así que las tarjetas ya no muestran cifras;
+ * queda el link a cada posteo para quien quiera ver los números en la fuente.
  */
-const PORTFOLIO_VIDEOS: {
+interface PortfolioPiece {
+  /** ID de YouTube. Vacío → la pieza vive sólo en Instagram (tarjeta sin player). */
   id: string;
   category: string;
   title: string;
-  yt: PlatformStat;
-  ig?: PlatformStat;
-}[] = [
+  /** Destino y/o marca, se muestra bajo el título. */
+  location: string;
+  /** Frame vertical 9:16 propio, sin extensión (.webp + fallback .jpg). */
+  thumb: string;
+  yt?: PlatformLink;
+  ig?: PlatformLink;
+}
+
+/** Las 3 piezas destacadas. El resto se despliega con "Ver más". */
+const PORTFOLIO_FEATURED: PortfolioPiece[] = [
   {
-    id: 'rCevn0IHPoQ', category: 'Alojamientos', title: 'Paradise Hotel — Sharm el Sheikh',
-    yt: { url: 'https://www.youtube.com/watch?v=rCevn0IHPoQ', stats: '941 views · 10 likes' },
-    ig: { url: 'https://www.instagram.com/reel/DKxV0oPs6R8/', stats: '2,7K views · 69 likes · 16 coment.' },
+    id: '', category: 'Alojamientos',
+    title: 'Un día de relax en el bosque',
+    location: 'Forest Domes · Vilnius, Lituania',
+    thumb: '/assets/images/portfolio/forest-domes',
+    ig: { url: 'https://www.instagram.com/reels/DaiZmzsMRHU/' },
   },
   {
-    id: 'ArpO3W5Rzhw', category: 'Alojamientos', title: 'Panama Resort',
-    yt: { url: 'https://www.youtube.com/watch?v=ArpO3W5Rzhw', stats: '2,7K views · 78 likes' },
-    ig: { url: 'https://www.instagram.com/reel/CxGR0O8gm5h/', stats: '671 views · 30 likes' },
+    id: 'hthFxbQBQxc', category: 'Gastronomía',
+    title: 'El mejor brunch',
+    location: 'Vero Cafe · Lituania',
+    thumb: '/assets/images/portfolio/verocafe',
+    yt: { url: 'https://www.youtube.com/shorts/hthFxbQBQxc' },
   },
   {
-    id: 'pvtR3abCZW0', category: 'Eventos', title: 'Cataratas del Iguazú',
-    yt: { url: 'https://www.youtube.com/watch?v=pvtR3abCZW0', stats: '178 views · 6 likes' },
-    ig: { url: 'https://www.instagram.com/reel/C2Se6VJAIMk/', stats: '6,4K views · 215 likes · 3 coment.' },
+    id: 'rCevn0IHPoQ', category: 'Alojamientos',
+    title: 'El resort con de todo',
+    location: 'Resort Paradise · Sharm el Sheikh',
+    thumb: '/assets/images/portfolio/parrotel',
+    yt: { url: 'https://www.youtube.com/watch?v=rCevn0IHPoQ' },
+    ig: { url: 'https://www.instagram.com/reel/DKxV0oPs6R8/' },
+  },
+];
+
+/** Trabajos anteriores — ocultos hasta que el visitante toca "Ver más". */
+const PORTFOLIO_REST: PortfolioPiece[] = [
+  {
+    id: 'Urf1Qvxu3AU', category: 'Eventos',
+    title: 'Globo aerostático',
+    location: 'Luxor, Egipto',
+    thumb: '/assets/images/portfolio/globos',
+    yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU' },
+    ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
   },
   {
-    id: 'Urf1Qvxu3AU', category: 'Eventos', title: 'Globo aerostático — Luxor',
-    yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU', stats: '167 views · 8 likes' },
-    ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/', stats: '15,9K views · 356 likes · 33 coment.' },
+    id: 'ArpO3W5Rzhw', category: 'Alojamientos',
+    title: 'Panama Resort',
+    location: 'Panamá',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=ArpO3W5Rzhw' },
+    ig: { url: 'https://www.instagram.com/reel/CxGR0O8gm5h/' },
   },
   {
-    id: 'Gw4LnyMO864', category: 'Gastronomía', title: 'Experiencia gastronómica',
-    yt: { url: 'https://www.youtube.com/watch?v=Gw4LnyMO864', stats: '1,2K views · 11 likes' },
-    ig: { url: 'https://www.instagram.com/reels/DK3wB8EsnWb/', stats: '1,4K views · 11 likes' },
+    id: 'pvtR3abCZW0', category: 'Eventos',
+    title: 'Cataratas del Iguazú',
+    location: 'Misiones, Argentina',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=pvtR3abCZW0' },
+    ig: { url: 'https://www.instagram.com/reel/C2Se6VJAIMk/' },
   },
   {
-    id: '5WDRY-KvFSM', category: 'Moda', title: 'Shopping — Panamá',
-    yt: { url: 'https://www.youtube.com/watch?v=5WDRY-KvFSM', stats: '1,7K views · 23 likes · 2 coment.' },
-    // Sin link directo al reel → fallback al perfil (reemplazar si aparece el reel).
-    ig: { url: 'https://www.instagram.com/exploriando/', stats: '624 views · 34 likes · 8 coment.' },
+    id: 'Gw4LnyMO864', category: 'Gastronomía',
+    title: 'Experiencia gastronómica',
+    location: 'Sharm el Sheikh',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=Gw4LnyMO864' },
+    ig: { url: 'https://www.instagram.com/reels/DK3wB8EsnWb/' },
+  },
+  {
+    id: '5WDRY-KvFSM', category: 'Moda',
+    title: 'Shopping',
+    location: 'Panamá',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=5WDRY-KvFSM' },
+    // Sin link directo al reel → fallback al perfil (reemplazar si aparece).
+    ig: { url: 'https://www.instagram.com/exploriando/' },
   },
 ];
 
@@ -74,7 +136,10 @@ const PORTFOLIO_VIDEOS: {
   templateUrl: './marcas.component.html',
   styleUrl: './marcas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RevealDirective, LiteYoutubeComponent],
+  imports: [
+    RouterLink, RevealDirective, LiteYoutubeComponent,
+    ProcesoTimelineComponent, HeroCardsComponent,
+  ],
 })
 export class MarcasComponent {
   private readonly lang = inject(LanguageService);
@@ -84,16 +149,35 @@ export class MarcasComponent {
   private readonly analytics = inject(AnalyticsService);
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].ugc);
-  readonly formUrl = CALENDLY_UGC_URL;
-
-  /** Calendly con el paquete elegido en el tag `a1` (nombre + precio). */
-  packageBookingUrl(pkg: { name: string; price: string }): string {
-    return `${CALENDLY_BASE}?a1=` +
-      encodeURIComponent(`UGC - ${pkg.name} (${pkg.price})`);
-  }
+  readonly instagramUrl = INSTAGRAM_DM_URL;
+  readonly mailUrl = CONTACT_MAIL_URL;
+  readonly quoteMailUrl = QUOTE_MAIL_URL;
   readonly youtubeChannelUrl = YOUTUBE_CHANNEL_URL;
 
-  readonly portfolioVideos = PORTFOLIO_VIDEOS;
+  readonly portfolioFeatured = PORTFOLIO_FEATURED;
+  readonly portfolioRest = PORTFOLIO_REST;
+
+  private readonly _extraServicesVisible = signal(false);
+  /** `true` cuando el visitante desplegó los 3 servicios extra. */
+  readonly extraServicesVisible = this._extraServicesVisible.asReadonly();
+
+  toggleExtraServices(): void {
+    const next = !this._extraServicesVisible();
+    this._extraServicesVisible.set(next);
+    if (next) this.analytics.track('servicios_ver_mas');
+  }
+
+  readonly heroCards     = HERO_CARDS;
+  readonly mostrarTaller = MOSTRAR_TALLER;
+
+  private readonly _restVisible = signal(false);
+  /** `true` cuando el visitante desplegó los trabajos anteriores. */
+  readonly restVisible = this._restVisible.asReadonly();
+
+  showRest(): void {
+    this._restVisible.set(true);
+    this.analytics.track('portfolio_ver_mas');
+  }
 
   private readonly previousTitle = this.title.getTitle();
   private readonly previousDescription =
@@ -133,8 +217,13 @@ export class MarcasComponent {
   }
 
   /** Tracking: click outbound al Google Form. `location` distingue de qué CTA salió. */
-  onMarcasFormClick(location: 'hero' | 'package' | 'final_cta' | 'hoteles', packageName?: string): void {
-    const params: Record<string, string> = { location };
+  /** `channel` distingue si la marca eligió DM o mail — antes todo era Calendly. */
+  onContactClick(
+    location: 'hero' | 'package' | 'final_cta' | 'hoteles',
+    channel: 'instagram' | 'mail',
+    packageName?: string,
+  ): void {
+    const params: Record<string, string> = { location, channel };
     if (packageName) params['package'] = packageName;
     this.analytics.track('marcas_form_click', params);
   }

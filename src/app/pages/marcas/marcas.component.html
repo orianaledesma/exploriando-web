@@ -3,20 +3,42 @@
   <!-- 1 · Hero de la página -->
   <section class="marcas-hero">
     <div class="container marcas-hero__inner">
-      <div class="marcas-hero__content">
+      <div class="marcas-hero__top">
+        <div class="marcas-hero__content">
         <a routerLink="/" class="marcas-hero__back">{{ t().heroBack }}</a>
         <span class="section-label hero-enter hero-enter-2">{{ t().heroLabel }}</span>
         <h1 class="hero-enter hero-enter-3">{{ t().headline }}</h1>
         <p class="marcas-hero__sub hero-enter hero-enter-4">{{ t().subheadline }}</p>
-        <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg hero-enter hero-enter-5"
-           (click)="onMarcasFormClick('hero')">
-          {{ t().heroCta }}
-        </a>
+        <div class="contact-pair hero-enter hero-enter-5">
+          <a class="btn btn--primary btn--lg" [href]="instagramUrl"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Escribir a Exploriando por Instagram"
+             (click)="onContactClick('hero', 'instagram')">
+            {{ t().contact.instagram }}
+          </a>
+          <a class="btn btn--secondary btn--lg" [href]="mailUrl"
+             (click)="onContactClick('hero', 'mail')">
+            {{ t().contact.mail }}
+          </a>
+          </div>
+        </div>
+
+        <!-- Dos frames reales en abanico, como naipes: muestran el material
+             que produzco antes de que la marca lea una sola palabra. -->
+        <app-hero-cards [sources]="heroCards" [alts]="t().heroCardAlts" />
       </div>
+
+      <!-- Specs de PRODUCCIÓN (no de alcance): qué puedo grabar y en qué
+           idiomas. Reemplaza al viejo bloque de audiencia. -->
+      <ul class="marcas-specs" role="list">
+        @for (spec of t().specs; track spec; let i = $index) {
+          <li class="marcas-specs__item hero-enter" [class]="'hero-enter-' + (6 + i)">{{ spec }}</li>
+        }
+      </ul>
     </div>
   </section>
 
-  <!-- 2 · Quién soy + audiencia -->
+  <!-- 2 · Quién soy -->
   <section class="marcas-about" aria-labelledby="about-title">
     <div class="container marcas-about__inner">
       <h2 id="about-title" class="visually-hidden">{{ t().quienSoy.heading }}</h2>
@@ -31,9 +53,6 @@
         <p class="marcas-about__note" appReveal [delay]="120">
           <strong>{{ t().quienSoy.howTitle }}</strong> {{ t().quienSoy.howBody }}
         </p>
-        <p class="marcas-about__community" appReveal [delay]="180">
-          <strong>{{ t().quienSoy.communityTitle }}</strong> {{ t().quienSoy.community }}
-        </p>
       </div>
     </div>
   </section>
@@ -45,30 +64,54 @@
       <p class="marcas-portfolio__sub" appReveal [delay]="80">{{ t().portfolioSubtitle }}</p>
 
       <div class="marcas-video-grid">
-        @for (video of portfolioVideos; track video.id; let i = $index) {
+        @for (piece of portfolioFeatured; track piece.title; let i = $index) {
           <div class="marcas-video-card" appReveal [delay]="100 + i * 60">
-            <span class="marcas-video-card__chip">{{ video.category }}</span>
-            <app-lite-youtube
-              class="marcas-video-card__player"
-              [videoId]="video.id"
-              [title]="video.title"
-              thumbQuality="maxresdefault" />
-            <div class="marcas-video-card__meta">
-              <p class="marcas-video-card__title">{{ video.title }}</p>
+            <span class="marcas-video-card__chip">{{ piece.category }}</span>
 
-              <a class="vstat" [href]="video.yt.url" target="_blank"
-                 rel="noopener" aria-label="Ver en YouTube (abre en pestaña nueva)">
-                <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/>
-                </svg>
-                <span>{{ video.yt.stats }}</span>
-                <svg class="vstat__ext" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
-                </svg>
+            @if (piece.id) {
+              <app-lite-youtube
+                class="marcas-video-card__player"
+                [videoId]="piece.id"
+                [title]="piece.title"
+                [thumbSrc]="piece.thumb"
+                thumbQuality="maxresdefault" />
+            } @else {
+              <!-- Pieza sólo de Instagram: no hay player embebible → el frame
+                   linkea al reel en su plataforma. -->
+              <a class="marcas-video-card__player marcas-video-card__player--link"
+                 [href]="piece.ig?.url" target="_blank" rel="noopener"
+                 [attr.aria-label]="'Ver \'' + piece.title + '\' en Instagram (abre en pestaña nueva)'">
+                <picture>
+                  <source [srcset]="piece.thumb + '.webp'" type="image/webp" />
+                  <img [src]="piece.thumb + '.jpg'" [alt]="piece.title"
+                       width="720" height="1280" loading="lazy" decoding="async" />
+                </picture>
+                <!-- Señala que es un video aunque el reel se abra en Instagram. -->
+                <span class="marcas-video-card__play" aria-hidden="true">
+                  <svg viewBox="0 0 68 48" width="68" height="48">
+                    <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+                          fill="#212121" fill-opacity=".8" />
+                    <path d="M 45,24 27,14 27,34" fill="#fff" />
+                  </svg>
+                </span>
               </a>
+            }
 
-              @if (video.ig; as ig) {
-                @if (ig.url) {
+            <div class="marcas-video-card__meta">
+              <p class="marcas-video-card__title">{{ piece.title }}</p>
+              <p class="marcas-video-card__location">{{ piece.location }}</p>
+
+              <div class="marcas-video-card__links">
+                @if (piece.yt; as yt) {
+                  <a class="vstat" [href]="yt.url" target="_blank"
+                     rel="noopener" aria-label="Ver en YouTube (abre en pestaña nueva)">
+                    <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/>
+                    </svg>
+                    <span>YouTube</span>
+                  </a>
+                }
+                @if (piece.ig; as ig) {
                   <a class="vstat" [href]="ig.url" target="_blank"
                      rel="noopener" aria-label="Ver en Instagram (abre en pestaña nueva)">
                     <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -76,31 +119,94 @@
                       <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
                       <circle cx="17.5" cy="6.5" r="1.4" fill="currentColor"/>
                     </svg>
-                    <span>{{ ig.stats }}</span>
-                    <svg class="vstat__ext" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
-                    </svg>
+                    <span>Instagram</span>
                   </a>
-                } @else {
-                  <span class="vstat vstat--plain">
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Trabajos anteriores: se renderizan siempre (así quedan en el HTML
+             prerenderizado y Google los indexa) y se ocultan con `hidden`
+             hasta que el visitante toca "Ver más". -->
+        @for (piece of portfolioRest; track piece.title; let i = $index) {
+          <div class="marcas-video-card" [hidden]="!restVisible()"
+               appReveal [delay]="60 + i * 60">
+            <span class="marcas-video-card__chip">{{ piece.category }}</span>
+
+            @if (piece.id) {
+              <app-lite-youtube
+                class="marcas-video-card__player"
+                [videoId]="piece.id"
+                [title]="piece.title"
+                [thumbSrc]="piece.thumb"
+                thumbQuality="maxresdefault" />
+            } @else {
+              <!-- Pieza sólo de Instagram: no hay player embebible → el frame
+                   linkea al reel en su plataforma. -->
+              <a class="marcas-video-card__player marcas-video-card__player--link"
+                 [href]="piece.ig?.url" target="_blank" rel="noopener"
+                 [attr.aria-label]="'Ver \'' + piece.title + '\' en Instagram (abre en pestaña nueva)'">
+                <picture>
+                  <source [srcset]="piece.thumb + '.webp'" type="image/webp" />
+                  <img [src]="piece.thumb + '.jpg'" [alt]="piece.title"
+                       width="720" height="1280" loading="lazy" decoding="async" />
+                </picture>
+                <!-- Señala que es un video aunque el reel se abra en Instagram. -->
+                <span class="marcas-video-card__play" aria-hidden="true">
+                  <svg viewBox="0 0 68 48" width="68" height="48">
+                    <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+                          fill="#212121" fill-opacity=".8" />
+                    <path d="M 45,24 27,14 27,34" fill="#fff" />
+                  </svg>
+                </span>
+              </a>
+            }
+
+            <div class="marcas-video-card__meta">
+              <p class="marcas-video-card__title">{{ piece.title }}</p>
+              <p class="marcas-video-card__location">{{ piece.location }}</p>
+
+              <div class="marcas-video-card__links">
+                @if (piece.yt; as yt) {
+                  <a class="vstat" [href]="yt.url" target="_blank"
+                     rel="noopener" aria-label="Ver en YouTube (abre en pestaña nueva)">
+                    <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/>
+                    </svg>
+                    <span>YouTube</span>
+                  </a>
+                }
+                @if (piece.ig; as ig) {
+                  <a class="vstat" [href]="ig.url" target="_blank"
+                     rel="noopener" aria-label="Ver en Instagram (abre en pestaña nueva)">
                     <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
                       <path fill="none" stroke="currentColor" stroke-width="2" d="M2 8a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6Z"/>
                       <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
                       <circle cx="17.5" cy="6.5" r="1.4" fill="currentColor"/>
                     </svg>
-                    <span>{{ ig.stats }}</span>
-                  </span>
+                    <span>Instagram</span>
+                  </a>
                 }
-              }
+              </div>
             </div>
           </div>
         }
       </div>
 
+      @if (!restVisible()) {
+        <div class="marcas-portfolio__expand" appReveal [delay]="160">
+          <button type="button" class="btn btn--outline" (click)="showRest()">
+            {{ t().portfolioExpandCta }}
+          </button>
+        </div>
+      }
+
       <div class="marcas-portfolio__more" appReveal [delay]="200">
         <p>{{ t().portfolioMoreText }}</p>
         <a [href]="youtubeChannelUrl" target="_blank" rel="noopener"
-           class="btn btn--ghost">
+           class="btn btn--outline">
           {{ t().portfolioMoreCta }}
         </a>
       </div>
@@ -115,10 +221,18 @@
       <p class="marcas-hoteles__start">
         <strong>{{ t().hoteles.startTitle }}</strong> {{ t().hoteles.startBody }}
       </p>
-      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg"
-         (click)="onMarcasFormClick('hoteles')">
-        {{ t().hoteles.cta }}
-      </a>
+      <div class="contact-pair">
+        <a class="btn btn--primary btn--lg" [href]="instagramUrl"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Escribir a Exploriando por Instagram"
+           (click)="onContactClick('hoteles', 'instagram')">
+          {{ t().contact.instagram }}
+        </a>
+        <a class="btn btn--outline btn--lg" [href]="mailUrl"
+           (click)="onContactClick('hoteles', 'mail')">
+          {{ t().contact.mail }}
+        </a>
+      </div>
     </div>
   </section>
 
@@ -144,27 +258,103 @@
     <div class="container">
       <h2 id="paquetes-title" appReveal>{{ t().packagesTitle }}</h2>
 
+      <!-- Grilla visible: 3 servicios, precio ascendente. El del medio destaca. -->
       <ul class="ugc__packages" role="list">
         @for (pkg of t().packages; track pkg.name; let i = $index) {
-          <li class="ugc__package" [class.ugc__package--featured]="i === 1" appReveal [delay]="120 + i * 100">
+          <li class="ugc__package" [class.ugc__package--featured]="i === 1"
+              appReveal [delay]="120 + i * 100">
             <span class="ugc__package-badge" [class.ugc__package-badge--featured]="i === 1">{{ pkg.badge }}</span>
             <p class="ugc__package-name">{{ pkg.name }}</p>
-            <p class="ugc__package-price">{{ pkg.price }}</p>
+            @if (pkg.price) {
+              <p class="ugc__package-price">{{ pkg.price }}</p>
+            }
             <p class="ugc__package-delivery">{{ pkg.delivery }}</p>
-            <p class="ugc__package-desc">{{ pkg.desc }}</p>
+            @if (pkg.desc) {
+              <p class="ugc__package-desc">{{ pkg.desc }}</p>
+            }
             <ul class="ugc__includes" role="list">
               @for (item of pkg.includes; track item) {
                 <li class="ugc__include-item">{{ item }}</li>
               }
             </ul>
-            <a [href]="packageBookingUrl(pkg)" target="_blank" rel="noopener"
-               (click)="onMarcasFormClick('package', pkg.name)"
-               class="btn btn--primary" style="margin-top: auto;">
-              {{ t().packageCta }}
-            </a>
           </li>
         }
       </ul>
+
+      <div class="marcas-portfolio__expand" appReveal [delay]="160">
+        <button type="button" class="btn btn--outline"
+                [attr.aria-expanded]="extraServicesVisible()"
+                aria-controls="servicios-extra"
+                (click)="toggleExtraServices()">
+          {{ extraServicesVisible() ? t().packagesCollapseCta : t().packagesExpandCta }}
+        </button>
+      </div>
+
+      <!-- Servicios extra. `hidden` (display:none) y no sólo opacidad, para que
+           no sean enfocables ni los lea el lector de pantalla estando cerrados. -->
+      <ul class="ugc__packages ugc__packages--extra" role="list"
+          id="servicios-extra" [hidden]="!extraServicesVisible()">
+        @for (pkg of t().packagesExtra; track pkg.name; let i = $index) {
+          <li class="ugc__package" appReveal [delay]="60 + i * 80">
+            <span class="ugc__package-badge">{{ pkg.badge }}</span>
+            <p class="ugc__package-name">{{ pkg.name }}</p>
+            @if (pkg.price) {
+              <p class="ugc__package-price">{{ pkg.price }}</p>
+            }
+            <p class="ugc__package-delivery">{{ pkg.delivery }}</p>
+            @if (pkg.desc) {
+              <p class="ugc__package-desc">{{ pkg.desc }}</p>
+            }
+            <ul class="ugc__includes" role="list">
+              @for (item of pkg.includes; track item) {
+                <li class="ugc__include-item">{{ item }}</li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+
+      <p class="marcas-rights">{{ t().rightsNote }}</p>
+
+      <!-- Línea de tiempo del proceso: entre los servicios y el CTA de cotización. -->
+      <app-proceso-timeline
+        class="marcas-proceso-block"
+        [title]="t().proceso.title"
+        [subtitle]="t().proceso.subtitle"
+        [steps]="t().proceso.steps" />
+
+      <!-- Puente al taller. OCULTO: /taller todavía no existe. Cuando la página
+           esté publicada, poner MOSTRAR_TALLER = true en el componente. -->
+      @if (mostrarTaller) {
+        <div class="marcas-taller" appReveal>
+          <p class="marcas-taller__title">{{ t().taller.title }}</p>
+          <p class="marcas-taller__text">{{ t().taller.text }}</p>
+          <a class="btn btn--outline" routerLink="/taller">{{ t().taller.cta }}</a>
+        </div>
+      }
+
+      <!-- CTA de cotización: reemplaza a la llamada agendada. -->
+      <div class="marcas-quote" appReveal>
+        <p class="marcas-quote__title">{{ t().quote.title }}</p>
+        <ol class="marcas-quote__list">
+          @for (item of t().quote.items; track item) {
+            <li>{{ item }}</li>
+          }
+        </ol>
+        <p class="marcas-quote__closing">{{ t().quote.closing }}</p>
+        <div class="contact-pair">
+          <a class="btn btn--primary" [href]="instagramUrl"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Escribir a Exploriando por Instagram"
+             (click)="onContactClick('package', 'instagram')">
+            {{ t().contact.instagram }}
+          </a>
+          <a class="btn btn--outline" [href]="quoteMailUrl"
+             (click)="onContactClick('package', 'mail')">
+            {{ t().contact.mail }}
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -173,10 +363,19 @@
     <div class="container marcas-cta__inner">
       <h2>{{ t().finalCta.title }}</h2>
       <p>{{ t().finalCta.body }}</p>
-      <a [href]="formUrl" target="_blank" rel="noopener" class="btn btn--primary btn--lg"
-         (click)="onMarcasFormClick('final_cta')">
-        {{ t().finalCta.cta }}
-      </a>
+      <div class="contact-pair">
+        <a class="btn btn--primary btn--lg" [href]="instagramUrl"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Escribir a Exploriando por Instagram"
+           (click)="onContactClick('final_cta', 'instagram')">
+          {{ t().contact.instagram }}
+        </a>
+        <a class="btn btn--secondary btn--lg" [href]="mailUrl"
+           (click)="onContactClick('final_cta', 'mail')">
+          {{ t().contact.mailFull }}
+        </a>
+      </div>
+
       <span class="marcas-cta__sub">{{ t().finalCta.sub }}</span>
     </div>
   </section>

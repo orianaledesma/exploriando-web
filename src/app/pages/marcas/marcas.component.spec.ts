@@ -32,21 +32,23 @@ describe('MarcasComponent', () => {
     const heroLink = fixture.debugElement.query(By.css('.marcas-hero a.btn--primary'));
     heroLink.triggerEventHandler('click', new MouseEvent('click'));
 
-    expect(trackSpy).toHaveBeenCalledWith('marcas_form_click', { location: 'hero' });
+    expect(trackSpy).toHaveBeenCalledWith('marcas_form_click', { location: 'hero', channel: 'instagram' });
   });
 
   it('trackea marcas_form_click con location=final_cta y location=package en sus respectivos botones', () => {
     const finalCtaLink = fixture.debugElement.query(By.css('.marcas-cta a.btn--primary'));
     finalCtaLink.triggerEventHandler('click', new MouseEvent('click'));
-    expect(trackSpy).toHaveBeenCalledWith('marcas_form_click', { location: 'final_cta' });
+    expect(trackSpy).toHaveBeenCalledWith('marcas_form_click', { location: 'final_cta', channel: 'instagram' });
 
-    const packageLink = fixture.debugElement.query(By.css('.ugc__package a.btn--primary'));
+    const packageLink = fixture.debugElement.query(By.css('.marcas-quote a.btn--primary'));
     packageLink.triggerEventHandler('click', new MouseEvent('click'));
 
+    // Ya no hay botón por tarjeta: el contacto de servicios vive en el bloque
+    // de cotización, así que se trackea sin nombre de paquete.
     const packageCall = trackSpy.calls.allArgs()
       .find(args => args[0] === 'marcas_form_click' && args[1].location === 'package');
     expect(packageCall).toBeTruthy();
-    expect(packageCall![1].package).toBeTruthy();
+    expect(packageCall![1].channel).toBe('instagram');
   });
 
   it('renderiza las secciones nuevas del media-kit (quién soy, hoteles, precios)', () => {
@@ -54,7 +56,10 @@ describe('MarcasComponent', () => {
     expect(compiled.querySelector('.marcas-about')).withContext('quién soy + audiencia').toBeTruthy();
     expect(compiled.querySelector('.marcas-hoteles')).withContext('hoteles & experiencias').toBeTruthy();
     expect(compiled.querySelector('.ugc__packages')).withContext('grilla de precios').toBeTruthy();
-    expect(compiled.querySelectorAll('.ugc__package').length).withContext('3 tiers').toBe(3);
+    // 3 servicios visibles + 3 que se despliegan con "Ver más servicios".
+    expect(compiled.querySelectorAll('.ugc__package').length).withContext('6 servicios').toBe(6);
+    expect(compiled.querySelector('#servicios-extra')?.hasAttribute('hidden'))
+      .withContext('los extra arrancan ocultos').toBeTrue();
   });
 
   it('oculta la sección de testimonios mientras no haya items', () => {

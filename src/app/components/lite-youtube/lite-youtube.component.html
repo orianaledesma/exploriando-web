@@ -14,12 +14,17 @@
     class="lite-youtube__poster"
     [attr.aria-label]="'Reproducir video: ' + title()"
     (click)="activate()">
-    <img
-      class="lite-youtube__thumb"
-      [src]="thumbUrl()"
-      [alt]="title()"
-      loading="lazy"
-      decoding="async" />
+    <picture>
+      @if (thumbWebp()) {
+        <source [srcset]="thumbWebp()" type="image/webp" />
+      }
+      <img
+        class="lite-youtube__thumb"
+        [src]="thumbUrl()"
+        [alt]="title()"
+        loading="lazy"
+        decoding="async" />
+    </picture>
     <span class="lite-youtube__play" aria-hidden="true">
       <svg viewBox="0 0 68 48" width="68" height="48">
         <path

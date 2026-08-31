@@ -1,0 +1,70 @@
+<section class="guias-premium" id="guias-premium" aria-labelledby="guias-premium-title">
+  <div class="container guias-premium__inner" appReveal>
+    <span class="section-label">{{ t().sectionLabel }}</span>
+    <h2 id="guias-premium-title">{{ t().headline }}</h2>
+    <p class="guias-premium__text">{{ t().text }}</p>
+
+    @if (enVenta) {
+      <!-- Modo venta: grilla de 1-3 guías con su botón de compra. -->
+      <p class="guias-premium__price">{{ t().price }}</p>
+      <ul class="guias-premium__grid" role="list">
+        @for (guia of t().guias; track guia.title; let i = $index) {
+          <li class="guias-premium__card" appReveal [delay]="80 + i * 80">
+            <p class="guias-premium__card-title">{{ guia.title }}</p>
+            <p class="guias-premium__card-place">{{ guia.place }}</p>
+            <p class="guias-premium__card-price">{{ guia.price }}</p>
+            <a [href]="guia.url" target="_blank" rel="noopener"
+               class="btn btn--primary" (click)="onBuyClick(guia.title)">
+              {{ guia.cta }}
+            </a>
+          </li>
+        }
+      </ul>
+    } @else {
+      <!-- Modo lista de espera: mismo formulario y proveedor que el resto de
+           las capturas de la página; sólo cambia `source` para segmentar. -->
+      @if (status() !== 'success' && status() !== 'duplicate') {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate
+              class="guias-premium__form" appReveal [delay]="120">
+          <div class="guias-premium__input-row">
+            <div class="form-field">
+              <label for="guias-premium-email" class="visually-hidden">{{ t().emailLabel }}</label>
+              <input id="guias-premium-email" type="email" formControlName="email"
+                     placeholder="tu@correo.com" autocomplete="email"
+                     [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+            </div>
+            <button type="submit" class="btn btn--primary"
+                    [disabled]="status() === 'loading'"
+                    [attr.aria-busy]="status() === 'loading'">
+              @if (status() === 'loading') {
+                <span class="spinner" aria-hidden="true"></span>
+              } @else {
+                {{ t().waitlistCta }} →
+              }
+            </button>
+          </div>
+
+          <div class="form-field--honeypot" aria-hidden="true">
+            <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+          </div>
+
+          @if (emailCtrl.invalid && emailCtrl.touched) {
+            <p class="field-error" role="alert">{{ t().errorEmail }}</p>
+          }
+          @if (status() === 'error') {
+            <p class="field-error" role="alert">{{ t().errorGeneric }}</p>
+          }
+          @if (status() === 'rateLimit') {
+            <p class="field-error" role="alert">{{ t().errorRate }}</p>
+          }
+        </form>
+
+        <p class="guias-premium__note">{{ t().note }}</p>
+      }
+
+      @if (status() === 'success' || status() === 'duplicate') {
+        <p class="guias-premium__success" aria-live="assertive">{{ t().success }}</p>
+      }
+    }
+  </div>
+</section>

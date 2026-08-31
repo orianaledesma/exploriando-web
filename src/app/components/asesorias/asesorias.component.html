@@ -1,0 +1,47 @@
+<section class="asesorias" id="asesorias" aria-labelledby="asesorias-title">
+  <div class="container">
+    <div class="vc-sessions" appReveal>
+      <p class="vc-sessions__pre">{{ t().preTitle }}</p>
+      <h2 id="asesorias-title" class="vc-sessions__title">{{ t().title }}</h2>
+      <p class="vc-sessions__sub">{{ t().sub }}</p>
+
+      <div class="vc-sessions__covers">
+        <p class="vc-sessions__covers-title">{{ t().coversTitle }}</p>
+        <ul class="vc-sessions__covers-list" role="list">
+          @for (item of t().covers; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
+
+      <div class="vc-sessions__grid">
+        <article class="vc-session-card">
+          <p class="vc-session-card__name">{{ t().session1Name }}</p>
+          <p class="vc-session-card__duration">{{ t().session1Duration }}</p>
+          <p class="vc-session-card__price">USD 150</p>
+          <a [href]="bookingUrl(t().session1Name + ' (USD 150)')"
+             target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta"
+             (click)="onSessionClick()">
+            {{ t().cta }}
+          </a>
+        </article>
+
+        <article class="vc-session-card vc-session-card--featured">
+          <span class="vc-session-card__badge">{{ t().session2Badge }}</span>
+          <p class="vc-session-card__name">{{ t().session2Name }}</p>
+          <p class="vc-session-card__duration">{{ t().session2Duration }}</p>
+          <p class="vc-session-card__price">USD 400</p>
+          <a [href]="bookingUrl(t().session2Name + ' (USD 400)')"
+             target="_blank" rel="noopener"
+             class="btn btn--primary vc-session-card__cta"
+             (click)="onSessionClick()">
+            {{ t().cta }}
+          </a>
+        </article>
+      </div>
+
+      <p class="vc-sessions__note">{{ t().ctaNote }}</p>
+    </div>
+  </div>
+</section>

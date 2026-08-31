@@ -1,0 +1,9 @@
+@for (src of sources(); track src; let i = $index) {
+  <figure class="hero-card" [class]="'hero-card hero-card--' + (i + 1)">
+    <picture>
+      <source [srcset]="src + '.webp'" type="image/webp" />
+      <img [src]="src + '.jpg'" [alt]="alts()[i]"
+           width="720" height="1280" loading="eager" decoding="async" />
+    </picture>
+  </figure>
+}

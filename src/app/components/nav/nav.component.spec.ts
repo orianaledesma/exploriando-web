@@ -67,10 +67,11 @@ describe('NavComponent', () => {
   });
 
   it('should render nav link hrefs from translations', () => {
-    // Con <base href="/"> los hashes se serializan como /#about, /#viajero-creador, etc.
+    // Con <base href="/"> los hashes se serializan como /#about, /#recursos, etc.
+    // Viajero Creador ya no es un ancla: tiene pestaña propia.
     const links = compiled.querySelectorAll<HTMLAnchorElement>('.nav__links .nav__link');
     expect(links[0]?.getAttribute('href')).toBe('/#about');
-    expect(links[1]?.getAttribute('href')).toBe('/#viajero-creador');
+    expect(links[1]?.getAttribute('href')).toBe('/viajero-creador');
     expect(links[2]?.getAttribute('href')).toBe('/marcas');
     expect(links[3]?.getAttribute('href')).toBe('/#recursos');
   });

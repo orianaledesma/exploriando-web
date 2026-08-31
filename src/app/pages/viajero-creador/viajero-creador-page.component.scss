@@ -1,0 +1,327 @@
+// Página /viajero-creador. Reutiliza el sistema de la página /marcas:
+// hero navy a ancho completo + secciones alternando bg-primary / bg-soft.
+
+:host {
+  display: block;
+}
+
+// ─── Hero de la página ───────────────────────────────────────────────────────
+// Mismo tratamiento que .marcas-hero: navy + glow azul arriba a la derecha.
+.vc-hero {
+  background-color: var(--color-bg-dark);
+  background-image:
+    radial-gradient(
+      circle at 82% 16%,
+      color-mix(in srgb, var(--color-blue) 22%, var(--color-navy)) 0%,
+      var(--color-navy) 60%
+    );
+  // 64px despeja el nav fijo.
+  padding: calc(var(--space-md) + 64px) 0 var(--space-lg);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    max-width: 620px;
+  }
+
+  h1 {
+    color: var(--color-text-on-dark);
+    max-width: 20ch;
+  }
+
+  &__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-on-dark);
+    opacity: 0.85;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .section-label { margin-bottom: 0; }
+}
+
+// ─── Qué vas a aprender ──────────────────────────────────────────────────────
+.vc-temas {
+  background-color: var(--color-bg-soft);
+  padding: var(--space-3xl) 0;
+
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+}
+
+.vc-subheadline {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  max-width: 640px;
+  margin-bottom: var(--space-sm);
+}
+
+.vc-intro {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  max-width: 640px;
+  margin-bottom: var(--space-xl);
+}
+
+.vc-topics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  list-style: none;
+  margin-bottom: var(--space-2xl);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.vc-topic {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: border-color var(--transition), transform var(--transition);
+
+  &:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  &__title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  &__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+}
+
+
+// ─── Aprendé gratis (playlist + grilla) ──────────────────────────────────────
+.vc-free {
+  background-color: var(--color-bg-primary);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text);
+    margin: var(--space-sm) 0 var(--space-xs);
+  }
+
+  // El badge global usa texto blanco (pensado para el hero oscuro). Acá el
+  // fondo es casi blanco → override a texto accent con fondo visible. Mismo
+  // arreglo que tenía .vc-youtube en la home.
+  .badge--fresh {
+    color: var(--color-accent);
+    background-color: rgba(255, 107, 107, 0.12);
+    border-color: rgba(255, 107, 107, 0.40);
+  }
+
+  &__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin: 0 auto var(--space-xl);
+    max-width: 56ch;
+  }
+
+  // El player mantiene el ancho de lectura; no se estira a todo el container.
+  &__player {
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+
+  &__grid {
+    list-style: none;
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    text-align: left;
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    background-color: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--transition), transform var(--transition);
+
+    &:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  &__card-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  &__card-title {
+    padding: var(--space-md);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  &__cta {
+    margin-top: var(--space-xl);
+  }
+}
+
+// ─── El curso (lista de espera / venta) ──────────────────────────────────────
+// Mismo patrón de sección centrada que .guias-premium en la home.
+.vc-curso {
+  background-color: var(--color-bg-soft);
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--color-border);
+
+  &__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  &__text {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  &__form {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  &__input-row {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+
+    .form-field { flex: 1; min-width: 200px; }
+  }
+
+  &__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  &__success {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  // Modo venta: card con precio + contenidos + botón de compra. Ya maquetada
+  // para que dar vuelta MODO_CURSO no requiera rediseñar nada.
+  &__card {
+    width: 100%;
+    max-width: 460px;
+    padding: var(--space-xl);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  &__price {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-accent);
+    line-height: 1;
+    margin: 0;
+  }
+
+  &__includes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+
+    li {
+      position: relative;
+      padding-left: var(--space-md);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.5;
+
+      + li { margin-top: var(--space-2xs); }
+
+      &::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+}
+
+// ─── Ritmo vertical en mobile ────────────────────────────────────────────────
+// Mismo ajuste que /marcas: 96px arriba/abajo es para desktop; en mobile
+// apila bandas enormes entre secciones.
+@media (max-width: 768px) {
+  .vc-temas,
+  .vc-free,
+  .vc-curso {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+}

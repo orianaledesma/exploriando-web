@@ -1,0 +1,200 @@
+:host {
+  display: block;
+}
+
+// Línea de tiempo "Cómo trabajo".
+//
+// Mobile-first (375px): los pasos se apilan y la línea corre vertical a la
+// izquierda, atravesando los puntos. Desktop (≥768px): los 4 pasos se reparten
+// en fila y la línea pasa a ser horizontal.
+//
+// La línea es un ::before decorativo del <ol> — el markup sigue siendo una
+// lista ordenada limpia para el lector de pantalla.
+
+$dot-size: 2.75rem;   // 44px
+$dot-half: 1.375rem;  // mitad del punto, para centrar la línea
+$line-w:   3px;
+
+.marcas-proceso {
+  &__title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text);
+    text-align: center;
+    margin: 0 0 var(--space-xs);
+  }
+
+  &__subtitle {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    text-align: center;
+    max-width: 56ch;
+    margin: 0 auto var(--space-xl);
+  }
+
+  // Panel: agrupa los 4 pasos en una sola unidad sobre el fondo bg-soft de la
+  // sección. Mismo recurso que .marcas-quote, que ya es una caja bg-primary
+  // dentro de esta misma sección → el bloque no introduce lenguaje nuevo.
+  &__steps {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-lg) var(--space-md);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    display: grid;
+    gap: var(--space-lg);
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg) var(--space-md);
+      align-items: start;
+      padding: var(--space-2xl) var(--space-xl);
+
+      // Línea horizontal única, del centro del primer punto al del último.
+      // El centro del primero cae a media columna del borde del contenido, y
+      // una columna es (contenido - 3 gaps) / 4 → media columna es /8.
+      &::before {
+        content: '';
+        position: absolute;
+        top: calc(var(--space-2xl) + #{$dot-half});
+        left:  calc(var(--space-xl) + (100% - var(--space-xl) * 2 - var(--space-md) * 3) / 8);
+        right: calc(var(--space-xl) + (100% - var(--space-xl) * 2 - var(--space-md) * 3) / 8);
+        height: $line-w;
+        transform: translateY(-50%);
+        border-radius: var(--radius-full);
+        // La línea lleva el sentido de avance: arranca en el azul de marca y
+        // termina en el aqua, que es el color del resultado en todo el sitio.
+        background-image: linear-gradient(
+          90deg,
+          var(--color-accent) 0%,
+          var(--color-accent-fresh) 100%
+        );
+      }
+    }
+  }
+
+  &__step {
+    position: relative;
+    padding-left: calc(#{$dot-size} + var(--space-md));
+
+    // Tramo de línea hasta el punto siguiente (cruza el gap del grid).
+    &::before {
+      content: '';
+      position: absolute;
+      top: $dot-size;
+      bottom: calc(-1 * var(--space-lg));
+      left: $dot-half;
+      width: $line-w;
+      transform: translateX(-50%);
+      border-radius: var(--radius-full);
+    }
+
+    // El último paso cierra el recorrido: no dibuja tramo.
+    &:last-child::before { content: none; }
+
+    // Cada tramo toma su franja del degradado azul → aqua, así los 3 tramos
+    // se leen como una sola línea continua que progresa.
+    &:nth-child(1)::before {
+      background-image: linear-gradient(180deg,
+        var(--color-accent) 0%,
+        color-mix(in srgb, var(--color-accent) 66%, var(--color-accent-fresh)) 100%);
+    }
+    &:nth-child(2)::before {
+      background-image: linear-gradient(180deg,
+        color-mix(in srgb, var(--color-accent) 66%, var(--color-accent-fresh)) 0%,
+        color-mix(in srgb, var(--color-accent) 33%, var(--color-accent-fresh)) 100%);
+    }
+    &:nth-child(3)::before {
+      background-image: linear-gradient(180deg,
+        color-mix(in srgb, var(--color-accent) 33%, var(--color-accent-fresh)) 0%,
+        var(--color-accent-fresh) 100%);
+    }
+
+    @media (min-width: 768px) {
+      padding-left: 0;
+      text-align: center;
+
+      // En desktop la línea es una sola barra horizontal en el <ol>.
+      &::before { content: none; }
+    }
+  }
+
+  // Punto numerado. Relleno --color-blue-mid (no --color-accent): el numeral
+  // blanco sobre el azul de marca da 4.16:1 y a este tamaño no califica como
+  // texto grande, así que no llegaba a AA. Con blue-mid son 7.66:1.
+  // El anillo del color del panel tapa la línea que pasa por detrás.
+  &__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $dot-size;
+    height: $dot-size;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background-color: var(--color-blue-mid);
+    color: var(--color-text-on-accent);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-black);
+    line-height: 1;
+    box-shadow:
+      0 0 0 6px var(--proceso-dot-ring, var(--color-bg-primary)),
+      var(--shadow-sm);
+
+    @media (min-width: 768px) {
+      position: static;
+      margin: 0 auto var(--space-md);
+    }
+  }
+
+  &__step-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-sm);
+    // En mobile el título arranca a la altura del punto.
+    min-height: $dot-size;
+    display: flex;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      display: block;
+      min-height: 0;
+    }
+  }
+
+  &__step-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    text-align: left;
+
+    li {
+      position: relative;
+      padding-left: var(--space-md);
+
+      + li { margin-top: var(--space-sm); }
+
+      // Viñeta aqua: mismo acento con el que termina la línea, así los
+      // entregables se leen como parte del mismo recorrido.
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 6px;
+        height: 6px;
+        border-radius: var(--radius-full);
+        background-color: var(--color-accent-fresh);
+        box-shadow: 0 0 0 3px var(--color-fresh-glow);
+      }
+    }
+  }
+}

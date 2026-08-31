@@ -1,0 +1,61 @@
+// Dos frames verticales en abanico, como naipes en la mano. El de atrás cae a
+// la izquierda y el de adelante monta encima, rotado al otro lado.
+//
+// El host es el que se posiciona dentro del hero; acá adentro sólo vive el
+// abanico. Los tamaños están pensados sobre fondo oscuro (hero de /marcas).
+:host {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  align-self: center;
+  // Ancho del par = las dos cards menos el solape. Se mantiene un solape
+  // chico (~20px) para que sigan leyéndose como naipes en abanico y no como
+  // dos fotos sueltas, pero sin que la de adelante tape al sujeto de atrás.
+  width: 280px;    // 150 + 150 − 20
+  height: 300px;
+
+  @media (min-width: 900px) {
+    width: 364px;  // 196 + 196 − 28
+    height: 380px;
+    align-self: auto;
+  }
+}
+
+.hero-card {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  width: 150px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  // Filo claro para que el frame se despegue del navy del hero.
+  box-shadow:
+    0 0 0 1px rgba(240, 248, 255, 0.22),
+    var(--shadow-lg);
+
+  @media (min-width: 900px) { width: 196px; }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+  }
+
+  // Atrás, inclinado a la izquierda.
+  &--1 {
+    left: 0;
+    transform: rotate(-7deg);
+    z-index: 1;
+  }
+
+  // Adelante, montado y algo más abajo — el escalón hace la lectura de
+  // "dos naipes" en vez de "dos fotos pegadas".
+  &--2 {
+    right: 0;
+    top: var(--space-lg);
+    transform: rotate(5deg);
+    z-index: 2;
+  }
+}

@@ -1,75 +1,12 @@
 <section class="viajero-creador" id="viajero-creador" aria-labelledby="vc-title">
-  <div class="container">
-
-    <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
-    <h2 id="vc-title" appReveal [delay]="80">{{ t().headline }}</h2>
-    <p class="vc-subheadline" appReveal [delay]="160">{{ t().subheadline }}</p>
-    <p class="vc-intro" appReveal [delay]="240">{{ t().intro }}</p>
-
-    <ul class="vc-topics" role="list">
-      @for (topic of t().topics; track topic.title; let i = $index) {
-        <li class="vc-topic" appReveal [delay]="320 + i * 80">
-          <h3 class="vc-topic__title">{{ topic.title }}</h3>
-          <p class="vc-topic__desc">{{ topic.description }}</p>
-        </li>
-      }
-    </ul>
-
-    <!-- Contenido gratis en YouTube (objetivo: watch hours del canal) -->
-    <div class="vc-youtube" appReveal [delay]="440">
-      <span class="badge badge--fresh">{{ t().youtube.badge }}</span>
-      <p class="vc-youtube__text">{{ t().youtube.text }}</p>
-      <a [href]="youtubeUrl" target="_blank" rel="noopener"
-         class="btn btn--primary btn--lg vc-youtube__cta"
-         (click)="onYoutubeClick()">
-        {{ t().youtube.cta }} →
-      </a>
-    </div>
-
-    <!-- Sesiones 1:1 — único producto pago -->
-    <div class="vc-sessions" appReveal [delay]="560">
-      <p class="vc-sessions__pre">{{ t().sessions.preTitle }}</p>
-      <h3 class="vc-sessions__title">{{ t().sessions.title }}</h3>
-      <p class="vc-sessions__sub">{{ t().sessions.sub }}</p>
-
-      <div class="vc-sessions__covers">
-        <p class="vc-sessions__covers-title">{{ t().sessions.coversTitle }}</p>
-        <ul class="vc-sessions__covers-list" role="list">
-          @for (item of t().sessions.covers; track item) {
-            <li>{{ item }}</li>
-          }
-        </ul>
-      </div>
-
-      <div class="vc-sessions__grid">
-        <article class="vc-session-card">
-          <p class="vc-session-card__name">{{ t().sessions.session1Name }}</p>
-          <p class="vc-session-card__duration">{{ t().sessions.session1Duration }}</p>
-          <p class="vc-session-card__price">USD 150</p>
-          <a [href]="bookingUrl(t().sessions.session1Name + ' (USD 150)')"
-             target="_blank" rel="noopener"
-             class="btn btn--primary vc-session-card__cta"
-             (click)="onSessionClick()">
-            {{ t().sessions.cta }}
-          </a>
-        </article>
-
-        <article class="vc-session-card vc-session-card--featured">
-          <span class="vc-session-card__badge">{{ t().sessions.session2Badge }}</span>
-          <p class="vc-session-card__name">{{ t().sessions.session2Name }}</p>
-          <p class="vc-session-card__duration">{{ t().sessions.session2Duration }}</p>
-          <p class="vc-session-card__price">USD 400</p>
-          <a [href]="bookingUrl(t().sessions.session2Name + ' (USD 400)')"
-             target="_blank" rel="noopener"
-             class="btn btn--primary vc-session-card__cta"
-             (click)="onSessionClick()">
-            {{ t().sessions.cta }}
-          </a>
-        </article>
-      </div>
-
-      <p class="vc-sessions__note">{{ t().sessions.ctaNote }}</p>
-    </div>
-
+  <div class="container viajero-creador__inner" appReveal>
+    <span class="section-label">{{ t().sectionLabel }}</span>
+    <h2 id="vc-title">{{ t().teaser.headline }}</h2>
+    <p class="viajero-creador__text">{{ t().teaser.text }}</p>
+    <a routerLink="/viajero-creador"
+       class="btn btn--primary btn--lg"
+       (click)="onCtaClick()">
+      {{ t().teaser.cta }} →
+    </a>
   </div>
 </section>
