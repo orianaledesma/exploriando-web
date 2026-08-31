@@ -1,0 +1,20 @@
+<!-- `<ol>` porque los pasos son una secuencia real; la línea que los une es
+     decorativa (::before del <ol>) y no ensucia el markup para el lector. -->
+<div class="marcas-proceso">
+  <h3 [id]="titleId()" class="marcas-proceso__title" appReveal>{{ title() }}</h3>
+  <p class="marcas-proceso__subtitle" appReveal [delay]="80">{{ subtitle() }}</p>
+
+  <ol class="marcas-proceso__steps">
+    @for (step of steps(); track step.title; let i = $index) {
+      <li class="marcas-proceso__step" appReveal [delay]="160 + i * 100">
+        <span class="marcas-proceso__dot" aria-hidden="true">{{ i + 1 }}</span>
+        <h4 class="marcas-proceso__step-title">{{ step.title }}</h4>
+        <ul class="marcas-proceso__step-list" role="list">
+          @for (item of step.items; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </li>
+    }
+  </ol>
+</div>
