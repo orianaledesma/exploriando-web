@@ -17,7 +17,7 @@ const HEYMONDO_URL =
   'https://heymondo.com/es?utm_medium=Afiliado&utm_source=EXPLORIANDO&utm_campaign=PRINCIPAL&cod_descuento=EXPLORIANDO&ag_campaign=EXPLORINADO&agencia=RXGocXNhwlEf9dfvWARvzOR3PxgEf1EDpXKFUVJa&redirect=TEMPORAL';
 
 const REVOLUT_URL =
-  'https://revolut.com/referral/?referral-code=oriledesma!MAY2-26-AR-H2-RNDM&geo-redirect';
+  'https://revolut.com/referral/?referral-code=oriledesma!SEP1-26-AR-H3&geo-redirect';
 
 @Component({
   selector: 'app-guia',

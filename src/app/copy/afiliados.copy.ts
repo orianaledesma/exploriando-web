@@ -59,8 +59,23 @@ export const AFILIADOS_COPY_A: AfiliadosCopy = {
         'En mi primer año de uso me ahorré cientos de euros. La cuenta es gratis.',
       disclaimer: 'Cuenta gratuita. Sin costos de apertura.',
       cta:        'Abrir cuenta gratis',
-      ctaUrl:     'https://revolut.com/referral/?referral-code=oriledesma!MAY2-26-AR-H2-RNDM&geo-redirect',
+      ctaUrl:     'https://revolut.com/referral/?referral-code=oriledesma!SEP1-26-AR-H3&geo-redirect',
       badge:      'Gratis',
+    },
+    {
+      id:         'airalo',
+      logo:       '📶',
+      name:       'Airalo',
+      tagline:    'Internet apenas aterrizás, sin buscar chip.',
+      body:
+        'eSIM que activás antes de subirte al avión: llegás con datos funcionando, ' +
+        'sin colas ni chips locales. La uso en cada viaje desde hace años.',
+      disclaimer: 'Planes desde USD 4,50.',
+      cta:        'Conseguir eSIM',
+      // TODO(Ori): reemplazar por el link de AFILIADO de Airalo. Mientras tanto
+      // apunta al sitio público — el botón funciona pero no genera comisión.
+      ctaUrl:     'https://www.airalo.com/',
+      badge:      'La que yo uso',
     },
   ],
   footerNote:

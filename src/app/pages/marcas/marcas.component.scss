@@ -23,12 +23,31 @@
     gap: var(--space-md);
   }
 
+  // Texto + naipes. Se parte en dos columnas recién a 900px: abajo de eso
+  // las dos cosas juntas dejan el titular demasiado angosto.
+  &__top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xl);
+    width: 100%;
+
+    @media (min-width: 900px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2xl);
+    }
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
     max-width: 620px;
+
+    @media (min-width: 900px) { flex: 1; }
   }
 
   &__back {
@@ -56,7 +75,63 @@
   .section-label { margin-bottom: 0; }
 }
 
-// ─── Quién soy + audiencia ──────────────────────────────────────────────────
+// ─── Franja de specs de producción ──────────────────────────────────────────
+// Cierra el hero con tres capacidades concretas. Va sobre el navy del hero
+// para no sumar una banda más entre el hero y "Quién soy".
+
+.marcas-specs {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md) 0 0;
+  border-top: 1px solid rgba(240, 248, 255, 0.18);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  &__item {
+    position: relative;
+    padding-left: var(--space-md);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-on-dark);
+    line-height: 1.5;
+
+    // Marcador aqua: el mismo acento con el que el sitio señala "concreto".
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      background-color: var(--color-accent-fresh);
+    }
+
+    // Separadores sólo entre columnas, nunca antes de la primera.
+    @media (min-width: 768px) {
+      padding: 0 var(--space-lg) 0 calc(var(--space-lg) + var(--space-md));
+
+      &::before { left: var(--space-lg); }
+
+      + .marcas-specs__item {
+        border-left: 1px solid rgba(240, 248, 255, 0.18);
+      }
+
+      &:first-child {
+        padding-left: var(--space-md);
+        &::before { left: 0; }
+      }
+    }
+  }
+}
+
+// ─── Quién soy ──────────────────────────────────────────────────────────────
 
 .marcas-about {
   padding-top: var(--space-3xl);
@@ -153,6 +228,12 @@
   }
 }
 
+.marcas-portfolio__expand {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-lg);
+}
+
 .marcas-video-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -168,6 +249,9 @@
 }
 
 .marcas-video-card {
+  // `display: flex` de abajo pisa el `display: none` implícito de [hidden].
+  &[hidden] { display: none; }
+
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -197,6 +281,39 @@
     aspect-ratio: 9 / 16;
   }
 
+  // Pieza sólo de Instagram: el frame es un link, no un player.
+  &__player--link {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-dark);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--transition);
+    }
+
+    &:hover img,
+    &:focus-visible img { transform: scale(1.03); }
+
+    .marcas-video-card__play {
+      position: relative;
+      z-index: var(--z-above);
+      pointer-events: none;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: -3px;
+    }
+  }
+
   &__meta {
     padding: var(--space-sm) var(--space-md) var(--space-md);
     display: flex;
@@ -208,7 +325,24 @@
     font-size: var(--text-sm);
     font-weight: var(--font-weight-bold);
     color: var(--color-text);
+    margin-bottom: 0;
+  }
+
+  // Destino / marca — subordinado al título, nunca protagonista.
+  &__location {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     margin-bottom: var(--space-2xs);
+  }
+
+  // Links de verificación, en fila: son secundarios, no un dato a leer.
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: auto;
   }
 
   .vstat {
@@ -223,14 +357,6 @@
     &__ico {
       width: 15px;
       height: 15px;
-      flex-shrink: 0;
-    }
-
-    &__ext {
-      width: 12px;
-      height: 12px;
-      margin-left: auto;
-      opacity: 0.55;
       flex-shrink: 0;
     }
 
@@ -312,10 +438,19 @@
     line-height: 1;
   }
 
+  // Sin precio, la card perdía su ancla visual. El plazo/alcance la recupera
+  // como chip — no como número gritado: es una duración, no un importe.
+  // En la Auditoría (única card con precio) el chip queda debajo del importe.
   .ugc__package-delivery {
+    align-self: flex-start;
+    margin-top: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-accent-dim);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    margin-top: calc(-1 * var(--space-2xs));
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-blue-mid);
+    line-height: 1.3;
   }
 
   .ugc__package-desc {
@@ -371,7 +506,7 @@
     color: var(--color-text-muted);
   }
 
-  // Bloque "Empecemos fácil" — entrada €120 / content × stay.
+  // Bloque "Empecemos fácil" — entrada €200 / content × stay.
   &__start {
     font-size: var(--text-base);
     line-height: 1.7;
@@ -466,5 +601,114 @@
   .marcas-cta {
     padding-top: var(--space-xl);
     padding-bottom: var(--space-xl);
+  }
+}
+
+
+// ─── Contacto directo (par de botones) ───────────────────────────────────────
+
+// Par Instagram + mail. Reutiliza .btn del sistema: acá sólo va la disposición.
+.contact-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+
+  // Mobile: apilados, primario arriba. Ancho natural, como el resto del sitio.
+  @media (max-width: 559px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  // Área táctil mínima (WCAG 2.5.5).
+  .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Dentro de una tarjeta de paquete el ancho es chico → siempre apilados.
+  &--card {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: auto;
+  }
+}
+
+
+
+// ─── Servicios: grilla extra, derechos y CTA de cotización ───────────────────
+
+// El selector va calificado con .marcas-paquetes porque el `display: grid` de
+// la grilla está anidado ahí — sin eso gana por especificidad y [hidden] no hace
+// nada (mismo bug que tuvimos en las tarjetas del portafolio).
+.marcas-paquetes .ugc__packages--extra {
+  margin-top: var(--space-md);
+
+  // display:none real (no sólo opacidad) → no enfocable ni leído si está cerrada.
+  &[hidden] { display: none; }
+}
+
+.marcas-rights {
+  max-width: 720px;
+  margin: var(--space-lg) auto 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.marcas-proceso-block {
+  display: block;
+  margin-top: var(--space-2xl);
+}
+
+// El puente al taller (oculto hasta que exista /taller) es la misma caja que
+// el CTA de cotización; sólo cambia que va centrado.
+.marcas-quote,
+.marcas-taller {
+  max-width: 600px;
+  margin: var(--space-xl) auto 0;
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-primary);
+
+  &__title {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+
+  &__list {
+    margin: 0 0 var(--space-sm);
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+
+    li + li { margin-top: var(--space-2xs); }
+  }
+
+  &__closing {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+  }
+}
+
+.marcas-taller {
+  text-align: center;
+
+  &__title {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-2xs);
+  }
+
+  &__text {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
   }
 }

@@ -60,7 +60,7 @@
     </div>
 
     <nav class="footer__nav" aria-label="Links del footer">
-      @for (col of [t().footer.columns.explore, t().footer.columns.community, t().footer.columns.brands, t().footer.columns.work]; track col.title) {
+      @for (col of [t().footer.columns.explore, t().footer.columns.community, t().footer.columns.brands]; track col.title) {
         <div class="footer__col">
           <p class="footer__col-title">{{ col.title }}</p>
           @for (link of col.links; track link.href) {
