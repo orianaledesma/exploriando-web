@@ -1,0 +1,153 @@
+<main class="vc-page">
+
+  <!-- 1 · Hero de la página -->
+  <section class="vc-hero">
+    <div class="container vc-hero__inner">
+      <span class="section-label hero-enter hero-enter-2">{{ t().hero.sectionLabel }}</span>
+      <h1 class="hero-enter hero-enter-3">{{ t().hero.headline }}</h1>
+      <p class="vc-hero__sub hero-enter hero-enter-4">{{ t().hero.text }}</p>
+      <a href="#aprende-gratis" class="btn btn--primary btn--lg hero-enter hero-enter-5">
+        {{ t().hero.cta }} ↓
+      </a>
+    </div>
+  </section>
+
+  <!-- 2 · Qué vas a aprender -->
+  <section class="vc-temas" aria-labelledby="vc-temas-title">
+    <div class="container">
+      <h2 id="vc-temas-title" appReveal>{{ t().headline }}</h2>
+      <p class="vc-subheadline" appReveal [delay]="80">{{ t().subheadline }}</p>
+      <p class="vc-intro" appReveal [delay]="160">{{ t().intro }}</p>
+
+      <ul class="vc-topics" role="list">
+        @for (topic of t().topics; track topic.title; let i = $index) {
+          <li class="vc-topic" appReveal [delay]="240 + i * 80">
+            <h3 class="vc-topic__title">{{ topic.title }}</h3>
+            <p class="vc-topic__desc">{{ topic.description }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 · Aprendé gratis: playlist embebida + grilla de videos -->
+  <section class="vc-free" id="aprende-gratis" aria-labelledby="vc-free-title">
+    <div class="container">
+      <span class="badge badge--fresh" appReveal>{{ t().youtube.badge }}</span>
+      <h2 id="vc-free-title" appReveal [delay]="80">{{ t().free.title }}</h2>
+      <p class="vc-free__sub" appReveal [delay]="160">{{ t().free.subtitle }}</p>
+
+      <!-- El embed arranca en el primer video y sigue con la playlist entera.
+           Poster liviano: el iframe sólo se carga al hacer click. -->
+      <div class="vc-free__player" appReveal [delay]="240">
+        <app-lite-youtube
+          [videoId]="firstVideoId"
+          [playlistId]="playlistId"
+          thumbQuality="maxresdefault"
+          [title]="t().free.title" />
+      </div>
+
+      <!-- Videos sueltos de la playlist. La lista vive en el componente
+           (`FREE_VIDEOS`) — sumar entradas ahí es lo único necesario. -->
+      <ul class="vc-free__grid" role="list">
+        @for (video of videos; track video.id; let i = $index) {
+          <li class="vc-free__card" appReveal [delay]="320 + i * 60">
+            <a class="vc-free__card-link"
+               [href]="'https://www.youtube.com/watch?v=' + video.id + '&list=' + playlistId"
+               target="_blank" rel="noopener"
+               (click)="onVideoClick(video.title)">
+              <img class="vc-free__card-thumb"
+                   [src]="'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'"
+                   [alt]="video.title"
+                   loading="lazy" decoding="async" />
+              <span class="vc-free__card-title">{{ video.title }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="vc-free__cta" appReveal>
+        <a [href]="playlistUrl" target="_blank" rel="noopener"
+           class="btn btn--primary btn--lg"
+           (click)="onYoutubeClick()">
+          {{ t().free.cta }} →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · El curso completo — lista de espera (modo venta preparado) -->
+  <section class="vc-curso" id="curso" aria-labelledby="vc-curso-title">
+    <div class="container vc-curso__inner" appReveal>
+      <span class="section-label">{{ t().curso.sectionLabel }}</span>
+      <h2 id="vc-curso-title">{{ t().curso.title }}</h2>
+      <p class="vc-curso__text">{{ t().curso.text }}</p>
+
+      @if (cursoEnVenta) {
+        <!-- Modo venta: card con precio, contenidos y botón de compra. -->
+        <div class="vc-curso__card">
+          <p class="vc-curso__price">{{ t().curso.price }}</p>
+          <ul class="vc-curso__includes" role="list">
+            @for (item of t().curso.includes; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+          <a [href]="cursoCheckout" target="_blank" rel="noopener"
+             class="btn btn--primary btn--lg">
+            {{ t().curso.salesCta }} →
+          </a>
+        </div>
+      } @else {
+        <!-- Lista de espera: mismo form y proveedor que el resto de las
+             capturas; sólo cambia `source` ('curso-creador') para segmentar. -->
+        @if (status() !== 'success' && status() !== 'duplicate') {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate
+                class="vc-curso__form" appReveal [delay]="120">
+            <div class="vc-curso__input-row">
+              <div class="form-field">
+                <label for="curso-email" class="visually-hidden">{{ t().curso.emailLabel }}</label>
+                <input id="curso-email" type="email" formControlName="email"
+                       placeholder="tu@correo.com" autocomplete="email"
+                       [attr.aria-invalid]="emailCtrl.invalid && emailCtrl.touched" />
+              </div>
+              <button type="submit" class="btn btn--primary"
+                      [disabled]="status() === 'loading'"
+                      [attr.aria-busy]="status() === 'loading'">
+                @if (status() === 'loading') {
+                  <span class="spinner" aria-hidden="true"></span>
+                } @else {
+                  {{ t().curso.waitlistCta }} →
+                }
+              </button>
+            </div>
+
+            <div class="form-field--honeypot" aria-hidden="true">
+              <input type="text" formControlName="trap" tabindex="-1" autocomplete="off" />
+            </div>
+
+            @if (emailCtrl.invalid && emailCtrl.touched) {
+              <p class="field-error" role="alert">{{ t().curso.errorEmail }}</p>
+            }
+            @if (status() === 'error') {
+              <p class="field-error" role="alert">{{ t().curso.errorGeneric }}</p>
+            }
+            @if (status() === 'rateLimit') {
+              <p class="field-error" role="alert">{{ t().curso.errorRate }}</p>
+            }
+          </form>
+
+          <p class="vc-curso__note">{{ t().curso.note }}</p>
+        }
+
+        @if (status() === 'success' || status() === 'duplicate') {
+          <p class="vc-curso__success" aria-live="assertive">{{ t().curso.success }}</p>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- 5 · Newsletter: es el bloque del footer, que AppComponent ya rinde en
+       todas las rutas. No se duplica acá.
+       Las asesorías 1:1 viven en la home (`app-asesorias`), no acá. -->
+
+</main>

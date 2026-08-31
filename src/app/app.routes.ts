@@ -12,6 +12,16 @@ export const routes: Routes = [
   },
   { path: 'guia',   component: GuiaComponent    },
 
+  // Viajero Creador — pestaña propia (antes era una sección de la home).
+  // Lazy: playlist + grilla de videos + waitlist, contenido que el visitante
+  // de la home no siempre abre. Prerendera igual (SSG soporta lazy routes).
+  {
+    path: 'viajero-creador',
+    loadComponent: () =>
+      import('./pages/viajero-creador/viajero-creador-page.component')
+        .then(m => m.ViajeroCreadorPageComponent),
+  },
+
   // Mapa + listado por país + blog post por ciudad — lazy para no inflar la landing.
   {
     path: 'mapa',

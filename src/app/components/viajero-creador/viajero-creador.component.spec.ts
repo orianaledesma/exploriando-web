@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ViajeroCreadorComponent } from './viajero-creador.component';
 import { LanguageService } from '../../services/language.service';
@@ -7,13 +8,14 @@ import { TRANSLATIONS } from '../../translations/translations';
 
 const COPY = TRANSLATIONS.es.viajeroCreador;
 
-describe('ViajeroCreadorComponent', () => {
+describe('ViajeroCreadorComponent (teaser)', () => {
   let fixture: ComponentFixture<ViajeroCreadorComponent>;
   let compiled: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ViajeroCreadorComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     TestBed.inject(LanguageService).set('es');
@@ -27,55 +29,36 @@ describe('ViajeroCreadorComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render section label, headline and all topics', () => {
+  it('should render section label and teaser headline', () => {
     expect(compiled.querySelector('.section-label')?.textContent?.trim())
       .toBe(COPY.sectionLabel);
-    expect(compiled.querySelector('h2#vc-title')?.textContent?.trim())
-      .toBe(COPY.headline);
-    expect(compiled.querySelectorAll('.vc-topic').length)
-      .toBe(COPY.topics.length);
+    expect(compiled.querySelector('h2')?.textContent?.trim())
+      .toBe(COPY.teaser.headline);
   });
 
-  it('should NOT render any waitlist form (model: free content lives on YouTube)', () => {
-    expect(compiled.querySelector('form')).toBeNull();
-    expect(compiled.querySelector('input[type="email"]')).toBeNull();
+  it('should render a single teaser paragraph', () => {
+    const paragraphs = compiled.querySelectorAll('p');
+    expect(paragraphs.length).toBe(1);
+    expect(paragraphs[0]?.textContent?.trim()).toBe(COPY.teaser.text);
   });
 
-  it('primary CTA points to the YouTube channel', () => {
-    const cta = compiled.querySelector<HTMLAnchorElement>('.vc-youtube__cta');
-    const href = cta?.getAttribute('href') ?? '';
-    expect(href).toContain('youtube.com/watch');
-    expect(href).toContain('list=PLjZ30HHREgvqeMNLcj36yBabdMVw_fAwa');
-    expect(cta?.textContent?.trim()).toContain(COPY.youtube.cta);
+  it('should NOT render the full content, which now lives on the page', () => {
+    expect(compiled.querySelector('.vc-topics')).toBeNull();
+    expect(compiled.querySelector('.vc-sessions')).toBeNull();
   });
 
-  it('session CTAs carry the specific session in the Calendly a1 tag', () => {
-    const ctas = compiled.querySelectorAll<HTMLAnchorElement>('.vc-session-card__cta');
-    expect(ctas.length).toBe(2);
-    const hrefs = Array.from(ctas).map(c => c.getAttribute('href') ?? '');
-    hrefs.forEach(href => {
-      expect(href).toContain('calendly.com/orianaledesma/asesoria-exploriando?a1=');
-      expect(href).toContain(encodeURIComponent('Asesoría 1:1'));
-    });
-    // cada card lleva su precio para que Ori sepa cuál eligió
-    expect(hrefs[0]).toContain(encodeURIComponent('USD 150'));
-    expect(hrefs[1]).toContain(encodeURIComponent('USD 400'));
+  it('should render CTA pointing to /viajero-creador', () => {
+    const cta = compiled.querySelector<HTMLAnchorElement>('a.btn');
+    expect(cta?.getAttribute('href')).toBe('/viajero-creador');
+    expect(cta?.textContent?.trim()).toContain(COPY.teaser.cta);
   });
 
-  it('tracks the YouTube click', () => {
+  it('should track on CTA click', () => {
     const trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
     fixture.debugElement
-      .query(By.css('.vc-youtube__cta'))
+      .query(By.css('a.btn'))
       .triggerEventHandler('click', new MouseEvent('click'));
-    expect(trackSpy).toHaveBeenCalledWith('viajero_creador_youtube_click');
-  });
-
-  it('tracks the session click', () => {
-    const trackSpy = spyOn(TestBed.inject(AnalyticsService), 'track');
-    fixture.debugElement
-      .query(By.css('.vc-session-card__cta'))
-      .triggerEventHandler('click', new MouseEvent('click'));
-    expect(trackSpy).toHaveBeenCalledWith('viajero_creador_session_click');
+    expect(trackSpy).toHaveBeenCalledWith('viajero_creador_teaser_click');
   });
 
   it('should have id for anchor navigation', () => {

@@ -14,9 +14,15 @@ export type AnalyticsEvent =
   | 'email_capture_submit'    // submit exitoso de cualquier form (param `source` lo identifica: hero/footer/guia/viajero-creador/etc.)
   | 'email_capture_error'     // error en submit (EmailJS, network)
   | 'marcas_form_click'       // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
+  | 'en_vivo_click'            // CTA al canal desde el bloque del vivo diario
+  | 'guias_premium_click'      // CTA/compra de una guía premium (param `guia`)
+  | 'servicios_ver_mas'        // despliega los 3 servicios extra en /marcas
+  | 'portfolio_ver_mas'        // despliega los trabajos anteriores en /marcas
   | 'marcas_teaser_click'     // CTA del teaser B2B en el landing → deriva a /marcas
   | 'viajero_creador_youtube_click'  // CTA al canal de YouTube (watch hours)
   | 'viajero_creador_session_click'  // CTA a reservar sesión 1:1 (Calendly)
+  | 'viajero_creador_teaser_click'   // CTA del teaser en la home → /viajero-creador
+  | 'viajero_creador_video_click'    // click a un video suelto de la grilla gratuita
   | 'affiliate_click';        // click outbound a un link de afiliado (param `partner` = id de la card)
 
 export type AnalyticsParams = Record<string, string | number | boolean>;

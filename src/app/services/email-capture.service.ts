@@ -30,6 +30,8 @@ const SOURCE_LABELS: Record<EmailCaptureData['source'], string> = {
   'footer':             'Footer — CTA final',
   'viajero-creador':    'Viajero Creador — Waitlist',
   'guia':               'Página /guia — Lectura completa',
+  'guias-premium':      'Guías premium — Lista de espera',
+  'curso-creador':      'Curso Viajero Creador — Lista de espera',
 };
 
 @Injectable({ providedIn: 'root' })
