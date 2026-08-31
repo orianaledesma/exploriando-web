@@ -1,0 +1,157 @@
+:host {
+  display: block;
+}
+
+// Sesiones 1:1 — el único producto pago del lado viajero. Vive en la home
+// (decisión Ori 2026-08-31): es lo que ve quien aterriza, no hace falta que
+// entre a /viajero-creador para encontrarlo.
+//
+// El copy sigue en `viajeroCreador.sessions` de las traducciones: es el mismo
+// texto de siempre, no se renombró la clave para no tocar los 3 idiomas.
+.asesorias {
+  background-color: var(--color-bg-soft);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-xl) 0;   // mobile
+
+  @media (min-width: 768px) {
+    padding: var(--space-3xl) 0;
+  }
+}
+
+.vc-sessions {
+  // Sección propia: el fondo y el padding los pone .vc-sessions-section.
+
+  &__pre {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2xs);
+  }
+
+  &__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+
+  &__sub {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 640px;
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+  }
+
+  &__covers {
+    margin-bottom: var(--space-xl);
+  }
+
+  &__covers-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+
+  &__covers-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+    max-width: 640px;
+
+    @media (min-width: 640px) {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-lg);
+    }
+
+    li {
+      position: relative;
+      padding-left: var(--space-md);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.5;
+
+      &::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  &__note {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+}
+
+.vc-session-card {
+  position: relative;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+
+  &--featured {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
+
+  &__badge {
+    position: absolute;
+    top: calc(-1 * var(--space-xs));
+    right: var(--space-md);
+    background-color: var(--color-accent-warm);
+    color: var(--color-text-on-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__name {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  &__duration {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  &__price {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: var(--space-md);
+  }
+
+  &__cta {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+}
