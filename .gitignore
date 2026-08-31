@@ -52,3 +52,7 @@ src/environments/environment.ts
 # Output de scripts/discover-youtube-videos.mjs (regenerable)
 scripts/youtube-matches.json
 scripts/youtube-recommended.json
+
+# Originales en crudo de los frames de entrega (19 MB de PNG).
+# Los versionados son los WebP q95 de _entrega/frames/.
+_entrega/_originales/
