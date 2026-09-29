@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LanguageService } from './services/language.service';
@@ -9,7 +9,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideHttpClient(), provideRouter([])],
+      providers: [provideHttpClient(withXhr()), provideRouter([])],
     }).compileComponents();
   });
 
