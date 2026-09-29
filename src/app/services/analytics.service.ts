@@ -23,7 +23,8 @@ export type AnalyticsEvent =
   | 'viajero_creador_session_click'  // CTA a reservar sesión 1:1 (Calendly)
   | 'viajero_creador_teaser_click'   // CTA del teaser en la home → /viajero-creador
   | 'viajero_creador_video_click'    // click a un video suelto de la grilla gratuita
-  | 'affiliate_click';        // click outbound a un link de afiliado (param `partner` = id de la card)
+  | 'affiliate_click'         // click outbound a un link de afiliado (param `partner` = id de la card)
+  | 'latina_connection_click';  // salida a latinaconnection.info desde la banda de la home (param `lang`)
 
 export type AnalyticsParams = Record<string, string | number | boolean>;
 

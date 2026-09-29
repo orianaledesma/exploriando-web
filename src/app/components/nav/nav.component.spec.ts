@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { NavComponent } from './nav.component';
+import { TRANSLATIONS } from '../../translations/translations';
 
 describe('NavComponent', () => {
     let fixture: ComponentFixture<NavComponent>;
@@ -59,11 +60,12 @@ describe('NavComponent', () => {
 
     // ─── Nav links ─────────────────────────────────────────────────────────────
 
-    it('should render all 4 nav links from translations', () => {
-        // Translations actuales: Nosotros, Viajero Creador, Marcas, Recursos.
-        // (#documentacion fue removido cuando se ocultó la sección IA por costos.)
+    it('should render every nav link from translations', () => {
+        // Derivado de las traducciones, no un número fijo: agregar o sacar una
+        // entrada del menú no debería obligar a editar este test.
+        const expected = TRANSLATIONS.es.nav.links.length;
         const links = compiled.querySelectorAll('.nav__links .nav__link');
-        expect(links.length).toBe(4);
+        expect(links.length).toBe(expected);
     });
 
     it('should render nav link hrefs from translations', () => {

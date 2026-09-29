@@ -126,6 +126,13 @@ interface AppTranslations {
     guias: PremiumGuide[];
   };
   marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
+  /** Cross-promo a Latina Connection, el curso de español argentino que Ori da
+   *  con su marido. Es una marca aparte, no un producto de Exploriando: se
+   *  muestra en los tres idiomas, y como las clases son en inglés, `note` lo
+   *  aclara para quien navega en ES o PT. */
+  latinaConnection: {
+    sectionLabel: string; headline: string; text: string; note: string; cta: string;
+  };
   mapaTeaser: {
     sectionLabel: string; headline: string; lead: string;
     countriesLabel: string; placesLabel: string; yearsLabel: string;
@@ -229,6 +236,7 @@ const es: AppTranslations = {
       { label: 'Viajero Creador', href: '/viajero-creador' },
       { label: 'Marcas',          href: '/marcas' },
       { label: 'Recursos',        href: '#recursos' },
+      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Unirme a la comunidad',
   },
@@ -593,6 +601,13 @@ const es: AppTranslations = {
     text:         'Hago UGC real en destino para marcas de viaje, beauty y lifestyle. Mirá el portafolio y los paquetes.',
     cta:          'Ver portafolio y paquetes',
   },
+  latinaConnection: {
+    sectionLabel: 'Otro proyecto mío',
+    headline:     'Latina Connection',
+    text:         'Un curso corto de español argentino para hombres que quieren conocer a una latina. Lo doy con mi marido, que fue el primero en aprenderlo así.',
+    note:         'Las clases son en inglés.',
+    cta:          'Conocer el curso',
+  },
   mapaTeaser: {
     sectionLabel:   'Esto es para vos',
     headline:       'Diez años de ruta. Cero teoría.',
@@ -701,6 +716,7 @@ const en: AppTranslations = {
       { label: 'Creator Traveler', href: '/viajero-creador' },
       { label: 'Brands',           href: '/marcas' },
       { label: 'Resources',        href: '#recursos' },
+      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Join the community',
   },
@@ -1064,6 +1080,13 @@ const en: AppTranslations = {
     text:         'I make real on-location UGC for travel, beauty and lifestyle brands. Check the portfolio and packages.',
     cta:          'See portfolio and packages',
   },
+  latinaConnection: {
+    sectionLabel: 'Another project of mine',
+    headline:     'Latina Connection',
+    text:         'A short Argentine Spanish course for men who want to meet a Latina. I teach it with my husband — he was the first one to learn it this way.',
+    note:         '4 lessons, 55 minutes.',
+    cta:          'See the course',
+  },
   mapaTeaser: {
     sectionLabel:   "This one's for you",
     headline:       'Ten years on the road. Zero theory.',
@@ -1172,6 +1195,7 @@ const pt: AppTranslations = {
       { label: 'Viajante Criador', href: '/viajero-creador' },
       { label: 'Marcas',           href: '/marcas' },
       { label: 'Recursos',         href: '#recursos' },
+      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Entrar na comunidade',
   },
@@ -1534,6 +1558,13 @@ const pt: AppTranslations = {
     headline:     'Conteúdo que vende a experiência, não uma cena montada.',
     text:         'Faço UGC real no destino para marcas de viagem, beauty e lifestyle. Veja o portfólio e os pacotes.',
     cta:          'Ver portfólio e pacotes',
+  },
+  latinaConnection: {
+    sectionLabel: 'Outro projeto meu',
+    headline:     'Latina Connection',
+    text:         'Um curso curto de espanhol argentino para homens que querem conhecer uma latina. Dou com meu marido, que foi o primeiro a aprender assim.',
+    note:         'As aulas são em inglês.',
+    cta:          'Conhecer o curso',
   },
   mapaTeaser: {
     sectionLabel:   'Isso aqui é pra você',

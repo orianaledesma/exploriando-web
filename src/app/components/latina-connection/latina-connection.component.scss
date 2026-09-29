@@ -1,0 +1,89 @@
+:host {
+  display: block;
+}
+
+/*
+ * Banda sobre el navy oscuro. Es la única sección de la home con fondo oscuro
+ * entre marcas-teaser y el footer: ese corte es lo que la marca como "otra
+ * cosa" sin necesidad de importar una paleta ajena. El azul de Latina
+ * Connection (#0971fd) y el de Exploriando (#1376FE) son casi el mismo, así
+ * que el CTA usa el acento propio del sitio.
+ */
+.lc-band {
+  padding: var(--space-xl) 0;
+  background: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
+
+  @media (min-width: 768px) {
+    padding: var(--space-3xl) 0;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    text-align: center;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      text-align: start;
+      gap: var(--space-xl);
+    }
+  }
+
+  &__mark {
+    flex: none;
+    display: block;
+    width: 148px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    @media (min-width: 768px) {
+      width: 200px;
+    }
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+
+    @media (min-width: 768px) {
+      align-items: flex-start;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text-on-dark);
+  }
+
+  .section-label {
+    color: var(--color-accent-fresh);
+  }
+
+  &__text {
+    margin: 0;
+    max-width: 52ch;
+    font-size: var(--text-lg);
+    color: var(--color-white-dim);
+  }
+
+  /* Aclara que las clases son en inglés antes de que el visitante haga clic. */
+  &__note {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-white-dim);
+  }
+
+  &__cta {
+    margin-top: var(--space-xs);
+  }
+}

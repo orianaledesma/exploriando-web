@@ -6,6 +6,7 @@ import { ViajeroCreadorComponent } from '../../components/viajero-creador/viajer
 import { AfiliadosComponent } from '../../components/afiliados/afiliados.component';
 import { AsesoriasComponent } from '../../components/asesorias/asesorias.component';
 import { RecursosComponent } from '../../components/recursos/recursos.component';
+import { LatinaConnectionComponent } from '../../components/latina-connection/latina-connection.component';
 import { MarcasTeaserComponent } from '../../components/marcas-teaser/marcas-teaser.component';
 import { EnVivoComponent } from '../../components/en-vivo/en-vivo.component';
 
@@ -32,6 +33,7 @@ import { EnVivoComponent } from '../../components/en-vivo/en-vivo.component';
     <app-asesorias />
     <app-afiliados />
     <app-viajero-creador />
+    <app-latina-connection />
     <app-marcas-teaser />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,7 @@ import { EnVivoComponent } from '../../components/en-vivo/en-vivo.component';
     AsesoriasComponent,
     AfiliadosComponent,
     ViajeroCreadorComponent,
+    LatinaConnectionComponent,
     MarcasTeaserComponent,
   ],
 })
