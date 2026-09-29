@@ -60,6 +60,18 @@ interface PortfolioPiece {
   ig?: PlatformLink;
 }
 
+/**
+ * Una pieza se puede mostrar si tiene con qué dibujar la tarjeta: o un video de
+ * YouTube (el poster lo deriva `lite-youtube`) o un frame propio.
+ *
+ * Sin ninguno de los dos, el template armaría `<img src=".jpg">` y la tarjeta
+ * saldría rota. Filtrar acá deja cargar una pieza con su link y su categoría
+ * antes de tener la imagen: el día que el frame aparece, se publica sola.
+ */
+function renderable(piece: PortfolioPiece): boolean {
+  return Boolean(piece.id || piece.thumb);
+}
+
 /** Las 3 piezas destacadas. El resto se despliega con "Ver más". */
 const PORTFOLIO_FEATURED: PortfolioPiece[] = [
   {
@@ -88,6 +100,25 @@ const PORTFOLIO_FEATURED: PortfolioPiece[] = [
 
 /** Trabajos anteriores — ocultos hasta que el visitante toca "Ver más". */
 const PORTFOLIO_REST: PortfolioPiece[] = [
+  {
+    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/entrevista-eventos
+    // (.webp + .jpg). Hasta que exista, `renderable` deja la pieza fuera de la grilla.
+    // Confirmar también título y lugar/marca.
+    id: '', category: 'Eventos',
+    title: 'Entrevistas en el evento',
+    location: '',
+    thumb: '',
+    ig: { url: 'https://www.instagram.com/p/Ddw1i_du6JZ/' },
+  },
+  {
+    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/hospedaje
+    // (.webp + .jpg). Confirmar también título y lugar/marca.
+    id: '', category: 'Alojamientos',
+    title: 'Un hospedaje por dentro',
+    location: '',
+    thumb: '',
+    ig: { url: 'https://www.instagram.com/p/DdJlhUnOEU3/' },
+  },
   {
     id: 'Urf1Qvxu3AU', category: 'Eventos',
     title: 'Globo aerostático',
@@ -154,8 +185,8 @@ export class MarcasComponent {
   readonly quoteMailUrl = QUOTE_MAIL_URL;
   readonly youtubeChannelUrl = YOUTUBE_CHANNEL_URL;
 
-  readonly portfolioFeatured = PORTFOLIO_FEATURED;
-  readonly portfolioRest = PORTFOLIO_REST;
+  readonly portfolioFeatured = PORTFOLIO_FEATURED.filter(renderable);
+  readonly portfolioRest = PORTFOLIO_REST.filter(renderable);
 
   private readonly _extraServicesVisible = signal(false);
   /** `true` cuando el visitante desplegó los 3 servicios extra. */

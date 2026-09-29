@@ -79,4 +79,28 @@ describe('MarcasComponent', () => {
         expect(headline()).toBe(TRANSLATIONS.en.ugc.headline);
         expect(headline()).not.toBe(TRANSLATIONS.es.ugc.headline);
     });
+
+    // ─── Portafolio: piezas sin frame ──────────────────────────────────────────
+
+    it('no expone piezas que todavía no tienen con qué dibujarse', () => {
+        // Una pieza sólo de Instagram sin frame propio armaría `<img src=".jpg">`.
+        // El filtro `renderable` las deja fuera hasta que llegue la imagen.
+        const componente = fixture.componentInstance;
+        const todas = [...componente.portfolioFeatured, ...componente.portfolioRest];
+
+        expect(todas.length).toBeGreaterThan(0);
+        for (const piece of todas) {
+            expect(piece.id || piece.thumb, piece.title).toBeTruthy();
+        }
+    });
+
+    it('ninguna tarjeta del portafolio apunta a una imagen vacía', () => {
+        const compiled = fixture.nativeElement as HTMLElement;
+        const roto = Array.from(
+            compiled.querySelectorAll<HTMLImageElement>('.marcas-video-card img'),
+        ).filter((img) => (img.getAttribute('src') ?? '').startsWith('.'));
+
+        expect(roto).toHaveLength(0);
+    });
+
 });
