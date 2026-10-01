@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../testing/router';
 import { provideRouter } from '@angular/router';
 import { AboutComponent } from './about.component';
 import { TRANSLATIONS } from '../../translations/translations';
@@ -13,7 +14,7 @@ describe('AboutComponent', () => {
         localStorage.removeItem('exploriando_lang');
         await TestBed.configureTestingModule({
             imports: [AboutComponent],
-            providers: [provideRouter([])],
+            providers: [provideTestRouter()],
         }).compileComponents();
 
         fixture = TestBed.createComponent(AboutComponent);

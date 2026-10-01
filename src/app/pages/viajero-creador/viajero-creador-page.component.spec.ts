@@ -1,4 +1,5 @@
 import type { Mock } from "vitest";
+import { provideTestRouter } from '../../testing/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -22,7 +23,7 @@ describe('ViajeroCreadorPageComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [ViajeroCreadorPageComponent],
-            providers: [provideRouter([]), provideHttpClient(withXhr()), provideHttpClientTesting()],
+            providers: [provideTestRouter(), provideHttpClient(withXhr()), provideHttpClientTesting()],
         }).compileComponents();
 
         TestBed.inject(LanguageService).set('es');

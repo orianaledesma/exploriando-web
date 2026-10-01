@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../testing/router';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
@@ -22,7 +23,7 @@ describe('CaminosComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CaminosComponent],
-      providers: [provideRouter([])],
+      providers: [provideTestRouter()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CaminosComponent);

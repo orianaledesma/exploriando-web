@@ -1,4 +1,5 @@
 import type { MockedObject } from "vitest";
+import { provideTestRouter } from '../../testing/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
@@ -32,7 +33,7 @@ describe('FooterComponent', () => {
             imports: [FooterComponent, ReactiveFormsModule],
             providers: [
                 { provide: EmailCaptureService, useValue: emailService },
-                provideRouter([]),
+                provideTestRouter(),
             ],
         }).compileComponents();
 

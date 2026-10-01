@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../testing/router';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MarcasTeaserComponent } from './marcas-teaser.component';
@@ -15,7 +16,7 @@ describe('MarcasTeaserComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [MarcasTeaserComponent],
-            providers: [provideRouter([])],
+            providers: [provideTestRouter()],
         }).compileComponents();
 
         TestBed.inject(LanguageService).set('es');

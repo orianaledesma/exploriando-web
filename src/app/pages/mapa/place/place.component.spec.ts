@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../../testing/router';
 import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -21,7 +22,7 @@ describe('PlaceComponent', () => {
             providers: [
                 provideHttpClient(withXhr()),
                 provideHttpClientTesting(),
-                provideRouter([]),
+                provideTestRouter(),
                 { provide: ActivatedRoute, useValue: { paramMap: paramMap$.asObservable() } },
             ],
         }).compileComponents();

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../../testing/router';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { CountryListComponent } from './country-list.component';
@@ -15,7 +16,7 @@ describe('CountryListComponent', () => {
 
         await TestBed.configureTestingModule({
             imports: [CountryListComponent],
-            providers: [provideRouter([])],
+            providers: [provideTestRouter()],
         }).compileComponents();
 
         fixture = TestBed.createComponent(CountryListComponent);

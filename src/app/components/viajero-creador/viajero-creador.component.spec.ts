@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../testing/router';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ViajeroCreadorComponent } from './viajero-creador.component';
@@ -15,7 +16,7 @@ describe('ViajeroCreadorComponent (teaser)', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [ViajeroCreadorComponent],
-            providers: [provideRouter([])],
+            providers: [provideTestRouter()],
         }).compileComponents();
 
         TestBed.inject(LanguageService).set('es');

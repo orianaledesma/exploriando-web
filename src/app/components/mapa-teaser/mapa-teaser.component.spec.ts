@@ -1,4 +1,5 @@
 import type { Mock } from "vitest";
+import { provideTestRouter } from '../../testing/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { By } from '@angular/platform-browser';
@@ -15,7 +16,7 @@ describe('MapaTeaserComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [MapaTeaserComponent],
-            providers: [provideRouter([])],
+            providers: [provideTestRouter()],
         }).compileComponents();
 
         // Karma comparte localStorage entre specs → forzamos 'es' para que

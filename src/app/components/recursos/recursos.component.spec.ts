@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTestRouter } from '../../testing/router';
 import { provideRouter } from '@angular/router';
 import { RecursosComponent } from './recursos.component';
 import { LanguageService } from '../../services/language.service';
@@ -13,7 +14,7 @@ describe('RecursosComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [RecursosComponent],
-            providers: [LanguageService, provideRouter([])],
+            providers: [LanguageService, provideTestRouter()],
         }).compileComponents();
 
         // Karma comparte localStorage entre specs; forzamos 'es' para que el
