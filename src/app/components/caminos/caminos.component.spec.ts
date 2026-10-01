@@ -67,6 +67,16 @@ describe('CaminosComponent', () => {
     );
   });
 
+  it('toda la tarjeta es clickeable sin duplicar elementos focuseables', () => {
+    // El área grande la da un ::after estirado sobre la tarjeta, no un <a>
+    // envolviendo todo: así el nombre accesible del link sigue siendo el CTA
+    // y no el texto completo de la tarjeta. Cada tarjeta debe tener
+    // exactamente un link, o el teclado pasaría dos veces por el mismo destino.
+    for (const card of cards()) {
+      expect(card.querySelectorAll('a')).toHaveLength(1);
+    }
+  });
+
   it('trackea qué intención eligió el visitante', () => {
     const track = vi.spyOn(TestBed.inject(AnalyticsService), 'track');
     cards()[1].querySelector('a')!.click();

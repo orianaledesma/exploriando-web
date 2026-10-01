@@ -37,7 +37,17 @@
     }
   }
 
+  /*
+   * Toda la tarjeta es el área clickeable, pero el elemento focuseable sigue
+   * siendo uno solo: el <a> del CTA, estirado con un ::after sobre la tarjeta.
+   *
+   * Envolver la tarjeta entera en un <a> sería más simple, pero el nombre
+   * accesible del link pasaría a ser todo el texto de la tarjeta — el lector
+   * de pantalla leería ícono, título, cuerpo, nota y CTA como un solo enlace.
+   * Así el nombre queda en el CTA y la tarjeta es nada más que superficie.
+   */
   &__card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
@@ -45,6 +55,22 @@
     background: var(--color-bg-soft);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
+    cursor: pointer;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    &:hover {
+      border-color: var(--color-accent-fresh);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* El foco se dibuja alrededor de la tarjeta, no del CTA de 14px. */
+    &:has(.caminos__cta:focus-visible) {
+      outline: 3px solid var(--color-accent-fresh);
+      outline-offset: 3px;
+    }
   }
 
   /*
@@ -95,7 +121,26 @@
     text-decoration: none;
   }
 
-  &__cta:hover {
+  /* Estira el área del link a toda la tarjeta. */
+  &__cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  /*
+   * El anillo lo pinta la tarjeta vía :has(), así que acá sobraría — pero sólo
+   * donde :has() funcione. Sin el @supports, un navegador sin soporte se queda
+   * sin anillo en la tarjeta Y sin anillo en el link: foco invisible.
+   */
+  @supports selector(:has(*)) {
+    &__cta:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__card:hover &__cta {
     text-decoration: underline;
   }
 }
