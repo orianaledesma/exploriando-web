@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Exploriando — maqueta versión 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg:#F2F5F5; --card:#FFFFFF; --ink:#13262A; --soft:#58696D; --rule:#D3DDDE;
+    --aqua:#168F8B; --aqua-bg:#E0F1F0; --aqua-dk:#0E6B68;
+    --pink:#D63E73; --pink-bg:#FBE8EF; --sand:#F7F3EC;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#0E1719; --card:#162224; --ink:#E3EEEF; --soft:#96A9AC; --rule:#27383B;
+      --aqua:#4FCBC5; --aqua-bg:#12302F; --aqua-dk:#7FDDD8;
+      --pink:#F27CA5; --pink-bg:#351A24; --sand:#1C2326;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1719;--card:#162224;--ink:#E3EEEF;--soft:#96A9AC;--rule:#27383B;
+    --aqua:#4FCBC5;--aqua-bg:#12302F;--aqua-dk:#7FDDD8;--pink:#F27CA5;--pink-bg:#351A24;--sand:#1C2326;
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{-webkit-text-size-adjust:100%;scroll-padding-top:70px}
+  body{margin:0;background:var(--card);color:var(--ink);
+    font-family:Figtree,"Helvetica Neue",Arial,sans-serif;font-size:17px;line-height:1.55}
+  h1,h2,h3,h4{font-family:Syne,Figtree,sans-serif;font-weight:800;letter-spacing:-.025em;line-height:1.12;margin:0}
+
+  /* Barra de control de la maqueta */
+  .ctl{background:var(--bg);border-bottom:1px solid var(--rule);padding:10px 18px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--soft)}
+  .ctl .tagx{font-family:Syne,sans-serif;font-size:10.5px;font-weight:800;letter-spacing:.08em;
+    background:var(--ink);color:var(--bg);padding:4px 10px;border-radius:99px}
+  .ctl label{display:flex;align-items:center;gap:7px;cursor:pointer;margin-left:auto}
+  .ctl input{width:16px;height:16px;accent-color:var(--pink)}
+
+  /* Nav */
+  .nav{display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--rule);
+    position:sticky;top:0;background:var(--card);z-index:5;flex-wrap:wrap}
+  .logo{font-family:Syne,sans-serif;font-weight:800;font-size:16px;letter-spacing:-.03em}
+  .logo span{color:var(--aqua)}
+  .nav a{font-size:13.5px;color:var(--soft);text-decoration:none}
+  .nav a:hover{color:var(--ink)}
+  .nav .lang{font-size:12px;border:1px solid var(--rule);border-radius:5px;padding:3px 8px}
+  .nav .cta{margin-left:auto;background:var(--aqua);color:#fff;font-size:13px;font-weight:600;
+    padding:8px 15px;border-radius:999px;text-decoration:none}
+  :root:not([data-theme="light"]) .nav .cta{color:#0E1719}
+  @media (max-width:640px){.nav a:not(.cta):not(.lang){display:none}}
+
+  .sec{padding:38px 20px;border-bottom:1px solid var(--rule);position:relative;max-width:980px;margin:0 auto}
+  .sec:last-of-type{border-bottom:0}
+  .eyebrow{font-family:Syne,sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--aqua);margin-bottom:9px}
+  .sec h2{font-size:clamp(20px,4.4vw,26px)}
+  .sec p{margin:9px 0 0;color:var(--soft);font-size:16px;max-width:54ch}
+
+  .hero h1{font-size:clamp(27px,6.4vw,44px);line-height:1.06;max-width:16ch}
+  .hero .sb{font-size:17px;max-width:50ch;margin-top:14px}
+  .field{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;max-width:440px}
+  .field .inp{flex:1 1 170px;border:1px solid var(--rule);border-radius:8px;padding:11px 13px;
+    font-size:14px;color:var(--soft);background:var(--bg)}
+  .field .go{background:var(--pink);color:#fff;font-size:14px;font-weight:600;padding:11px 19px;border-radius:8px}
+  :root:not([data-theme="light"]) .field .go{color:#0E1719}
+  .hero .photo{min-height:190px}
+
+  .photo{border-radius:11px;min-height:130px;margin-top:18px;display:flex;align-items:flex-end;padding:12px;
+    background:linear-gradient(130deg,var(--aqua) 0%,#5FB7B0 45%,var(--pink) 118%);opacity:.75}
+  .photo span{font-size:11.5px;color:#fff;background:rgba(0,0,0,.26);padding:3px 9px;border-radius:5px}
+
+  .btn{display:inline-block;background:var(--aqua);color:#fff;font-size:14px;font-weight:600;
+    padding:10px 18px;border-radius:999px;margin-top:18px;text-decoration:none}
+  :root:not([data-theme="light"]) .btn{color:#0E1719}
+  .btn.ghost{background:transparent;color:var(--aqua);border:1px solid var(--aqua)}
+
+  .cards{display:grid;grid-template-columns:1fr;gap:11px;margin-top:20px}
+  @media (min-width:560px){.cards{grid-template-columns:1fr 1fr}}
+  @media (min-width:900px){.cards.c4{grid-template-columns:repeat(4,1fr)}}
+  .mc{border:1px solid var(--rule);border-radius:11px;padding:16px 16px;background:var(--bg)}
+  .mc .ic{font-size:21px;line-height:1}
+  .mc h3{font-family:Figtree,sans-serif;font-weight:700;font-size:16px;letter-spacing:0;margin:9px 0 4px}
+  .mc p{font-size:14.5px;margin:0;color:var(--soft);max-width:none}
+  .mc .go{font-size:13px;color:var(--aqua);font-weight:600;margin-top:10px;display:block}
+  .mc.en{border-color:var(--pink)} .mc.en .go{color:var(--pink)}
+
+  .strip{display:flex;gap:11px;margin-top:18px;overflow-x:auto;padding-bottom:6px}
+  .strip .th{flex:none;width:150px}
+  .strip .th .photo{min-height:96px;margin-top:0}
+  .strip .th p{font-size:13.5px;margin-top:7px}
+
+  .split{display:grid;grid-template-columns:1fr;gap:18px;align-items:center}
+  @media (min-width:700px){.split{grid-template-columns:1fr 1fr}}
+  .split .photo{margin-top:0;min-height:200px}
+
+  .price{border:1px solid var(--rule);border-radius:11px;padding:16px;background:var(--bg);margin-top:18px;max-width:330px}
+  .price b{font-family:Syne,sans-serif;font-size:24px;display:block}
+  .price small{color:var(--soft);font-size:14px}
+
+  .foot{background:var(--sand);padding:28px 20px;font-size:14px;color:var(--soft)}
+  .foot .in{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px}
+  @media (min-width:640px){.foot .in{grid-template-columns:2fr 1fr 1fr}}
+  .foot b{display:block;color:var(--ink);font-family:Syne,sans-serif;font-size:13px;margin-bottom:7px}
+  .foot a{display:block;color:var(--soft);text-decoration:none;margin:4px 0}
+
+  .ann{position:absolute;top:12px;right:16px;background:var(--pink);color:#fff;font-family:Syne,sans-serif;
+    font-size:10px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:99px;display:none;z-index:2}
+  :root:not([data-theme="light"]) .ann{color:#0E1719}
+  .show-ann .ann{display:block}
+  .show-ann .sec[data-new]{box-shadow:inset 0 0 0 2px var(--pink)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="ctl">
+  <span class="tagx">MAQUETA · VERSIÓN 2</span>
+  <span>Ruteador por audiencia · lema actual sin cambios</span>
+  <label><input type="checkbox" id="ann"> Marcar lo nuevo</label>
+</div>
+
+<div id="page">
+
+  <div class="nav">
+    <span class="logo">EXPLOR<span>IANDO</span></span>
+    <a href="#">Nosotros</a><a href="#">Viajero Creador</a><a href="#">Marcas</a><a href="#">Recursos</a>
+    <span class="lang">ES</span>
+    <a href="#" class="cta">Unirme a la comunidad</a>
+  </div>
+
+  <div class="sec hero" data-new><span class="ann">ACORTADO</span>
+    <h1>Lo mejor que vas a hacer en tu vida es viajar</h1>
+    <p class="sb">No necesitás ser rico para viajar. Necesitás saber cómo hacerlo. Hace 9 años lo hacemos y acá está todo lo que aprendimos.</p>
+    <div class="field"><div class="inp">Tu correo</div><div class="go">Quiero la guía gratis</div></div>
+    <div class="photo"><span>Video o foto de portada</span></div>
+  </div>
+
+  <div class="sec" data-new><span class="ann">NUEVO</span>
+    <div class="eyebrow">¿Qué te trajo acá?</div>
+    <h2>Elegí por dónde empezar</h2>
+    <p>Cuatro caminos distintos. Cada uno te lleva a lo suyo, sin que tengas que buscar.</p>
+    <div class="cards c4">
+      <div class="mc"><div class="ic">🗺️</div><h3>Quiero viajar más</h3><p>42 ciudades con guía, mapa, presupuesto real y los errores ya cometidos.</p><span class="go">Ver el mapa →</span></div>
+      <div class="mc"><div class="ic">🎬</div><h3>Quiero crear contenido</h3><p>La serie Viajero Creador y asesorías 1 a 1 para arrancar de verdad.</p><span class="go">Empezar acá →</span></div>
+      <div class="mc en"><div class="ic">💬</div><h3>I want to learn Spanish</h3><p>Real Argentine Spanish, taught by someone who actually lives it.</p><span class="go">See the course →</span></div>
+      <div class="mc"><div class="ic">📣</div><h3>Tengo una marca</h3><p>Contenido en destino para hotelería y travel-tech, con medición.</p><span class="go">Ver paquetes →</span></div>
+    </div>
+  </div>
+
+  <div class="sec" data-new><span class="ann">SUBE</span>
+    <div class="eyebrow">De lunes a viernes</div>
+    <h2>El vivo de cocina</h2>
+    <p>Recetas argentinas con lo que se consigue acá. Todos los días, en vivo, con preguntas, charla y algún desastre.</p>
+    <div class="split">
+      <div class="photo"><span>Frame del vivo</span></div>
+      <div><p style="margin-top:0">Es el lugar donde más nos encontramos. Si querés ver cómo es la vida acá sin postales, empezá por ahí.</p><a href="#" class="btn">Ver el próximo vivo</a></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">Gratis, siempre</div>
+    <h2>La guía para tu primer viaje</h2>
+    <p>Requisitos de documentación, presupuesto real y los pasos en el orden en que hay que darlos.</p>
+    <div class="field"><div class="inp">Tu correo</div><div class="go">Descargar</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">El mapa</div>
+    <h2>12 países, 42 ciudades</h2>
+    <p>Cada una con su video y su guía. Lo que costó, lo que valió la pena y lo que no.</p>
+    <div class="strip">
+      <div class="th"><div class="photo"></div><p>Split, Croacia</p></div>
+      <div class="th"><div class="photo"></div><p>Kaunas, Lituania</p></div>
+      <div class="th"><div class="photo"></div><p>Sharm el Sheikh</p></div>
+      <div class="th"><div class="photo"></div><p>Vilnius, Lituania</p></div>
+      <div class="th"><div class="photo"></div><p>Brela, Croacia</p></div>
+    </div>
+    <a href="#" class="btn ghost">Ver el mapa completo</a>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">Nosotros</div>
+    <h2>Una argentina y un lituano</h2>
+    <div class="split">
+      <div><p style="margin-top:0">Hace 9 años documentamos viajes reales: lo que cuesta, lo que sale mal y lo que vale la pena. Vivimos en Kaunas y seguimos recorriendo.</p><a href="#" class="btn ghost">Conocernos</a></div>
+      <div class="photo"><span>Foto de pareja</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">Asesoría</div>
+    <h2>Charlemos 1 a 1</h2>
+    <p>Tu próximo viaje o tu proyecto de contenido, resuelto en una hora con alguien que ya lo hizo.</p>
+    <div class="price"><b>USD 150</b><small>Sesión única · Pack de 3 a USD 400</small></div>
+    <a href="#" class="btn">Reservar</a>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">Para marcas</div>
+    <h2>Contenido que hace desear lo que vendés</h2>
+    <p>Reels y fotos en destino para hotelería, experiencias y travel-tech. Con objetivos por escrito y medición a 60 días.</p>
+    <a href="#" class="btn ghost">Ver paquetes</a>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">Recursos</div>
+    <h2>Lo que usamos siempre</h2>
+    <div class="cards">
+      <div class="mc"><h3>Seguro de viaje</h3><p>El que nos sacó del apuro de verdad.</p><span class="go">Ver →</span></div>
+      <div class="mc"><h3>eSIM</h3><p>Datos apenas aterrizás, sin trámites.</p><span class="go">Ver →</span></div>
+      <div class="mc"><h3>Banco para viajar</h3><p>Cambio de divisa sin que te coman vivo.</p><span class="go">Ver →</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>¿Todavía no sos parte?</h2>
+    <p>Cada mes mandamos información concreta: destinos accesibles, requisitos actualizados, errores que evitar. Gratis, siempre. Ya son más de 2.000 viajeros adentro.</p>
+    <div class="field"><div class="inp">Tu correo</div><div class="go">Unirme ahora</div></div>
+  </div>
+
+  <div class="foot">
+    <div class="in">
+      <div><b>Exploriando</b>No necesitás ser rico para viajar.<br>Necesitás saber cómo hacerlo.</div>
+      <div><b>Explorar</b><a href="#">Mapa de viajes</a><a href="#">Viajero Creador</a><a href="#">Guía de viaje</a></div>
+      <div><b>Para marcas</b><a href="#">Contenido UGC</a><a href="#">hello@orianaledesma.dev</a></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('ann').addEventListener('change',function(){
+  document.getElementById('page').classList.toggle('show-ann',this.checked);
+});
+</script>
+</body>
+</html>
