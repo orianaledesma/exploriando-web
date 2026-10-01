@@ -39,9 +39,10 @@
     max-width: 560px;
   }
 
-  /* La segunda mitad del titular: itálica + acento del sitio. */
+  /* La segunda mitad del titular: itálica, mismo blanco que el resto. El
+     acento se probó y Ori lo descartó — el quiebre lo hace la itálica sola. */
   &__headline-accent {
-    color: var(--color-accent-fresh);
+    color: inherit;
     font-style: italic;
   }
 
