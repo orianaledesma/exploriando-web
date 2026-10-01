@@ -265,7 +265,7 @@ const es: AppTranslations = {
     headlineA:   'Viajá con los ojos,',
     headlineB:   'comé con el alma.',
     tagline:     'Dos mundos. Una sola mesa.',
-    subheadline: 'Soy Ori, argentina viviendo en Kaunas con mi esposo lituano. Cada destino que pisamos lo contamos desde adentro — mirá qué se come, cómo se vive y qué pasa cuando dos culturas se mezclan en la cocina.',
+    subheadline: 'Soy Ori y con mi esposo lituano te mostramos cómo se vive, se come y qué pasa cuando dos culturas se mezclan.',
     ctaLive:     'Unirme al vivo de hoy',
     ctaGuides:   'Ver guías de destinos',
     // 42 es el número real de ciudades en src/app/data/places.ts. Antes decía
@@ -277,11 +277,10 @@ const es: AppTranslations = {
     headline:     'Una argentina que dejó de esperar el momento perfecto.',
     body: [
       'Me llamo Ori. Hace años decidí que no iba a esperar tener más dinero, más tiempo o más seguridad para viajar. Agarré lo que tenía y me fui.',
-      'Lo que descubrí es que la mayoría de los obstáculos que creía reales eran, en realidad, falta de información. Visas, vuelos baratos, documentación, destinos accesibles — todo tiene un cómo.',
-      'Después se sumó Mindaugas, mi marido lituano, y Exploriando dejó de ser un proyecto mío para ser de los dos. Yo pongo la mirada de la latina que se enfrentó a cada trámite y cada miedo desde cero; él, la del europeo que vive donde para muchos es destino. Las rutas, las guías y los videos los pensamos, los viajamos y los grabamos juntos.',
+      'Después se sumó mi esposo lituano, y Exploriando dejó de ser un proyecto mío para ser de los dos. Yo pongo la mirada de la latina que se enfrentó a cada trámite y cada miedo desde cero; él, la del europeo que vive donde para muchos es destino. Las rutas, las guías y los videos los pensamos, los viajamos y los grabamos juntos.',
     ],
     stats: [
-      { value: '54', label: 'ciudades recorridas' },
+      { value: '42', label: 'ciudades recorridas' },
       { value: '9',   label: 'años viajando full time' },
       { value: '3',   label: 'continentes desde cero' },
     ],
@@ -780,7 +779,7 @@ const en: AppTranslations = {
     headlineA:   'Travel with your eyes,',
     headlineB:   'eat with your soul.',
     tagline:     'Two worlds. One table.',
-    subheadline: "I'm Ori, an Argentine living in Kaunas with my Lithuanian husband. Every place we land we tell from the inside — see what people eat, how they live, and what happens when two cultures meet in the kitchen.",
+    subheadline: "I'm Ori, and with my Lithuanian husband we show you how people live, what they eat, and what happens when two cultures mix.",
     ctaLive:     "Join today's live",
     ctaGuides:   'See destination guides',
     socialProof: '+2,000 travelers · 42 cities · 9 years traveling',
@@ -790,11 +789,10 @@ const en: AppTranslations = {
     headline:     'An Argentine woman who stopped waiting for the perfect moment.',
     body: [
       "My name is Ori. Years ago I decided I wasn't going to wait until I had more money, more time, or more security to travel. I grabbed what I had and left.",
-      "What I discovered is that most of the obstacles I thought were real were, in reality, a lack of information. Visas, cheap flights, documentation, accessible destinations — everything has a how.",
-      "Then Mindaugas, my Lithuanian husband, joined the project — and Exploriando stopped being mine and became ours. I bring the perspective of a Latina who faced every form, every visa and every fear from scratch; he brings the side of the European who lives where, for many, the trip ends. The routes, the guides and the videos — we think them, travel them and film them together.",
+      "Then my Lithuanian husband joined the project — and Exploriando stopped being mine and became ours. I bring the perspective of a Latina who faced every form, every visa and every fear from scratch; he brings the side of the European who lives where, for many, the trip ends. The routes, the guides and the videos — we think them, travel them and film them together.",
     ],
     stats: [
-      { value: '54', label: 'cities visited' },
+      { value: '42', label: 'cities visited' },
       { value: '9',   label: 'years traveling full time' },
       { value: '3',   label: 'continents from scratch' },
     ],
@@ -1289,7 +1287,7 @@ const pt: AppTranslations = {
     headlineA:   'Viaje com os olhos,',
     headlineB:   'coma com a alma.',
     tagline:     'Dois mundos. Uma só mesa.',
-    subheadline: 'Sou Ori, argentina morando em Kaunas com meu marido lituano. Cada destino que pisamos contamos de dentro — veja o que se come, como se vive e o que acontece quando duas culturas se misturam na cozinha.',
+    subheadline: 'Sou Ori e com meu marido lituano te mostramos como se vive, como se come e o que acontece quando duas culturas se misturam.',
     ctaLive:     'Entrar no ao vivo de hoje',
     ctaGuides:   'Ver guias de destinos',
     socialProof: '+2.000 viajantes · 42 cidades · 9 anos viajando',
@@ -1299,11 +1297,10 @@ const pt: AppTranslations = {
     headline:     'Uma argentina que parou de esperar o momento perfeito.',
     body: [
       'Meu nome é Ori. Há anos decidi que não ia esperar ter mais dinheiro, mais tempo ou mais segurança para viajar. Peguei o que tinha e fui.',
-      'O que descobri é que a maioria dos obstáculos que achava que eram reais eram, na verdade, falta de informação. Vistos, voos baratos, documentação, destinos acessíveis — tudo tem um como.',
-      'Depois o Mindaugas, meu marido lituano, entrou no projeto, e o Exploriando deixou de ser meu para ser dos dois. Eu trago o olhar da latina que enfrentou cada trâmite e cada medo do zero; ele, o do europeu que vive onde, para muitos, a viagem termina. As rotas, os guias e os vídeos — pensamos, viajamos e filmamos juntos.',
+      'Depois meu marido lituano entrou no projeto, e o Exploriando deixou de ser meu para ser dos dois. Eu trago o olhar da latina que enfrentou cada trâmite e cada medo do zero; ele, o do europeu que vive onde, para muitos, a viagem termina. As rotas, os guias e os vídeos — pensamos, viajamos e filmamos juntos.',
     ],
     stats: [
-      { value: '54', label: 'cidades percorridas' },
+      { value: '42', label: 'cidades percorridas' },
       { value: '9',   label: 'anos viajando em tempo integral' },
       { value: '3',   label: 'continentes do zero' },
     ],
