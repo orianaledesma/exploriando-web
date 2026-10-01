@@ -75,12 +75,25 @@ jobs:
           echo "main=$main" >> "$GITHUB_OUTPUT"
           echo "Construido: $main"
 
+      # El CLI directo en vez de netlify/actions/cli@master, por dos razones:
+      #
+      # 1. La action corre en un contenedor Docker sin npm en el PATH. El
+      #    plugin @netlify/angular-runtime, que Netlify auto-instala al
+      #    detectar Angular, fuerza un `npm run build` que ahí falla con
+      #    ENOENT. --no-build lo evita: acá ya construimos en el paso anterior
+      #    y lo único que queremos es subir el directorio.
+      # 2. La action devuelve exit 0 aunque su CLI falle. Con `run:` el exit
+      #    code es el del CLI y el job se pone rojo en el acto.
+      #
+      # --functions sube netlify/functions (subscribe, documentacion). Sin
+      # esto la function no se deploya y POST /api/subscribe devuelve 404.
       - name: Deploy a Netlify
-        uses: netlify/actions/cli@master
-        with:
-          # --functions sube netlify/functions (subscribe, documentacion). Sin
-          # esto la function no se deploya y POST /api/subscribe devuelve 404.
-          args: deploy --prod --dir=dist/exploriando/browser --functions=netlify/functions
+        run: |
+          npx --yes netlify-cli@27 deploy \
+            --prod \
+            --no-build \
+            --dir=dist/exploriando/browser \
+            --functions=netlify/functions
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
