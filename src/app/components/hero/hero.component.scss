@@ -39,87 +39,37 @@
     max-width: 560px;
   }
 
-  &__form {
-    width: 100%;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  &__input-group {
-    display: flex;
-    gap: var(--space-xs);
-    flex-wrap: wrap;
-
-    .form-field { flex: 1; min-width: 220px; }
-
-    input {
-      background: rgba(255,255,255,0.92);
-      border-color: transparent;
-      color: var(--color-text);
-
-      &:focus {
-        background: #fff;
-        border-color: var(--color-accent-fresh);
-        box-shadow: 0 0 0 3px var(--color-fresh-glow);
-      }
-    }
-  }
-
-  &__subtext {
-    font-size: var(--text-xs);
-    color: rgba(255, 255, 255, 0.65);
-  }
-
-  &__social-proof {
-    font-size: var(--text-sm);
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: var(--font-weight-medium);
-    margin-top: var(--space-sm);
-
-    &::before {
-      content: '★ ';
-      color: var(--color-accent-warm);
-    }
-  }
-
-  &__success {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    background: rgba(61, 217, 179, 0.15);
-    border: 1px solid rgba(61, 217, 179, 0.40);
-    border-radius: var(--radius-lg);
-    padding: var(--space-md) var(--space-lg);
-    color: var(--color-text-on-dark);
-    max-width: 520px;
-
-    p { color: var(--color-text-on-dark); font-size: var(--text-base); }
-  }
-
-  &__success-icon {
-    font-size: 1.5rem;
+  /* La segunda mitad del titular: itálica + acento del sitio. */
+  &__headline-accent {
     color: var(--color-accent-fresh);
+    font-style: italic;
   }
 
-  &__gift {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    padding-top: var(--space-sm);
-    border-top: 1px solid rgba(61, 217, 179, 0.30);
-  }
-
-  &__gift-label {
-    font-size: var(--text-sm);
+  &__tagline {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
     font-weight: var(--font-weight-bold);
-    color: var(--color-accent-fresh);
+    color: var(--color-text-on-dark);
   }
 
-  &__gift-sub {
-    font-size: var(--text-xs);
-    color: rgba(255, 255, 255, 0.55);
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  /* El outline sobre el navy necesita su propio borde: el del sistema está
+     pensado para fondos claros. */
+  &__actions .btn--outline {
+    color: var(--color-text-on-dark);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  &__actions .btn--outline:hover {
+    border-color: var(--color-text-on-dark);
   }
 }
+
 

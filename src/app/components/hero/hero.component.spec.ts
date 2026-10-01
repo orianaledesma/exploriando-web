@@ -1,100 +1,95 @@
-import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { HeroComponent } from './hero.component';
-import { EmailCaptureService } from '../../services/email-capture.service';
-
-const VALID_EMAIL = 'test@example.com';
+import { AnalyticsService } from '../../services/analytics.service';
+import { LanguageService } from '../../services/language.service';
+import { YOUTUBE_LIVE_URL } from '../../data/links';
+import { TRANSLATIONS } from '../../translations/translations';
+import type { Lang } from '../../models/language.model';
 
 describe('HeroComponent', () => {
-    beforeEach(() => {
-        vi.useFakeTimers({ advanceTimeDelta: 1, shouldAdvanceTime: true });
-    });
-    afterEach(() => {
-        vi.useRealTimers();
-    });
-    let component: HeroComponent;
-    let fixture: ComponentFixture<HeroComponent>;
-    // Sólo los métodos públicos que usa el componente: MockedObject<T> exigiría
-    // también los miembros privados del servicio real.
-    let mockService: Pick<MockedObject<EmailCaptureService>, 'isRateLimited' | 'hasAlreadySubmitted' | 'submit' | 'recordSubmission'>;
+  let fixture: ComponentFixture<HeroComponent>;
+  let compiled: HTMLElement;
+  let lang: LanguageService;
 
-    beforeEach(async () => {
-        mockService = {
-            isRateLimited: vi.fn().mockName("EmailCaptureService.isRateLimited"),
-            hasAlreadySubmitted: vi.fn().mockName("EmailCaptureService.hasAlreadySubmitted"),
-            submit: vi.fn().mockName("EmailCaptureService.submit"),
-            recordSubmission: vi.fn().mockName("EmailCaptureService.recordSubmission")
-        };
-        mockService.isRateLimited.mockReturnValue(false);
-        mockService.hasAlreadySubmitted.mockReturnValue(false);
+  const el = <T extends HTMLElement>(sel: string): T | null =>
+    compiled.querySelector<T>(sel);
 
-        await TestBed.configureTestingModule({
-            imports: [HeroComponent],
-            providers: [{ provide: EmailCaptureService, useValue: mockService }],
-        }).compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HeroComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(HeroComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    fixture = TestBed.createComponent(HeroComponent);
+    lang = TestBed.inject(LanguageService);
+    lang.set('es');
+    fixture.detectChanges();
+    compiled = fixture.nativeElement;
+  });
 
-    afterEach(() => localStorage.clear());
+  it('ya no captura email: eso vive en el footer y en /guia', () => {
+    // El formulario se removió del hero el 2026-10-01. Si alguien lo repone
+    // acá, este test avisa que hay dos capturas compitiendo en la misma página.
+    expect(el('form')).toBeNull();
+    expect(el('input')).toBeNull();
+  });
 
-    it('should create', () => expect(component).toBeTruthy());
+  it('rinde el titular partido, con la segunda mitad destacada', () => {
+    const copy = TRANSLATIONS.es.hero;
+    const h1 = el('h1')!;
 
-    it('should show email input and submit button', () => {
-        expect(fixture.nativeElement.querySelector('[data-testid="hero-email"]')).toBeTruthy();
-        expect(fixture.nativeElement.querySelector('[data-testid="hero-submit"]')).toBeTruthy();
-    });
+    expect(h1.textContent).toContain(copy.headlineA);
+    // La segunda mitad va en <em> para que la itálica y el acento no dependan
+    // de un <span> suelto sin semántica.
+    expect(h1.querySelector('em')?.textContent?.trim()).toBe(copy.headlineB);
+  });
 
-    it('should show success state after valid submission', async () => {
-        mockService.submit.mockReturnValue(of({}));
-        component.form.setValue({ email: VALID_EMAIL, trap: '' });
-        await vi.advanceTimersByTimeAsync(0);
-        component.onSubmit();
-        fixture.detectChanges();
+  it('muestra kicker, tagline y descripción', () => {
+    const copy = TRANSLATIONS.es.hero;
+    expect(compiled.textContent).toContain(copy.eyebrow);
+    expect(el('.hero__tagline')?.textContent?.trim()).toBe(copy.tagline);
+    expect(el('.hero__subheadline')?.textContent?.trim()).toBe(copy.subheadline);
+  });
 
-        expect(component.status()).toBe('success');
-        expect(fixture.nativeElement.querySelector('[data-testid="hero-success"]')).toBeTruthy();
-    });
+  it('el CTA principal sale al vivo de YouTube de forma segura', () => {
+    const live = el<HTMLAnchorElement>('[data-testid="hero-live"]')!;
+    expect(live.getAttribute('href')).toBe(YOUTUBE_LIVE_URL);
+    expect(live.target).toBe('_blank');
+    expect(live.rel).toContain('noopener');
+    expect(live.textContent?.trim()).toBe(TRANSLATIONS.es.hero.ctaLive);
+  });
 
-    it('should set error status on service failure', async () => {
-        mockService.submit.mockReturnValue(throwError(() => new Error('fail')));
-        component.form.setValue({ email: VALID_EMAIL, trap: '' });
-        await vi.advanceTimersByTimeAsync(0);
-        component.onSubmit();
-        expect(component.status()).toBe('error');
-    });
+  it('el CTA secundario lleva al mapa, dentro del sitio', () => {
+    const guides = el<HTMLAnchorElement>('[data-testid="hero-guides"]')!;
+    expect(guides.getAttribute('href')).toBe('/mapa');
+    expect(guides.getAttribute('target')).toBeNull();
+  });
 
-    it('should set rateLimit status when rate limited', async () => {
-        mockService.isRateLimited.mockReturnValue(true);
-        component.form.setValue({ email: VALID_EMAIL, trap: '' });
-        await vi.advanceTimersByTimeAsync(0);
-        component.onSubmit();
-        expect(component.status()).toBe('rateLimit');
-        expect(mockService.submit).not.toHaveBeenCalled();
-    });
+  it('distingue de dónde salió el click al vivo', () => {
+    const track = vi.spyOn(TestBed.inject(AnalyticsService), 'track');
+    el<HTMLAnchorElement>('[data-testid="hero-live"]')!.click();
+    // en-vivo dispara el mismo evento con location=section.
+    expect(track).toHaveBeenCalledWith('en_vivo_click', { location: 'hero' });
+  });
 
-    it('should set duplicate status when already submitted', async () => {
-        mockService.hasAlreadySubmitted.mockReturnValue(true);
-        component.form.setValue({ email: VALID_EMAIL, trap: '' });
-        await vi.advanceTimersByTimeAsync(0);
-        component.onSubmit();
-        expect(component.status()).toBe('duplicate');
-        expect(mockService.submit).not.toHaveBeenCalled();
-    });
+  it('la prueba social dice 42 ciudades, que es lo que hay en los datos', () => {
+    for (const l of ['es', 'en', 'pt'] as Lang[]) {
+      expect(TRANSLATIONS[l].hero.socialProof, l).toContain('42');
+      expect(TRANSLATIONS[l].hero.socialProof, l).not.toContain('54');
+    }
+  });
 
-    it('should silently succeed when honeypot is filled', async () => {
-        component.form.setValue({ email: VALID_EMAIL, trap: 'bot' });
-        await vi.advanceTimersByTimeAsync(0);
-        component.onSubmit();
-        expect(mockService.submit).not.toHaveBeenCalled();
-        expect(component.status()).toBe('success');
-    });
+  it('traduce el hero completo en los tres idiomas', () => {
+    for (const l of ['es', 'en', 'pt'] as Lang[]) {
+      lang.set(l);
+      fixture.detectChanges();
 
-    it('should have honeypot with tabindex -1', () => {
-        const trap: HTMLInputElement = fixture.nativeElement.querySelector('[formControlName="trap"]');
-        expect(trap.getAttribute('tabindex')).toBe('-1');
-    });
+      const copy = TRANSLATIONS[l].hero;
+      for (const txt of [copy.eyebrow, copy.headlineA, copy.headlineB, copy.tagline, copy.ctaLive, copy.ctaGuides]) {
+        expect(compiled.textContent, `${l}: ${txt}`).toContain(txt);
+      }
+    }
+  });
 });

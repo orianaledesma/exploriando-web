@@ -1,70 +1,39 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EmailCaptureService, GIFT_DRIVE_URL } from '../../services/email-capture.service';
-import { EmailCaptureStatus } from '../../models/email-capture.model';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
+import { AnalyticsService } from '../../services/analytics.service';
+import { YOUTUBE_LIVE_URL } from '../../data/links';
 import { TRANSLATIONS } from '../../translations/translations';
 
+/**
+ * Hero de la home.
+ *
+ * Dejó de capturar email (2026-10-01): el formulario, con su honeypot, rate
+ * limit, estados de error y pantalla de éxito con la guía de regalo, se
+ * removió a pedido de Ori para que la portada mande al vivo, que es donde más
+ * se encuentra con su audiencia. La captura sigue viva en el footer
+ * (#comunidad-form) y en /guia.
+ *
+ * El titular viene partido en dos campos: la segunda mitad se rinde en
+ * itálica y con el color de acento.
+ */
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule],
+  imports: [RouterLink],
 })
 export class HeroComponent {
-  private readonly lang         = inject(LanguageService);
-  private readonly fb           = inject(FormBuilder);
-  private readonly emailService = inject(EmailCaptureService);
+  private readonly lang = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
 
-  readonly t       = computed(() => TRANSLATIONS[this.lang.current()].hero);
-  readonly giftUrl = GIFT_DRIVE_URL;
+  readonly t = computed(() => TRANSLATIONS[this.lang.current()].hero);
 
-  form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    trap:  [''], // honeypot
-  });
+  readonly liveUrl = YOUTUBE_LIVE_URL;
 
-  status = signal<EmailCaptureStatus>('idle');
-
-  get emailCtrl() { return this.form.controls['email']; }
-
-  onSubmit(): void {
-    if (this.form.value['trap']) {
-      this.status.set('success');
-      return;
-    }
-
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    if (this.emailService.isRateLimited()) {
-      this.status.set('rateLimit');
-      return;
-    }
-
-    if (this.emailService.hasAlreadySubmitted()) {
-      this.status.set('duplicate');
-      return;
-    }
-
-    this.status.set('loading');
-
-    this.emailService.submit({ email: this.form.value['email'] as string, source: 'hero', lang: this.lang.current() }).subscribe({
-      next: () => {
-        this.emailService.recordSubmission();
-        this.status.set('success');
-        this.form.reset();
-      },
-      error: () => this.status.set('error'),
-    });
+  /** Tracking: salida al vivo desde el hero. */
+  onLiveClick(): void {
+    this.analytics.track('en_vivo_click', { location: 'hero' });
   }
 }
