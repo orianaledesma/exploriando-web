@@ -46,10 +46,9 @@ describe('HeroComponent', () => {
     expect(h1.querySelector('em')?.textContent?.trim()).toBe(copy.headlineB);
   });
 
-  it('muestra kicker, tagline y descripción', () => {
+  it('muestra kicker y descripción', () => {
     const copy = TRANSLATIONS.es.hero;
     expect(compiled.textContent).toContain(copy.eyebrow);
-    expect(el('.hero__tagline')?.textContent?.trim()).toBe(copy.tagline);
     expect(el('.hero__subheadline')?.textContent?.trim()).toBe(copy.subheadline);
   });
 
@@ -87,7 +86,7 @@ describe('HeroComponent', () => {
       fixture.detectChanges();
 
       const copy = TRANSLATIONS[l].hero;
-      for (const txt of [copy.eyebrow, copy.headlineA, copy.headlineB, copy.tagline, copy.ctaLive, copy.ctaGuides]) {
+      for (const txt of [copy.eyebrow, copy.headlineA, copy.headlineB, copy.ctaLive, copy.ctaGuides]) {
         expect(compiled.textContent, `${l}: ${txt}`).toContain(txt);
       }
     }

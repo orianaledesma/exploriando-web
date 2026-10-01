@@ -22,7 +22,6 @@ interface AppTranslations {
      *  con el color de acento. Partirlo acá en vez de meter markup en el copy
      *  mantiene las traducciones como texto plano. */
     headlineA: string; headlineB: string;
-    tagline: string;
     subheadline: string;
     ctaLive: string; ctaGuides: string;
     socialProof: string;
@@ -264,7 +263,6 @@ const es: AppTranslations = {
     eyebrow:     'Una argentina, un lituano y el mundo en el medio',
     headlineA:   'Viajá con los ojos,',
     headlineB:   'comé con el alma.',
-    tagline:     'Dos mundos. Una sola mesa.',
     subheadline: 'Soy Ori y con mi esposo lituano te mostramos cómo se vive, se come y qué pasa cuando dos culturas se mezclan.',
     ctaLive:     'Unirme al vivo de hoy',
     ctaGuides:   'Ver guías de destinos',
@@ -778,7 +776,6 @@ const en: AppTranslations = {
     eyebrow:     'An Argentine, a Lithuanian and the world in between',
     headlineA:   'Travel with your eyes,',
     headlineB:   'eat with your soul.',
-    tagline:     'Two worlds. One table.',
     subheadline: "I'm Ori, and with my Lithuanian husband we show you how people live, what they eat, and what happens when two cultures mix.",
     ctaLive:     "Join today's live",
     ctaGuides:   'See destination guides',
@@ -1286,7 +1283,6 @@ const pt: AppTranslations = {
     eyebrow:     'Uma argentina, um lituano e o mundo no meio',
     headlineA:   'Viaje com os olhos,',
     headlineB:   'coma com a alma.',
-    tagline:     'Dois mundos. Uma só mesa.',
     subheadline: 'Sou Ori e com meu marido lituano te mostramos como se vive, como se come e o que acontece quando duas culturas se misturam.',
     ctaLive:     'Entrar no ao vivo de hoje',
     ctaGuides:   'Ver guias de destinos',
