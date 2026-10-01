@@ -3,7 +3,10 @@
   publish = "dist/exploriando/browser"
 
 [build.environment]
-  NODE_VERSION = "20"
+  # Tiene que coincidir con .nvmrc: Angular 22 no arranca en Node 20 y el
+  # Netlify Build que dispara el CLI fallaba con "Error while running build".
+  # El sitio salía igual sólo porque la subida del --dir ocurre antes.
+  NODE_VERSION = "22.23.3"
   NPM_VERSION  = "10"
 
 # Netlify Functions
