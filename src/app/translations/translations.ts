@@ -3,6 +3,8 @@ import { Lang } from '../models/language.model';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NavLink        { label: string; href: string; }
+/** Una tarjeta del ruteador. `note` se rinde sólo si tiene contenido. */
+interface CaminoCopy     { title: string; body: string; cta: string; note: string; }
 interface FooterLink     { label: string; href: string; }
 interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
@@ -133,6 +135,15 @@ interface AppTranslations {
   latinaConnection: {
     sectionLabel: string; headline: string; text: string; note: string; cta: string;
   };
+
+  /** Ruteador por audiencia, arriba de la home. Cuatro caminos, uno por
+   *  intención: viajar, crear contenido, aprender español, contratar.
+   *  Reemplaza a los teasers de Viajero Creador y Latina Connection, que
+   *  quedaron desmontados — las tarjetas son ahora la única puerta. */
+  caminos: {
+    sectionLabel: string; headline: string; intro: string;
+    viajar: CaminoCopy; crear: CaminoCopy; espanol: CaminoCopy; marca: CaminoCopy;
+  };
   mapaTeaser: {
     sectionLabel: string; headline: string; lead: string;
     countriesLabel: string; placesLabel: string; yearsLabel: string;
@@ -236,7 +247,6 @@ const es: AppTranslations = {
       { label: 'Viajero Creador', href: '/viajero-creador' },
       { label: 'Marcas',          href: '/marcas' },
       { label: 'Recursos',        href: '#recursos' },
-      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Unirme a la comunidad',
   },
@@ -608,6 +618,38 @@ const es: AppTranslations = {
     note:         'Las clases son en inglés.',
     cta:          'Conocer el curso',
   },
+  caminos: {
+    sectionLabel: '¿Qué te trajo acá?',
+    headline:     'Elegí por dónde empezar',
+    intro:        'Cuatro caminos distintos. Cada uno te lleva a lo suyo, sin que tengas que buscar.',
+    viajar: {
+      title: 'Quiero viajar más',
+      body:  '42 ciudades con guía, mapa, presupuesto real y los errores ya cometidos.',
+      cta:   'Ver el mapa',
+      note:  '',
+    },
+    crear: {
+      title: 'Quiero crear contenido',
+      body:  'La serie Viajero Creador y asesorías 1 a 1 para arrancar de verdad.',
+      cta:   'Empezar acá',
+      note:  '',
+    },
+    // A propósito en inglés, igual que en la maqueta: el curso se dicta en
+    // inglés, así que la tarjeta en su idioma es la señal más clara de a quién
+    // le habla. `note` lo dice explícito para quien navega en español.
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Curso en inglés · otra marca mía',
+    },
+    marca: {
+      title: 'Tengo una marca',
+      body:  'Contenido en destino para hotelería y travel-tech, con medición.',
+      cta:   'Ver paquetes',
+      note:  '',
+    },
+  },
   mapaTeaser: {
     sectionLabel:   'Esto es para vos',
     headline:       'Diez años de ruta. Cero teoría.',
@@ -716,7 +758,6 @@ const en: AppTranslations = {
       { label: 'Creator Traveler', href: '/viajero-creador' },
       { label: 'Brands',           href: '/marcas' },
       { label: 'Resources',        href: '#recursos' },
-      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Join the community',
   },
@@ -1087,6 +1128,35 @@ const en: AppTranslations = {
     note:         '4 lessons, 55 minutes.',
     cta:          'See the course',
   },
+  caminos: {
+    sectionLabel: 'What brought you here?',
+    headline:     'Pick where to start',
+    intro:        'Four different paths. Each one takes you straight to its own thing.',
+    viajar: {
+      title: 'I want to travel more',
+      body:  '42 cities with guides, maps, real budgets and the mistakes already made.',
+      cta:   'See the map',
+      note:  '',
+    },
+    crear: {
+      title: 'I want to create content',
+      body:  'The Creator Traveler series and 1-on-1 sessions to actually get started.',
+      cta:   'Start here',
+      note:  '',
+    },
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Another project of mine',
+    },
+    marca: {
+      title: 'I have a brand',
+      body:  'On-location content for hospitality and travel-tech, with measurement.',
+      cta:   'See packages',
+      note:  '',
+    },
+  },
   mapaTeaser: {
     sectionLabel:   "This one's for you",
     headline:       'Ten years on the road. Zero theory.',
@@ -1195,7 +1265,6 @@ const pt: AppTranslations = {
       { label: 'Viajante Criador', href: '/viajero-creador' },
       { label: 'Marcas',           href: '/marcas' },
       { label: 'Recursos',         href: '#recursos' },
-      { label: 'Latina Connection', href: '#latina-connection' },
     ],
     cta: 'Entrar na comunidade',
   },
@@ -1565,6 +1634,35 @@ const pt: AppTranslations = {
     text:         'Um curso curto de espanhol argentino para homens que querem conhecer uma latina. Dou com meu marido, que foi o primeiro a aprender assim.',
     note:         'As aulas são em inglês.',
     cta:          'Conhecer o curso',
+  },
+  caminos: {
+    sectionLabel: 'O que te trouxe aqui?',
+    headline:     'Escolha por onde começar',
+    intro:        'Quatro caminhos diferentes. Cada um leva direto ao seu.',
+    viajar: {
+      title: 'Quero viajar mais',
+      body:  '42 cidades com guia, mapa, orçamento real e os erros já cometidos.',
+      cta:   'Ver o mapa',
+      note:  '',
+    },
+    crear: {
+      title: 'Quero criar conteúdo',
+      body:  'A série Viajante Criador e sessões 1 a 1 para começar de verdade.',
+      cta:   'Começar aqui',
+      note:  '',
+    },
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Curso em inglês · outra marca minha',
+    },
+    marca: {
+      title: 'Tenho uma marca',
+      body:  'Conteúdo no destino para hotelaria e travel-tech, com medição.',
+      cta:   'Ver pacotes',
+      note:  '',
+    },
   },
   mapaTeaser: {
     sectionLabel:   'Isso aqui é pra você',
