@@ -14,7 +14,7 @@ export type AnalyticsEvent =
   | 'email_capture_submit'    // submit exitoso de cualquier form (param `source` lo identifica: hero/footer/guia/viajero-creador/etc.)
   | 'email_capture_error'     // error en submit (EmailJS, network)
   | 'marcas_form_click'       // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
-  | 'en_vivo_click'            // CTA al canal desde el bloque del vivo diario
+  | 'en_vivo_click'            // CTA al vivo (param `location`: hero | section)
   | 'guias_premium_click'      // CTA/compra de una guía premium (param `guia`)
   | 'servicios_ver_mas'        // despliega los 3 servicios extra en /marcas
   | 'portfolio_ver_mas'        // despliega los trabajos anteriores en /marcas

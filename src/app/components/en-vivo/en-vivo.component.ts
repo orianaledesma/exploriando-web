@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { LanguageService } from '../../services/language.service';
 import { AnalyticsService } from '../../services/analytics.service';
+import { YOUTUBE_LIVE_URL } from '../../data/links';
 import { TRANSLATIONS } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 
 /** Canal donde ocurre el vivo diario de cocina. */
-const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@Exploriando/live';
+
 
 /**
  * Frame de un vivo real, sin extensión: se sirve `.webp` con fallback `.jpg`.
@@ -32,10 +33,10 @@ export class EnVivoComponent {
   private readonly analytics = inject(AnalyticsService);
 
   readonly t = computed(() => TRANSLATIONS[this.lang.current()].enVivo);
-  readonly channelUrl = YOUTUBE_CHANNEL_URL;
+  readonly channelUrl = YOUTUBE_LIVE_URL;
   readonly frameSrc   = LIVE_FRAME_SRC;
 
   onCtaClick(): void {
-    this.analytics.track('en_vivo_click');
+    this.analytics.track('en_vivo_click', { location: 'section' });
   }
 }
