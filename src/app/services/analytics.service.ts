@@ -14,7 +14,7 @@ export type AnalyticsEvent =
   | 'email_capture_submit'    // submit exitoso de cualquier form (param `source` lo identifica: hero/footer/guia/viajero-creador/etc.)
   | 'email_capture_error'     // error en submit (EmailJS, network)
   | 'marcas_form_click'       // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
-  | 'en_vivo_click'            // CTA al canal desde el bloque del vivo diario
+  | 'en_vivo_click'            // CTA al vivo (param `location`: hero | section)
   | 'guias_premium_click'      // CTA/compra de una guía premium (param `guia`)
   | 'servicios_ver_mas'        // despliega los 3 servicios extra en /marcas
   | 'portfolio_ver_mas'        // despliega los trabajos anteriores en /marcas
@@ -23,7 +23,9 @@ export type AnalyticsEvent =
   | 'viajero_creador_session_click'  // CTA a reservar sesión 1:1 (Calendly)
   | 'viajero_creador_teaser_click'   // CTA del teaser en la home → /viajero-creador
   | 'viajero_creador_video_click'    // click a un video suelto de la grilla gratuita
-  | 'affiliate_click';        // click outbound a un link de afiliado (param `partner` = id de la card)
+  | 'affiliate_click'         // click outbound a un link de afiliado (param `partner` = id de la card)
+  | 'latina_connection_click'   // salida a latinaconnection.info (param `lang`)
+  | 'camino_click';            // tarjeta del ruteador por audiencia en la home (param `camino`)
 
 export type AnalyticsParams = Record<string, string | number | boolean>;
 

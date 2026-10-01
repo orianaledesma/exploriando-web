@@ -35,9 +35,15 @@ export class RecursosComponent {
     return [`/assets/content/guias/${file}`];
   });
 
-  /** Scrollea al form de captura del Hero (único punto de captura). */
+  /**
+   * Scrollea al form de captura del footer.
+   *
+   * Apuntaba a #hero-email hasta que el hero dejó de capturar email
+   * (2026-10-01): el botón quedó sin hacer nada porque getElementById
+   * devolvía null y el método salía en silencio.
+   */
   scrollToHero(): void {
-    const input = document.getElementById('hero-email');
+    const input = document.getElementById('footer-email');
     if (input) {
       input.scrollIntoView({ behavior: 'smooth', block: 'center' });
       (input as HTMLInputElement).focus();

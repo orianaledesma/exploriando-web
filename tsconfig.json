@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -15,8 +14,7 @@
     "moduleDetection": "force",
     "target": "ES2022",
     "module": "ES2022",
-    "moduleResolution": "bundler",
-    "lib": ["ES2022", "dom"]
+    "moduleResolution": "bundler"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

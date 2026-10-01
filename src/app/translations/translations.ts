@@ -3,6 +3,8 @@ import { Lang } from '../models/language.model';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NavLink        { label: string; href: string; }
+/** Una tarjeta del ruteador. `note` se rinde sólo si tiene contenido. */
+interface CaminoCopy     { title: string; body: string; cta: string; note: string; }
 interface FooterLink     { label: string; href: string; }
 interface Stat           { value: string; label: string; }
 interface Topic          { title: string; description: string; }
@@ -14,7 +16,16 @@ interface ProcessStep    { title: string; items: string[]; }
 
 interface AppTranslations {
   nav: { links: NavLink[]; cta: string; };
-  hero: { eyebrow: string; headline: string; subheadline: string; cta: string; ctaSubtext: string; socialProof: string; };
+  hero: {
+    eyebrow: string;
+    /** El titular va partido en dos: la segunda mitad se rinde en itálica y
+     *  con el color de acento. Partirlo acá en vez de meter markup en el copy
+     *  mantiene las traducciones como texto plano. */
+    headlineA: string; headlineB: string;
+    subheadline: string;
+    ctaLive: string; ctaGuides: string;
+    socialProof: string;
+  };
   about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
@@ -126,6 +137,22 @@ interface AppTranslations {
     guias: PremiumGuide[];
   };
   marcasTeaser: { sectionLabel: string; headline: string; text: string; cta: string; };
+  /** Cross-promo a Latina Connection, el curso de español argentino que Ori da
+   *  con su marido. Es una marca aparte, no un producto de Exploriando: se
+   *  muestra en los tres idiomas, y como las clases son en inglés, `note` lo
+   *  aclara para quien navega en ES o PT. */
+  latinaConnection: {
+    sectionLabel: string; headline: string; text: string; note: string; cta: string;
+  };
+
+  /** Ruteador por audiencia, arriba de la home. Cuatro caminos, uno por
+   *  intención: viajar, crear contenido, aprender español, contratar.
+   *  Reemplaza a los teasers de Viajero Creador y Latina Connection, que
+   *  quedaron desmontados — las tarjetas son ahora la única puerta. */
+  caminos: {
+    sectionLabel: string; headline: string; intro: string;
+    viajar: CaminoCopy; crear: CaminoCopy; espanol: CaminoCopy; marca: CaminoCopy;
+  };
   mapaTeaser: {
     sectionLabel: string; headline: string; lead: string;
     countriesLabel: string; placesLabel: string; yearsLabel: string;
@@ -233,23 +260,25 @@ const es: AppTranslations = {
     cta: 'Unirme a la comunidad',
   },
   hero: {
-    eyebrow:     'Comunidad de viajeros latinos',
-    headline:    'Lo mejor que vas a hacer en tu vida es viajar.',
-    subheadline: '9 años viajando me enseñaron que ninguna cosa que comprés rinde como una experiencia. Acá te muestro dónde poner la plata para que cada viaje valga.',
-    cta:         'Mandame la guía gratis',
-    ctaSubtext:  'Sin costo. Sin spam. Solo información que funciona.',
-    socialProof: '+2.000 viajeros · 54 ciudades · 9 años viajando',
+    eyebrow:     'Una argentina, un lituano y el mundo en el medio',
+    headlineA:   'Viajá con los ojos,',
+    headlineB:   'comé con el alma.',
+    subheadline: 'Soy Ori y con mi esposo lituano te mostramos cómo se vive, se come y qué pasa cuando dos culturas se mezclan.',
+    ctaLive:     'Unirme al vivo de hoy',
+    ctaGuides:   'Ver guías de destinos',
+    // 42 es el número real de ciudades en src/app/data/places.ts. Antes decía
+    // 54, que no coincidía con el mapa que el visitante puede contar.
+    socialProof: '+2.000 viajeros · 42 ciudades · 9 años viajando',
   },
   about: {
     sectionLabel: 'Quiénes somos',
     headline:     'Una argentina que dejó de esperar el momento perfecto.',
     body: [
       'Me llamo Ori. Hace años decidí que no iba a esperar tener más dinero, más tiempo o más seguridad para viajar. Agarré lo que tenía y me fui.',
-      'Lo que descubrí es que la mayoría de los obstáculos que creía reales eran, en realidad, falta de información. Visas, vuelos baratos, documentación, destinos accesibles — todo tiene un cómo.',
-      'Después se sumó Mindaugas, mi marido lituano, y Exploriando dejó de ser un proyecto mío para ser de los dos. Yo pongo la mirada de la latina que se enfrentó a cada trámite y cada miedo desde cero; él, la del europeo que vive donde para muchos es destino. Las rutas, las guías y los videos los pensamos, los viajamos y los grabamos juntos.',
+      'Después se sumó mi esposo lituano, y Exploriando dejó de ser un proyecto mío para ser de los dos. Yo pongo la mirada de la latina que se enfrentó a cada trámite y cada miedo desde cero; él, la del europeo que vive donde para muchos es destino. Las rutas, las guías y los videos los pensamos, los viajamos y los grabamos juntos.',
     ],
     stats: [
-      { value: '54', label: 'ciudades recorridas' },
+      { value: '42', label: 'ciudades recorridas' },
       { value: '9',   label: 'años viajando full time' },
       { value: '3',   label: 'continentes desde cero' },
     ],
@@ -593,6 +622,45 @@ const es: AppTranslations = {
     text:         'Hago UGC real en destino para marcas de viaje, beauty y lifestyle. Mirá el portafolio y los paquetes.',
     cta:          'Ver portafolio y paquetes',
   },
+  latinaConnection: {
+    sectionLabel: 'Otro proyecto mío',
+    headline:     'Latina Connection',
+    text:         'Un curso corto de español argentino para hombres que quieren conocer a una latina. Lo doy con mi marido, que fue el primero en aprenderlo así.',
+    note:         'Las clases son en inglés.',
+    cta:          'Conocer el curso',
+  },
+  caminos: {
+    sectionLabel: '¿Qué te trajo acá?',
+    headline:     'Elegí por dónde empezar',
+    intro:        'Cuatro caminos distintos. Cada uno te lleva a lo suyo, sin que tengas que buscar.',
+    viajar: {
+      title: 'Quiero viajar más',
+      body:  '42 ciudades con guía, mapa, presupuesto real y los errores ya cometidos.',
+      cta:   'Ver el mapa',
+      note:  '',
+    },
+    crear: {
+      title: 'Quiero crear contenido',
+      body:  'La serie Viajero Creador y asesorías 1 a 1 para arrancar de verdad.',
+      cta:   'Empezar acá',
+      note:  '',
+    },
+    // A propósito en inglés, igual que en la maqueta: el curso se dicta en
+    // inglés, así que la tarjeta en su idioma es la señal más clara de a quién
+    // le habla. `note` lo dice explícito para quien navega en español.
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Curso en inglés · otra marca mía',
+    },
+    marca: {
+      title: 'Tengo una marca',
+      body:  'Contenido en destino para hotelería y travel-tech, con medición.',
+      cta:   'Ver paquetes',
+      note:  '',
+    },
+  },
   mapaTeaser: {
     sectionLabel:   'Esto es para vos',
     headline:       'Diez años de ruta. Cero teoría.',
@@ -705,23 +773,23 @@ const en: AppTranslations = {
     cta: 'Join the community',
   },
   hero: {
-    eyebrow:     'Latin traveler community',
-    headline:    "The best thing you'll do in your life is travel.",
-    subheadline: "9 years on the road taught me that nothing you buy pays off like an experience. Here's where to put your money so every trip is worth it.",
-    cta:         'Send me the free guide',
-    ctaSubtext:  'Free. No spam. Just information that works.',
-    socialProof: '+2,000 travelers · 54 cities · 9 years traveling',
+    eyebrow:     'An Argentine, a Lithuanian and the world in between',
+    headlineA:   'Travel with your eyes,',
+    headlineB:   'eat with your soul.',
+    subheadline: "I'm Ori, and with my Lithuanian husband we show you how people live, what they eat, and what happens when two cultures mix.",
+    ctaLive:     "Join today's live",
+    ctaGuides:   'See destination guides',
+    socialProof: '+2,000 travelers · 42 cities · 9 years traveling',
   },
   about: {
     sectionLabel: 'Who we are',
     headline:     'An Argentine woman who stopped waiting for the perfect moment.',
     body: [
       "My name is Ori. Years ago I decided I wasn't going to wait until I had more money, more time, or more security to travel. I grabbed what I had and left.",
-      "What I discovered is that most of the obstacles I thought were real were, in reality, a lack of information. Visas, cheap flights, documentation, accessible destinations — everything has a how.",
-      "Then Mindaugas, my Lithuanian husband, joined the project — and Exploriando stopped being mine and became ours. I bring the perspective of a Latina who faced every form, every visa and every fear from scratch; he brings the side of the European who lives where, for many, the trip ends. The routes, the guides and the videos — we think them, travel them and film them together.",
+      "Then my Lithuanian husband joined the project — and Exploriando stopped being mine and became ours. I bring the perspective of a Latina who faced every form, every visa and every fear from scratch; he brings the side of the European who lives where, for many, the trip ends. The routes, the guides and the videos — we think them, travel them and film them together.",
     ],
     stats: [
-      { value: '54', label: 'cities visited' },
+      { value: '42', label: 'cities visited' },
       { value: '9',   label: 'years traveling full time' },
       { value: '3',   label: 'continents from scratch' },
     ],
@@ -1064,6 +1132,42 @@ const en: AppTranslations = {
     text:         'I make real on-location UGC for travel, beauty and lifestyle brands. Check the portfolio and packages.',
     cta:          'See portfolio and packages',
   },
+  latinaConnection: {
+    sectionLabel: 'Another project of mine',
+    headline:     'Latina Connection',
+    text:         'A short Argentine Spanish course for men who want to meet a Latina. I teach it with my husband — he was the first one to learn it this way.',
+    note:         '4 lessons, 55 minutes.',
+    cta:          'See the course',
+  },
+  caminos: {
+    sectionLabel: 'What brought you here?',
+    headline:     'Pick where to start',
+    intro:        'Four different paths. Each one takes you straight to its own thing.',
+    viajar: {
+      title: 'I want to travel more',
+      body:  '42 cities with guides, maps, real budgets and the mistakes already made.',
+      cta:   'See the map',
+      note:  '',
+    },
+    crear: {
+      title: 'I want to create content',
+      body:  'The Creator Traveler series and 1-on-1 sessions to actually get started.',
+      cta:   'Start here',
+      note:  '',
+    },
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Another project of mine',
+    },
+    marca: {
+      title: 'I have a brand',
+      body:  'On-location content for hospitality and travel-tech, with measurement.',
+      cta:   'See packages',
+      note:  '',
+    },
+  },
   mapaTeaser: {
     sectionLabel:   "This one's for you",
     headline:       'Ten years on the road. Zero theory.',
@@ -1176,23 +1280,23 @@ const pt: AppTranslations = {
     cta: 'Entrar na comunidade',
   },
   hero: {
-    eyebrow:     'Comunidade de viajantes latinos',
-    headline:    'A melhor coisa que você vai fazer na vida é viajar.',
-    subheadline: 'Os 9 anos na estrada me ensinaram que nada que você compra rende como uma experiência. Aqui te mostro onde colocar o dinheiro para que cada viagem valha a pena.',
-    cta:         'Me envie o guia grátis',
-    ctaSubtext:  'Grátis. Sem spam. Apenas informação que funciona.',
-    socialProof: '+2.000 viajantes · 54 cidades · 9 anos viajando',
+    eyebrow:     'Uma argentina, um lituano e o mundo no meio',
+    headlineA:   'Viaje com os olhos,',
+    headlineB:   'coma com a alma.',
+    subheadline: 'Sou Ori e com meu marido lituano te mostramos como se vive, como se come e o que acontece quando duas culturas se misturam.',
+    ctaLive:     'Entrar no ao vivo de hoje',
+    ctaGuides:   'Ver guias de destinos',
+    socialProof: '+2.000 viajantes · 42 cidades · 9 anos viajando',
   },
   about: {
     sectionLabel: 'Quem somos',
     headline:     'Uma argentina que parou de esperar o momento perfeito.',
     body: [
       'Meu nome é Ori. Há anos decidi que não ia esperar ter mais dinheiro, mais tempo ou mais segurança para viajar. Peguei o que tinha e fui.',
-      'O que descobri é que a maioria dos obstáculos que achava que eram reais eram, na verdade, falta de informação. Vistos, voos baratos, documentação, destinos acessíveis — tudo tem um como.',
-      'Depois o Mindaugas, meu marido lituano, entrou no projeto, e o Exploriando deixou de ser meu para ser dos dois. Eu trago o olhar da latina que enfrentou cada trâmite e cada medo do zero; ele, o do europeu que vive onde, para muitos, a viagem termina. As rotas, os guias e os vídeos — pensamos, viajamos e filmamos juntos.',
+      'Depois meu marido lituano entrou no projeto, e o Exploriando deixou de ser meu para ser dos dois. Eu trago o olhar da latina que enfrentou cada trâmite e cada medo do zero; ele, o do europeu que vive onde, para muitos, a viagem termina. As rotas, os guias e os vídeos — pensamos, viajamos e filmamos juntos.',
     ],
     stats: [
-      { value: '54', label: 'cidades percorridas' },
+      { value: '42', label: 'cidades percorridas' },
       { value: '9',   label: 'anos viajando em tempo integral' },
       { value: '3',   label: 'continentes do zero' },
     ],
@@ -1534,6 +1638,42 @@ const pt: AppTranslations = {
     headline:     'Conteúdo que vende a experiência, não uma cena montada.',
     text:         'Faço UGC real no destino para marcas de viagem, beauty e lifestyle. Veja o portfólio e os pacotes.',
     cta:          'Ver portfólio e pacotes',
+  },
+  latinaConnection: {
+    sectionLabel: 'Outro projeto meu',
+    headline:     'Latina Connection',
+    text:         'Um curso curto de espanhol argentino para homens que querem conhecer uma latina. Dou com meu marido, que foi o primeiro a aprender assim.',
+    note:         'As aulas são em inglês.',
+    cta:          'Conhecer o curso',
+  },
+  caminos: {
+    sectionLabel: 'O que te trouxe aqui?',
+    headline:     'Escolha por onde começar',
+    intro:        'Quatro caminhos diferentes. Cada um leva direto ao seu.',
+    viajar: {
+      title: 'Quero viajar mais',
+      body:  '42 cidades com guia, mapa, orçamento real e os erros já cometidos.',
+      cta:   'Ver o mapa',
+      note:  '',
+    },
+    crear: {
+      title: 'Quero criar conteúdo',
+      body:  'A série Viajante Criador e sessões 1 a 1 para começar de verdade.',
+      cta:   'Começar aqui',
+      note:  '',
+    },
+    espanol: {
+      title: 'I want to learn Spanish',
+      body:  'Real Argentine Spanish, taught by someone who actually lives it.',
+      cta:   'See the course',
+      note:  'Curso em inglês · outra marca minha',
+    },
+    marca: {
+      title: 'Tenho uma marca',
+      body:  'Conteúdo no destino para hotelaria e travel-tech, com medição.',
+      cta:   'Ver pacotes',
+      note:  '',
+    },
   },
   mapaTeaser: {
     sectionLabel:   'Isso aqui é pra você',

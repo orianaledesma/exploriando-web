@@ -1,0 +1,44 @@
+<section class="caminos" id="por-donde-empezar" aria-labelledby="caminos-title">
+  <div class="container">
+
+    <span class="section-label" appReveal>{{ t().sectionLabel }}</span>
+    <h2 id="caminos-title" appReveal [delay]="80">{{ t().headline }}</h2>
+    <p class="caminos__intro" appReveal [delay]="160">{{ t().intro }}</p>
+
+    <ul class="caminos__grid" role="list">
+      @for (card of cards(); track card.id; let i = $index) {
+        <li class="caminos__card"
+            [class.caminos__card--foreign]="card.foreign"
+            appReveal
+            [delay]="240 + i * 100">
+
+          <span class="caminos__icon" aria-hidden="true">{{ card.icon }}</span>
+          <h3 class="caminos__title">{{ card.title }}</h3>
+          <p class="caminos__body">{{ card.body }}</p>
+
+          @if (card.note) {
+            <p class="caminos__note">{{ card.note }}</p>
+          }
+
+          @if (card.kind === 'route') {
+            <a [routerLink]="card.href"
+               class="caminos__cta"
+               (click)="onCardClick(card.id)">
+              {{ card.cta }} →
+            </a>
+          } @else {
+            <a [href]="card.href"
+               class="caminos__cta"
+               target="_blank"
+               rel="noopener"
+               (click)="onCardClick(card.id)">
+              {{ card.cta }} →
+            </a>
+          }
+
+        </li>
+      }
+    </ul>
+
+  </div>
+</section>

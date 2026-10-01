@@ -1,0 +1,31 @@
+<section class="lc-band"
+         id="latina-connection"
+         aria-labelledby="latina-connection-title">
+  <div class="container lc-band__inner" appReveal>
+
+    <picture class="lc-band__mark">
+      <source srcset="/assets/images/latina-connection-mark.webp" type="image/webp" />
+      <img src="/assets/images/latina-connection-mark.png"
+           width="360" height="259"
+           alt=""
+           loading="lazy"
+           decoding="async" />
+    </picture>
+
+    <div class="lc-band__copy">
+      <span class="section-label">{{ t().sectionLabel }}</span>
+      <h2 id="latina-connection-title">{{ t().headline }}</h2>
+      <p class="lc-band__text">{{ t().text }}</p>
+      <p class="lc-band__note">{{ t().note }}</p>
+
+      <a [href]="url"
+         class="btn btn--primary btn--lg lc-band__cta"
+         target="_blank"
+         rel="noopener"
+         (click)="onCtaClick()">
+        {{ t().cta }} →
+      </a>
+    </div>
+
+  </div>
+</section>

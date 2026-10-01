@@ -13,12 +13,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
       # Deuda técnica de specs resuelta (2026-05-18): 208/208 verdes.
       # Tests vuelven a ser bloqueantes — si fallan, no se deploya.
-      - run: npx ng test --watch=false --browsers=ChromeHeadless
+      # Vitest sobre jsdom desde Angular 22 — ya no hace falta un Chrome.
+      - run: npx ng test --watch=false
 
   deploy:
     runs-on: ubuntu-latest
@@ -28,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
 
