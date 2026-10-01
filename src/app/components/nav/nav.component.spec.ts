@@ -60,6 +60,21 @@ describe('NavComponent', () => {
 
     // ─── Nav links ─────────────────────────────────────────────────────────────
 
+    it('ningún link del menú apunta a un ancla que no esté en la home', () => {
+        // El reorden de la maqueta v2 desmontó la banda de Latina Connection y
+        // dejó su entrada de menú apuntando a #latina-connection, que ya no
+        // existía: el click navegaba a la home y no scrolleaba a ninguna parte.
+        // Los anclas de secciones desmontadas no pueden quedar en el menú.
+        const desmontadas = ['latina-connection', 'viajero-creador-teaser', 'guias-premium'];
+        const fragmentos = TRANSLATIONS.es.nav.links
+            .filter((l) => l.href.startsWith('#'))
+            .map((l) => l.href.slice(1));
+
+        for (const muerta of desmontadas) {
+            expect(fragmentos, `#${muerta} quedó huérfano en el menú`).not.toContain(muerta);
+        }
+    });
+
     it('should render every nav link from translations', () => {
         // Derivado de las traducciones, no un número fijo: agregar o sacar una
         // entrada del menú no debería obligar a editar este test.
