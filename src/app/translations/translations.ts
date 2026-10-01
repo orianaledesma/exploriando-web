@@ -16,7 +16,17 @@ interface ProcessStep    { title: string; items: string[]; }
 
 interface AppTranslations {
   nav: { links: NavLink[]; cta: string; };
-  hero: { eyebrow: string; headline: string; subheadline: string; cta: string; ctaSubtext: string; socialProof: string; };
+  hero: {
+    eyebrow: string;
+    /** El titular va partido en dos: la segunda mitad se rinde en itálica y
+     *  con el color de acento. Partirlo acá en vez de meter markup en el copy
+     *  mantiene las traducciones como texto plano. */
+    headlineA: string; headlineB: string;
+    tagline: string;
+    subheadline: string;
+    ctaLive: string; ctaGuides: string;
+    socialProof: string;
+  };
   about: { sectionLabel: string; headline: string; body: string[]; stats: Stat[]; crossSell: string; };
   viajeroCreador: {
     sectionLabel: string; headline: string; subheadline: string; intro: string;
@@ -251,12 +261,16 @@ const es: AppTranslations = {
     cta: 'Unirme a la comunidad',
   },
   hero: {
-    eyebrow:     'Comunidad de viajeros latinos',
-    headline:    'Lo mejor que vas a hacer en tu vida es viajar.',
-    subheadline: '9 años viajando me enseñaron que ninguna cosa que comprés rinde como una experiencia. Acá te muestro dónde poner la plata para que cada viaje valga.',
-    cta:         'Mandame la guía gratis',
-    ctaSubtext:  'Sin costo. Sin spam. Solo información que funciona.',
-    socialProof: '+2.000 viajeros · 54 ciudades · 9 años viajando',
+    eyebrow:     'Una argentina, un lituano y el mundo en el medio',
+    headlineA:   'Viajá con los ojos,',
+    headlineB:   'comé con el alma.',
+    tagline:     'Dos mundos. Una sola mesa.',
+    subheadline: 'Soy Ori, argentina viviendo en Kaunas con mi esposo lituano. Cada destino que pisamos lo contamos desde adentro — mirá qué se come, cómo se vive y qué pasa cuando dos culturas se mezclan en la cocina.',
+    ctaLive:     'Unirme al vivo de hoy',
+    ctaGuides:   'Ver guías de destinos',
+    // 42 es el número real de ciudades en src/app/data/places.ts. Antes decía
+    // 54, que no coincidía con el mapa que el visitante puede contar.
+    socialProof: '+2.000 viajeros · 42 ciudades · 9 años viajando',
   },
   about: {
     sectionLabel: 'Quiénes somos',
@@ -762,12 +776,14 @@ const en: AppTranslations = {
     cta: 'Join the community',
   },
   hero: {
-    eyebrow:     'Latin traveler community',
-    headline:    "The best thing you'll do in your life is travel.",
-    subheadline: "9 years on the road taught me that nothing you buy pays off like an experience. Here's where to put your money so every trip is worth it.",
-    cta:         'Send me the free guide',
-    ctaSubtext:  'Free. No spam. Just information that works.',
-    socialProof: '+2,000 travelers · 54 cities · 9 years traveling',
+    eyebrow:     'An Argentine, a Lithuanian and the world in between',
+    headlineA:   'Travel with your eyes,',
+    headlineB:   'eat with your soul.',
+    tagline:     'Two worlds. One table.',
+    subheadline: "I'm Ori, an Argentine living in Kaunas with my Lithuanian husband. Every place we land we tell from the inside — see what people eat, how they live, and what happens when two cultures meet in the kitchen.",
+    ctaLive:     "Join today's live",
+    ctaGuides:   'See destination guides',
+    socialProof: '+2,000 travelers · 42 cities · 9 years traveling',
   },
   about: {
     sectionLabel: 'Who we are',
@@ -1269,12 +1285,14 @@ const pt: AppTranslations = {
     cta: 'Entrar na comunidade',
   },
   hero: {
-    eyebrow:     'Comunidade de viajantes latinos',
-    headline:    'A melhor coisa que você vai fazer na vida é viajar.',
-    subheadline: 'Os 9 anos na estrada me ensinaram que nada que você compra rende como uma experiência. Aqui te mostro onde colocar o dinheiro para que cada viagem valha a pena.',
-    cta:         'Me envie o guia grátis',
-    ctaSubtext:  'Grátis. Sem spam. Apenas informação que funciona.',
-    socialProof: '+2.000 viajantes · 54 cidades · 9 anos viajando',
+    eyebrow:     'Uma argentina, um lituano e o mundo no meio',
+    headlineA:   'Viaje com os olhos,',
+    headlineB:   'coma com a alma.',
+    tagline:     'Dois mundos. Uma só mesa.',
+    subheadline: 'Sou Ori, argentina morando em Kaunas com meu marido lituano. Cada destino que pisamos contamos de dentro — veja o que se come, como se vive e o que acontece quando duas culturas se misturam na cozinha.',
+    ctaLive:     'Entrar no ao vivo de hoje',
+    ctaGuides:   'Ver guias de destinos',
+    socialProof: '+2.000 viajantes · 42 cidades · 9 anos viajando',
   },
   about: {
     sectionLabel: 'Quem somos',
