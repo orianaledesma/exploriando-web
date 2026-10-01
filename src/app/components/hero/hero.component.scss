@@ -6,7 +6,9 @@
   overflow: hidden;
   background:
     linear-gradient(135deg, rgba(6,14,36,0.82) 0%, rgba(11,31,74,0.62) 45%, rgba(19,118,254,0.30) 100%),
-    url('/assets/images/hero.webp') center / cover no-repeat;
+    /* 65% y no center: la foto es vertical (2400x3200) y con el recorte
+       centrado los brazos quedaban justo en el borde inferior. */
+    url('/assets/images/hero.webp') center 65% / cover no-repeat;
   color: var(--color-text-on-dark);
 
   &__overlay {
@@ -22,15 +24,22 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-md);
+    gap: var(--space-lg);
     max-width: 700px;
     padding-top: var(--space-3xl);
     padding-bottom: var(--space-3xl);
   }
 
   h1 {
+    /*
+     * Mismo mínimo fluido que el h1 global (el clamp es lo que evita que en
+     * 375px el titular se desborde), con el tope bajado a 4.275rem.
+     */
+    font-size: clamp(2.5rem, 5.5vw, 4.275rem);
     color: var(--color-text-on-dark);
     white-space: pre-line;
+    /* Un respiro propio: el gap del contenedor solo no alcanzaba. */
+    margin-block: var(--space-xs) var(--space-2xs);
   }
 
   &__subheadline {
@@ -39,19 +48,17 @@
     max-width: 560px;
   }
 
-  /* La segunda mitad del titular: itálica, mismo blanco que el resto. El
-     acento se probó y Ori lo descartó — el quiebre lo hace la itálica sola. */
+  /*
+   * La segunda mitad del titular: itálica, mismo blanco que el resto. El
+   * acento se probó y Ori lo descartó — el quiebre lo hace la itálica sola.
+   *
+   * `display: block` garantiza las dos líneas en cualquier ancho: dejarlo al
+   * wrap natural hacía que el corte dependiera del idioma y del viewport.
+   */
   &__headline-accent {
+    display: block;
     color: inherit;
     font-style: italic;
-  }
-
-  &__tagline {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-on-dark);
   }
 
   &__actions {
