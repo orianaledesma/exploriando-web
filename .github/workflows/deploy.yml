@@ -48,6 +48,33 @@ jobs:
       - name: Generar sitemap.xml + robots.txt
         run: node scripts/generate-sitemap.mjs
 
+      # netlify/actions/cli@master devuelve 0 aunque su CLI falle. En el deploy
+      # del 2026-10-01 imprimió "Error while running build" y el job quedó en
+      # verde; el sitio salió igual sólo porque la subida del --dir ocurre
+      # antes del error. Esto corta ese modo de falla silenciosa.
+      - name: Verificar que existan los secrets de Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          faltan=""
+          [ -z "$NETLIFY_AUTH_TOKEN" ] && faltan="$faltan NETLIFY_AUTH_TOKEN"
+          [ -z "$NETLIFY_SITE_ID" ] && faltan="$faltan NETLIFY_SITE_ID"
+          if [ -n "$faltan" ]; then
+            echo "::error::Faltan secrets:$faltan"
+            exit 1
+          fi
+
+      # Guarda el nombre con hash del bundle recién construido. Después del
+      # deploy se compara contra lo que sirve el dominio: si no coincide, lo
+      # publicado no es este build.
+      - name: Anotar el artefacto construido
+        id: artefacto
+        run: |
+          main=$(ls dist/exploriando/browser/main-*.js | head -1 | xargs basename)
+          echo "main=$main" >> "$GITHUB_OUTPUT"
+          echo "Construido: $main"
+
       - name: Deploy a Netlify
         uses: netlify/actions/cli@master
         with:
@@ -57,3 +84,22 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
+
+      # La verificación que de verdad importa: preguntarle al dominio si está
+      # sirviendo ESTE build. Es lo único que no depende de que la action
+      # reporte bien su propio resultado.
+      - name: Verificar que producción sirva este build
+        run: |
+          esperado="${{ steps.artefacto.outputs.main }}"
+          for i in $(seq 1 12); do
+            publicado=$(curl -sL --max-time 20 https://exploriando.page/ \
+              | grep -o 'main-[A-Z0-9]*\.js' | head -1 || true)
+            if [ "$publicado" = "$esperado" ]; then
+              echo "Producción sirve $publicado — deploy confirmado."
+              exit 0
+            fi
+            echo "intento $i: sirve '$publicado', esperaba '$esperado'"
+            sleep 15
+          done
+          echo "::error::exploriando.page no sirve $esperado. El deploy no llegó."
+          exit 1
