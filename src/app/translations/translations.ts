@@ -3,6 +3,27 @@ import { Lang } from '../models/language.model';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NavLink        { label: string; href: string; }
+/** Una opción contratable dentro de un servicio. */
+interface ServicioOpcionT {
+  name: string;
+  /** Plazo o unidad de venta: "1 semana", "Por mes", "1 pieza". */
+  scope: string;
+  body: string;
+  includes: string[];
+}
+interface ServicioT {
+  title: string;
+  /** Para quién es, en una línea. */
+  para: string;
+  body: string;
+  bullets: string[];
+  options: ServicioOpcionT[];
+  /** A quién le llega. Vacío en los servicios donde no aplica. */
+  audienceTitle: string;
+  audience: string;
+  /** Letra chica: licencias, extras que se cotizan aparte. */
+  note: string;
+}
 /** Una tarjeta del ruteador. `note` se rinde sólo si tiene contenido. */
 interface CaminoCopy     { title: string; body: string; cta: string; note: string; }
 interface FooterLink     { label: string; href: string; }
@@ -80,6 +101,37 @@ interface AppTranslations {
     heroCardAlts: string[];
     // ─── Portfolio (antes hardcodeado en el HTML) ──────────────────────
     portfolioTitle: string; portfolioSubtitle: string;
+    /**
+     * Una entrada por categoría del portafolio, con el mismo id que CATEGORIES
+     * en marcas.component.ts. `intro` dice cómo se graba esa categoría: es lo
+     * que convierte la pestaña en un argumento de venta y no en un filtro.
+     */
+    portfolioCategories: Record<
+      'hoteleria' | 'gastronomia' | 'cocina' | 'experiencias' | 'moda',
+      { label: string; intro: string }
+    >;
+    /** Tarjeta que ocupa el lugar de una categoría todavía sin piezas. */
+    portfolioEmpty: { title: string; note: string };
+
+    // ─── Servicios (maqueta v2, 2026-10-05) ───────────────────────────────
+    /**
+     * Tres formas de trabajar más un paquete a medida. Reemplaza la grilla de
+     * paquetes sueltos: antes todo era producción UGC; ahora se distingue
+     * producir material para la marca de aparecer en los canales de Ori, que
+     * son negocios distintos con audiencias distintas.
+     */
+    servicios: {
+      sectionLabel: string;
+      title: string;
+      lead: string;
+      optionsTitle: string;
+      expandCta: string;
+      collapseCta: string;
+      items: ServicioT[];
+      custom: {
+        title: string; body: string; cta: string;
+      };
+    };
     portfolioExpandCta: string;
     portfolioMoreText: string; portfolioMoreCta: string;
     // ─── Hoteles & experiencias (entrada de baja fricción) ─────────────
@@ -417,6 +469,184 @@ const es: AppTranslations = {
     ],
     portfolioTitle:    'Portafolio de contenido',
     portfolioSubtitle: 'Contenido real grabado en destino, no en set. Así se ve el estilo que produzco — cada pieza linkea a su posteo original.',
+    portfolioCategories: {
+      hoteleria: {
+        label: 'Hotelería',
+        intro: 'Alojamientos grabados como una estadía real: la llegada, el primer ingreso, el amanecer, los detalles. No un recorrido de ambientes, sino la secuencia que hace que alguien se imagine adentro.',
+      },
+      gastronomia: {
+        label: 'Gastronomía',
+        intro: 'Producto en contexto: lo que se pide, cómo llega, cómo se ve en la mesa y qué se siente al probarlo. Formatos cortos pensados para que dé hambre, no para catalogar la carta.',
+      },
+      cocina: {
+        label: 'Cocina',
+        intro: 'Cocino en vivo de lunes a viernes en YouTube, una hora por día, contestando qué le pongo a cada plato. Un producto que aparece ahí se usa de verdad, delante de gente que pregunta.',
+      },
+      experiencias: {
+        label: 'Experiencias',
+        intro: 'Experiencias y actividades contadas desde adentro: la anticipación, el momento y la reacción. El formato que mejor funciona cuando lo que se vende es algo que se siente.',
+      },
+      moda: {
+        label: 'Moda',
+        intro: 'Producto en uso y en recorrido: cómo se ve puesto, cómo se elige, qué se lleva. Pensado para tiendas y marcas que venden algo que se prueba.',
+      },
+    },
+    portfolioEmpty: {
+      title: 'Próxima producción',
+      note: 'Esta categoría todavía no tiene piezas publicadas.',
+    },
+    servicios: {
+      sectionLabel: 'Servicios',
+      title: 'Tres formas de trabajar conmigo',
+      lead: 'Elegí según lo que necesites: material para tus canales, presencia en los míos, o las dos cosas.',
+      optionsTitle: 'Opciones disponibles',
+      expandCta: 'Ver opciones',
+      collapseCta: 'Ocultar opciones',
+      items: [
+        {
+          title: 'Contenido UGC',
+          para: 'Para hoteles, restaurantes, experiencias y productos',
+          body: 'Produzco el material y te lo entrego a vos. Es tuyo: lo usás en tus redes, tu web, tus fichas de OTA y tus ads. Mi audiencia no entra en la ecuación.',
+          bullets: [
+            'Videos verticales y fotos grabados en destino',
+            'Varios hooks para testear cuál convierte',
+            'En español y en inglés',
+          ],
+          options: [
+            {
+              name: 'Video UGC Suelto',
+              scope: '1 semana',
+              body: 'Para probar el formato con una pieza.',
+              includes: [
+                '1 video vertical de 15-60s, en español o inglés',
+                'Hook y CTA definidos antes de grabar',
+                '1 ronda de ajustes y subtítulos',
+              ],
+            },
+            {
+              name: 'Piloto Medido',
+              scope: '2 semanas + medición 60 días',
+              body: 'Para saber si funciona antes de escalar. Es el camino que recomiendo.',
+              includes: [
+                '3 videos verticales con 3 hooks distintos + 5 fotos, en tu propiedad',
+                'Objetivos por escrito antes de grabar — qué querés que pase',
+                'Medición de 3 métricas a 30 y 60 días, con reporte simple',
+                'Si no funciona, el contenido queda para vos igual',
+              ],
+            },
+            {
+              name: 'Librería de Contenido',
+              scope: '3-4 semanas',
+              body: 'Para grupos, cadenas y operadores con varias propiedades.',
+              includes: [
+                '6 videos verticales + 10 clips de historias derivados',
+                '10 fotos lifestyle para web, redes y OTAs',
+                'Set completo de formatos y guion incluido',
+              ],
+            },
+          ],
+          audienceTitle: '',
+          audience: '',
+          note: 'Todas las opciones incluyen licencia de uso orgánico por 90 días. Publicidad paga, whitelisting, perpetuidad, material en crudo y exclusividad se cotizan como línea aparte en la propuesta.',
+        },
+        {
+          title: 'Entretenimiento en redes',
+          para: 'Para marcas que quieren llegar a mi comunidad de Instagram',
+          body: 'Tu marca aparece en mi contenido de viaje y lifestyle, publicado en mis canales. El formato es el mismo con el que la gente ya me sigue, así que no se lee como un aviso.',
+          bullets: [
+            'Reels e historias publicados en mis redes',
+            'Integración dentro de la historia, no una placa',
+            'Audiencia principalmente latinoamericana',
+          ],
+          options: [
+            {
+              name: 'Reel publicado',
+              scope: '1 pieza',
+              body: 'Una aparición en mi feed, integrada en el contenido.',
+              includes: [
+                '1 reel con tu producto o lugar dentro de la historia',
+                'Guion compartido antes de grabar',
+                'Mención y link en el posteo',
+              ],
+            },
+            {
+              name: 'Reel + historias',
+              scope: '1 pieza + apoyo',
+              body: 'El reel más la secuencia de historias que lo acompaña.',
+              includes: [
+                '1 reel publicado en el feed',
+                'Secuencia de historias con link directo',
+                'Historias guardadas en destacados',
+              ],
+            },
+            {
+              name: 'Pack mensual',
+              scope: 'Por mes',
+              body: 'Presencia sostenida durante todo el mes, no una aparición suelta.',
+              includes: [
+                'Varias piezas repartidas en el mes',
+                'Historias de apoyo en cada publicación',
+                'Reporte mensual de alcance y comentarios',
+              ],
+            },
+          ],
+          audienceTitle: 'A quién le llega',
+          audience: 'Comunidad adulta de 25 a 45 años, mayoritariamente en Argentina, Panamá, Guatemala, Brasil y República Dominicana. Es el servicio indicado si tu marca vende en Latinoamérica.',
+          note: 'Si además querés el material para usarlo en tus propios canales, se suma como línea aparte en la propuesta.',
+        },
+        {
+          title: 'Entretenimiento en vivo',
+          para: 'Para marcas de alimentos, cocina y consumo masivo',
+          body: 'Cocino en vivo en YouTube todos los días hábiles, una hora por día. Tu producto se usa de verdad en la receta, con la comunidad preguntando en tiempo real.',
+          bullets: [
+            'Mención y uso real durante el vivo',
+            'Preguntas de la audiencia respondidas al aire',
+            'El replay queda publicado con tu link',
+          ],
+          options: [
+            {
+              name: 'Mención en vivo',
+              scope: '1 vivo',
+              body: 'Para probar el formato con una sola aparición.',
+              includes: [
+                'Tu producto usado en la receta del día, con el nombre dicho',
+                'Preguntas de la audiencia respondidas al aire',
+                'Link en la descripción del vivo y del replay',
+              ],
+            },
+            {
+              name: 'Plan mensual',
+              scope: 'Por mes',
+              body: 'Presencia repetida, que es donde el formato rinde de verdad.',
+              includes: [
+                'Varias apariciones a lo largo del mes',
+                'Piezas verticales derivadas de los mejores momentos',
+                'Link fijo en descripciones durante todo el mes',
+                'Reporte mensual de views y comentarios',
+              ],
+            },
+            {
+              name: 'Patrocinio de temporada',
+              scope: '3 meses mínimo',
+              body: 'Para quedar asociado al formato, no solo aparecer en él.',
+              includes: [
+                'Presencia sostenida durante toda la temporada',
+                'Mejor precio por mención que la compra suelta',
+                'Reporte mensual de resultados',
+              ],
+            },
+          ],
+          audienceTitle: 'A quién le llega',
+          audience: 'Público adulto hispanohablante, principalmente en Estados Unidos, España y México. Muchos son latinos viviendo fuera de su país — si tu producto resuelve algo de esa vida, es tu cliente.',
+          note: 'Si además querés las piezas para usarlas en tus propios canales, se suman como línea aparte en la propuesta.',
+        },
+      ],
+      custom: {
+        title: 'Paquete personalizado',
+        body: '¿Necesitás una combinación de los tres, o algo que no está en la lista? Armamos la propuesta a medida: producción y difusión se cotizan por separado, para que sepas exactamente qué estás pagando en cada línea.',
+        cta: 'Armemos el tuyo',
+      },
+    },
     portfolioExpandCta: 'Ver más trabajos',
     portfolioMoreText: '¿Querés ver todo lo que produzco?',
     portfolioMoreCta:  'Ver canal completo →',
@@ -928,6 +1158,184 @@ const en: AppTranslations = {
     ],
     portfolioTitle:    'Content portfolio',
     portfolioSubtitle: 'Real content shot on location, not on a set. This is what the style I produce looks like — every piece links to its original post.',
+    portfolioCategories: {
+      hoteleria: {
+        label: 'Hospitality',
+        intro: 'Stays filmed like a real one: the arrival, walking in for the first time, sunrise, the small details. Not a tour of the rooms — the sequence that makes someone picture themselves there.',
+      },
+      gastronomia: {
+        label: 'Food',
+        intro: 'Product in context: what you order, how it arrives, how it looks on the table and what it feels like to taste it. Short formats built to make people hungry, not to catalogue the menu.',
+      },
+      cocina: {
+        label: 'Cooking',
+        intro: 'I cook live on YouTube every weekday, an hour a day, answering what goes into each dish. A product that shows up there gets genuinely used, in front of people asking questions.',
+      },
+      experiencias: {
+        label: 'Experiences',
+        intro: 'Experiences told from the inside: the build-up, the moment, the reaction. The format that works best when what you sell is something people feel.',
+      },
+      moda: {
+        label: 'Fashion',
+        intro: 'Product worn and shopped for: how it looks on, how it gets picked, what goes home. Built for stores and brands selling something you try on.',
+      },
+    },
+    portfolioEmpty: {
+      title: 'Next production',
+      note: 'No published pieces in this category yet.',
+    },
+    servicios: {
+      sectionLabel: 'Services',
+      title: 'Three ways to work with me',
+      lead: 'Pick what you need: material for your own channels, presence on mine, or both.',
+      optionsTitle: 'Available options',
+      expandCta: 'See options',
+      collapseCta: 'Hide options',
+      items: [
+        {
+          title: 'UGC content',
+          para: 'For hotels, restaurants, experiences and products',
+          body: 'I produce the material and hand it over to you. It is yours: your socials, your website, your OTA listings, your ads. My audience is not part of the deal.',
+          bullets: [
+            'Vertical videos and photos shot on location',
+            'Several hooks so you can test which one converts',
+            'In Spanish and in English',
+          ],
+          options: [
+            {
+              name: 'Single UGC video',
+              scope: '1 week',
+              body: 'To try the format with one piece.',
+              includes: [
+                'One 15-60s vertical video, in Spanish or English',
+                'Hook and CTA agreed before shooting',
+                'One round of edits, subtitles included',
+              ],
+            },
+            {
+              name: 'Measured pilot',
+              scope: '2 weeks + 60-day tracking',
+              body: 'To know whether it works before scaling. This is the one I recommend.',
+              includes: [
+                '3 vertical videos with 3 different hooks + 5 photos, shot at your property',
+                'Goals in writing before shooting — what you want to happen',
+                '3 metrics measured at 30 and 60 days, with a plain report',
+                'If it does not work, the content is still yours',
+              ],
+            },
+            {
+              name: 'Content library',
+              scope: '3-4 weeks',
+              body: 'For groups, chains and operators running several properties.',
+              includes: [
+                '6 vertical videos + 10 story clips derived from them',
+                '10 lifestyle photos for web, social and OTAs',
+                'Full set of formats, script included',
+              ],
+            },
+          ],
+          audienceTitle: '',
+          audience: '',
+          note: 'Every option includes a 90-day organic usage licence. Paid media, whitelisting, perpetuity, raw footage and exclusivity are quoted as separate lines in the proposal.',
+        },
+        {
+          title: 'Social entertainment',
+          para: 'For brands that want to reach my Instagram community',
+          body: 'Your brand shows up inside my travel and lifestyle content, published on my channels. It is the same format people already follow me for, so it does not read as an ad.',
+          bullets: [
+            'Reels and stories published on my channels',
+            'Woven into the story, not a title card',
+            'Mainly Latin American audience',
+          ],
+          options: [
+            {
+              name: 'Published reel',
+              scope: '1 piece',
+              body: 'One appearance on my feed, built into the content.',
+              includes: [
+                'One reel with your product or venue inside the story',
+                'Script shared before shooting',
+                'Mention and link in the caption',
+              ],
+            },
+            {
+              name: 'Reel + stories',
+              scope: '1 piece + support',
+              body: 'The reel plus the story sequence that carries it.',
+              includes: [
+                'One reel published on the feed',
+                'Story sequence with a direct link',
+                'Stories saved to highlights',
+              ],
+            },
+            {
+              name: 'Monthly pack',
+              scope: 'Per month',
+              body: 'Sustained presence across the month, not a one-off appearance.',
+              includes: [
+                'Several pieces spread across the month',
+                'Supporting stories with every post',
+                'Monthly report on reach and comments',
+              ],
+            },
+          ],
+          audienceTitle: 'Who it reaches',
+          audience: 'Adults aged 25 to 45, mostly in Argentina, Panama, Guatemala, Brazil and the Dominican Republic. This is the service to pick if your brand sells in Latin America.',
+          note: 'If you also want the material for your own channels, it is added as a separate line in the proposal.',
+        },
+        {
+          title: 'Live entertainment',
+          para: 'For food, cooking and consumer brands',
+          body: 'I cook live on YouTube every weekday, an hour a day. Your product gets genuinely used in the recipe, with the community asking questions in real time.',
+          bullets: [
+            'Named and actually used during the live',
+            'Audience questions answered on air',
+            'The replay stays up with your link',
+          ],
+          options: [
+            {
+              name: 'Live mention',
+              scope: '1 live',
+              body: 'To try the format with a single appearance.',
+              includes: [
+                'Your product used in that day recipe, named out loud',
+                'Audience questions answered on air',
+                'Link in the live and replay description',
+              ],
+            },
+            {
+              name: 'Monthly plan',
+              scope: 'Per month',
+              body: 'Repeated presence, which is where this format actually pays off.',
+              includes: [
+                'Several appearances across the month',
+                'Vertical pieces cut from the best moments',
+                'Permanent link in descriptions all month',
+                'Monthly report on views and comments',
+              ],
+            },
+            {
+              name: 'Season sponsorship',
+              scope: '3 months minimum',
+              body: 'To be associated with the format, not just appear in it.',
+              includes: [
+                'Sustained presence across the whole season',
+                'Better price per mention than buying one-off',
+                'Monthly results report',
+              ],
+            },
+          ],
+          audienceTitle: 'Who it reaches',
+          audience: 'Spanish-speaking adults, mainly in the United States, Spain and Mexico. Many are Latin Americans living abroad — if your product solves something about that life, they are your customer.',
+          note: 'If you also want the pieces for your own channels, they are added as a separate line in the proposal.',
+        },
+      ],
+      custom: {
+        title: 'Custom package',
+        body: 'Need a mix of the three, or something that is not on the list? We build the proposal to fit: production and distribution are quoted separately, so you know exactly what you are paying for on each line.',
+        cta: 'Let us build yours',
+      },
+    },
     portfolioExpandCta: 'See more work',
     portfolioMoreText: 'Want to see everything I produce?',
     portfolioMoreCta:  'See the full channel →',
@@ -1435,6 +1843,184 @@ const pt: AppTranslations = {
     ],
     portfolioTitle:    'Portfólio de conteúdo',
     portfolioSubtitle: 'Conteúdo real gravado no destino, não em estúdio. É assim que o estilo que produzo se vê — cada peça linka para o post original.',
+    portfolioCategories: {
+      hoteleria: {
+        label: 'Hotelaria',
+        intro: 'Hospedagens gravadas como uma estadia de verdade: a chegada, a primeira entrada, o amanhecer, os detalhes. Não um tour pelos ambientes, e sim a sequência que faz alguém se imaginar lá dentro.',
+      },
+      gastronomia: {
+        label: 'Gastronomia',
+        intro: 'Produto em contexto: o que se pede, como chega, como fica na mesa e o que se sente ao provar. Formatos curtos feitos para dar fome, não para catalogar o cardápio.',
+      },
+      cocina: {
+        label: 'Cozinha',
+        intro: 'Cozinho ao vivo no YouTube de segunda a sexta, uma hora por dia, respondendo o que vai em cada prato. Um produto que aparece ali é usado de verdade, na frente de gente que pergunta.',
+      },
+      experiencias: {
+        label: 'Experiências',
+        intro: 'Experiências contadas de dentro: a expectativa, o momento e a reação. O formato que melhor funciona quando o que se vende é algo que se sente.',
+      },
+      moda: {
+        label: 'Moda',
+        intro: 'Produto em uso e em percurso: como fica vestido, como se escolhe, o que se leva. Pensado para lojas e marcas que vendem algo que se experimenta.',
+      },
+    },
+    portfolioEmpty: {
+      title: 'Próxima produção',
+      note: 'Esta categoria ainda não tem peças publicadas.',
+    },
+    servicios: {
+      sectionLabel: 'Serviços',
+      title: 'Três formas de trabalhar comigo',
+      lead: 'Escolha conforme o que precisa: material para os seus canais, presença nos meus, ou as duas coisas.',
+      optionsTitle: 'Opções disponíveis',
+      expandCta: 'Ver opções',
+      collapseCta: 'Ocultar opções',
+      items: [
+        {
+          title: 'Conteúdo UGC',
+          para: 'Para hotéis, restaurantes, experiências e produtos',
+          body: 'Produzo o material e entrego para você. É seu: usa nas suas redes, no seu site, nas suas fichas de OTA e nos seus anúncios. Minha audiência não entra na conta.',
+          bullets: [
+            'Vídeos verticais e fotos gravados no destino',
+            'Vários hooks para testar qual converte',
+            'Em espanhol e em inglês',
+          ],
+          options: [
+            {
+              name: 'Vídeo UGC avulso',
+              scope: '1 semana',
+              body: 'Para testar o formato com uma peça.',
+              includes: [
+                '1 vídeo vertical de 15-60s, em espanhol ou inglês',
+                'Hook e CTA definidos antes de gravar',
+                '1 rodada de ajustes e legendas',
+              ],
+            },
+            {
+              name: 'Piloto medido',
+              scope: '2 semanas + medição 60 dias',
+              body: 'Para saber se funciona antes de escalar. É o caminho que recomendo.',
+              includes: [
+                '3 vídeos verticais com 3 hooks diferentes + 5 fotos, na sua propriedade',
+                'Objetivos por escrito antes de gravar — o que você quer que aconteça',
+                'Medição de 3 métricas aos 30 e 60 dias, com relatório simples',
+                'Se não funcionar, o conteúdo fica para você do mesmo jeito',
+              ],
+            },
+            {
+              name: 'Biblioteca de conteúdo',
+              scope: '3-4 semanas',
+              body: 'Para grupos, redes e operadores com várias propriedades.',
+              includes: [
+                '6 vídeos verticais + 10 clipes de stories derivados',
+                '10 fotos lifestyle para site, redes e OTAs',
+                'Set completo de formatos e roteiro incluído',
+              ],
+            },
+          ],
+          audienceTitle: '',
+          audience: '',
+          note: 'Todas as opções incluem licença de uso orgânico por 90 dias. Mídia paga, whitelisting, perpetuidade, material bruto e exclusividade são cotados como linha separada na proposta.',
+        },
+        {
+          title: 'Entretenimento nas redes',
+          para: 'Para marcas que querem chegar à minha comunidade do Instagram',
+          body: 'Sua marca aparece dentro do meu conteúdo de viagem e lifestyle, publicado nos meus canais. É o mesmo formato pelo qual as pessoas já me seguem, então não se lê como anúncio.',
+          bullets: [
+            'Reels e stories publicados nos meus canais',
+            'Integrado na história, não uma placa',
+            'Audiência principalmente latino-americana',
+          ],
+          options: [
+            {
+              name: 'Reel publicado',
+              scope: '1 peça',
+              body: 'Uma aparição no meu feed, integrada ao conteúdo.',
+              includes: [
+                '1 reel com seu produto ou lugar dentro da história',
+                'Roteiro compartilhado antes de gravar',
+                'Menção e link no post',
+              ],
+            },
+            {
+              name: 'Reel + stories',
+              scope: '1 peça + apoio',
+              body: 'O reel mais a sequência de stories que o acompanha.',
+              includes: [
+                '1 reel publicado no feed',
+                'Sequência de stories com link direto',
+                'Stories salvos nos destaques',
+              ],
+            },
+            {
+              name: 'Pacote mensal',
+              scope: 'Por mês',
+              body: 'Presença sustentada durante todo o mês, não uma aparição solta.',
+              includes: [
+                'Várias peças distribuídas ao longo do mês',
+                'Stories de apoio em cada publicação',
+                'Relatório mensal de alcance e comentários',
+              ],
+            },
+          ],
+          audienceTitle: 'A quem chega',
+          audience: 'Comunidade adulta de 25 a 45 anos, principalmente na Argentina, Panamá, Guatemala, Brasil e República Dominicana. É o serviço indicado se a sua marca vende na América Latina.',
+          note: 'Se você também quiser o material para usar nos seus próprios canais, entra como linha separada na proposta.',
+        },
+        {
+          title: 'Entretenimento ao vivo',
+          para: 'Para marcas de alimentos, cozinha e consumo',
+          body: 'Cozinho ao vivo no YouTube todos os dias úteis, uma hora por dia. Seu produto é usado de verdade na receita, com a comunidade perguntando em tempo real.',
+          bullets: [
+            'Menção e uso real durante o ao vivo',
+            'Perguntas da audiência respondidas no ar',
+            'O replay fica publicado com o seu link',
+          ],
+          options: [
+            {
+              name: 'Menção ao vivo',
+              scope: '1 ao vivo',
+              body: 'Para testar o formato com uma única aparição.',
+              includes: [
+                'Seu produto usado na receita do dia, com o nome dito',
+                'Perguntas da audiência respondidas no ar',
+                'Link na descrição do ao vivo e do replay',
+              ],
+            },
+            {
+              name: 'Plano mensal',
+              scope: 'Por mês',
+              body: 'Presença repetida, que é onde o formato realmente rende.',
+              includes: [
+                'Várias aparições ao longo do mês',
+                'Peças verticais derivadas dos melhores momentos',
+                'Link fixo nas descrições durante todo o mês',
+                'Relatório mensal de views e comentários',
+              ],
+            },
+            {
+              name: 'Patrocínio de temporada',
+              scope: '3 meses no mínimo',
+              body: 'Para ficar associado ao formato, não apenas aparecer nele.',
+              includes: [
+                'Presença sustentada durante toda a temporada',
+                'Melhor preço por menção do que a compra avulsa',
+                'Relatório mensal de resultados',
+              ],
+            },
+          ],
+          audienceTitle: 'A quem chega',
+          audience: 'Público adulto de língua espanhola, principalmente nos Estados Unidos, Espanha e México. Muitos são latinos morando fora do seu país — se o seu produto resolve algo dessa vida, é o seu cliente.',
+          note: 'Se você também quiser as peças para usar nos seus próprios canais, entram como linha separada na proposta.',
+        },
+      ],
+      custom: {
+        title: 'Pacote personalizado',
+        body: 'Precisa de uma combinação dos três, ou de algo que não está na lista? Montamos a proposta sob medida: produção e difusão são cotadas separadamente, para você saber exatamente o que está pagando em cada linha.',
+        cta: 'Vamos montar o seu',
+      },
+    },
     portfolioExpandCta: 'Ver mais trabalhos',
     portfolioMoreText: 'Quer ver tudo o que eu produzo?',
     portfolioMoreCta:  'Ver o canal completo →',
