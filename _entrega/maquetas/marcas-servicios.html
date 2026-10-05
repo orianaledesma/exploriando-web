@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para marcas — Exploriando</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1575ff;--menta:#3dd9b3;--profundo:#061029;--tinta:#0b1220;
+    --grafito:#5d6878;--niebla:#f2f5fa;--papel:#fff;--linea:#dfe5ee;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --cuerpo:'Inter',system-ui,sans-serif;
+    --dato:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--niebla);color:var(--tinta);font-family:var(--cuerpo);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  h1,h2,h3,h4{font-family:var(--display);line-height:1.12;letter-spacing:-.025em;margin:0}
+  p{margin:0 0 .9em}
+  a{color:inherit}
+  section{padding:54px 0}
+  h2.t{font-size:clamp(24px,3vw,33px);margin-bottom:10px}
+  .eyebrow{font-family:var(--dato);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grafito);display:flex;align-items:center;gap:10px;margin-bottom:13px}
+  .eyebrow::before{content:"";width:20px;height:2px;background:var(--menta);flex:none}
+  .lead{font-size:17.5px;color:#39424f}
+  .mini{font-size:13.5px;color:var(--grafito)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:15px;text-decoration:none;padding:13px 22px;border-radius:4px;border:1.5px solid var(--azul);background:var(--azul);color:#fff;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--azul)}
+  .btn.claro{background:var(--menta);border-color:var(--menta);color:var(--profundo)}
+  .btn.linea{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+  .acciones{display:flex;flex-wrap:wrap;gap:11px}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--menta);outline-offset:3px}
+
+  /* hero */
+  .hero{padding:52px 0 50px}
+  .hero h1{font-size:clamp(30px,4.1vw,46px);font-weight:700;margin-bottom:16px;max-width:15em}
+  .hero h1 em{font-style:normal;color:var(--azul)}
+  .hero .lead{max-width:36em;margin-bottom:24px}
+  .imgs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:34px}
+  .imgs figure{margin:0;border-radius:6px;overflow:hidden;background:#c9d2e0;position:relative;aspect-ratio:4/5}
+  .imgs img{width:100%;height:100%;object-fit:cover;display:block}
+  .imgs figcaption{position:absolute;inset:auto 0 0 0;padding:26px 12px 10px;background:linear-gradient(to top,rgba(6,16,41,.88),transparent);color:#fff;font-family:var(--dato);font-size:11.5px}
+  .bullets{margin-top:26px;padding-top:18px;border-top:1px solid var(--linea);display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--dato);font-size:12px;color:var(--grafito)}
+  .bullets b{color:var(--tinta);font-weight:500}
+
+  /* bio */
+  .bio{background:var(--papel);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+  .bio-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:42px;align-items:start}
+  .bio-foto{border-radius:6px;overflow:hidden}
+  .bio-foto img{width:100%;display:block;aspect-ratio:4/5;object-fit:cover}
+
+  /* filtros portafolio */
+  .filtros{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 4px}
+  .filtro{font-family:var(--display);font-weight:600;font-size:14px;padding:9px 18px;border-radius:40px;border:1.5px solid var(--linea);background:var(--papel);color:var(--grafito);cursor:pointer}
+  .filtro[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+  .grupo{display:none}
+  .grupo.activo{display:block}
+  .intro-cat{font-size:15.5px;color:#39424f;margin:18px 0 0;max-width:52em}
+
+  .piezas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+  .pieza{background:var(--papel);border:1px solid var(--linea);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+  .pieza .foto{aspect-ratio:9/12;background:#c9d2e0;overflow:hidden;position:relative}
+  .pieza .foto img{width:100%;height:100%;object-fit:cover;display:block}
+  .pieza .vacia{width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-family:var(--dato);font-size:12px;color:var(--grafito);background:repeating-linear-gradient(45deg,#e8edf4,#e8edf4 10px,#f2f5fa 10px,#f2f5fa 20px)}
+  .pieza .txt{padding:16px 18px 20px;display:flex;flex-direction:column;flex:1}
+  .pieza h3{font-size:17px;margin-bottom:3px}
+  .pieza .lugar{font-size:13.5px;color:var(--grafito);margin-bottom:8px}
+  .pieza p{font-size:14.5px;color:#39424f;margin:0 0 10px}
+  .pieza .links{font-family:var(--dato);font-size:12px;margin-top:auto}
+  .pieza .links a{color:var(--azul);text-decoration:none;margin-right:12px}
+  .mas-piezas{display:none;margin-top:22px}
+  .mas-piezas.abierto{display:block}
+  .centrar{text-align:center;margin-top:24px}
+
+  /* servicios */
+  .servicios{background:var(--papel);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+  .servs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px;align-items:start}
+  .serv{border:1px solid var(--linea);border-radius:8px;background:var(--niebla);padding:26px 24px 28px;display:flex;flex-direction:column;height:100%}
+  .serv .rot{font-family:var(--dato);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--azul);margin-bottom:10px}
+  .serv h3{font-size:21px;margin-bottom:8px}
+  .serv .para{font-size:13.5px;color:var(--grafito);margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--linea)}
+  .serv > p{font-size:14.5px;color:#39424f;margin:0 0 16px}
+  .serv ul{list-style:none;margin:0 0 18px;padding:0;font-size:14.5px}
+  .serv li{padding-left:18px;position:relative;margin-bottom:8px;color:#39424f}
+  .serv li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--menta);border-radius:2px}
+  .serv .vermas{margin-top:auto;background:transparent;border:1.5px solid var(--linea);color:var(--tinta);font-family:var(--display);font-weight:600;font-size:14px;padding:11px 16px;border-radius:4px;cursor:pointer;width:100%;text-align:center}
+  .serv .vermas:hover{border-color:var(--azul);color:var(--azul)}
+  .detalle{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--linea)}
+  .detalle.abierto{display:block}
+  .detalle h4{font-family:var(--dato);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--grafito);margin:14px 0 8px;font-weight:500}
+  .detalle h4:first-child{margin-top:0}
+  .opcion{border:1px solid var(--linea);border-radius:6px;background:var(--papel);padding:16px 18px;margin-bottom:12px}
+  .opcion .cab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+  .opcion h5{font-family:var(--display);font-size:16.5px;letter-spacing:-.02em;margin:0}
+  .opcion .alcance{font-family:var(--dato);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grafito);white-space:nowrap}
+  .opcion p{font-size:13.5px;color:var(--grafito);margin:0 0 9px}
+  .opcion ul{margin:0;padding:0;list-style:none;font-size:14px}
+  .opcion li{padding-left:16px;position:relative;margin-bottom:5px;color:#39424f}
+  .opcion li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;background:var(--menta);border-radius:50%}
+  .nota-der{font-size:13px;color:var(--grafito);border-top:1px solid var(--linea);padding-top:12px;margin:14px 0 0}
+  .detalle p{font-size:14px;color:#39424f;margin:0 0 10px}
+  .detalle ul{margin-bottom:10px}
+
+  .personalizado{margin-top:22px;border:1.5px dashed var(--azul);border-radius:8px;background:var(--niebla);padding:26px 28px;display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center}
+  .personalizado .rot{font-family:var(--dato);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--azul);margin-bottom:8px}
+  .personalizado h3{font-size:21px;margin-bottom:8px}
+  .personalizado p{font-size:14.5px;color:#39424f;margin:0;max-width:52em}
+
+  /* cta oscuro */
+  .osc{background:var(--profundo);color:#fff}
+  .osc h2,.osc h3,.osc h4{color:#fff}
+  .osc p{color:rgba(255,255,255,.8)}
+  .osc .eyebrow{color:rgba(255,255,255,.5)}
+
+  /* proceso */
+  .proceso{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:28px}
+  .pz{border-top:2px solid var(--tinta);padding-top:14px}
+  .pz b{font-family:var(--dato);font-size:11px;color:var(--azul);letter-spacing:.1em;display:block;margin-bottom:6px}
+  .pz h4{font-size:17px;margin-bottom:8px}
+  .pz ul{list-style:none;margin:0;padding:0;font-size:14px}
+  .pz li{padding-left:14px;position:relative;margin-bottom:6px;color:#39424f}
+  .pz li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--menta);border-radius:50%}
+  .tres-datos{background:var(--papel);border:1px solid var(--linea);border-radius:6px;padding:26px 28px;margin-top:34px}
+  .tres-datos h3{font-size:19px;margin-bottom:12px}
+  .tres-datos ol{margin:0 0 16px;padding-left:20px;font-size:15px;color:#39424f}
+  .tres-datos li{margin-bottom:6px}
+
+  .contacto{text-align:center;padding:62px 0}
+  .contacto p{max-width:30em;margin:0 auto 22px}
+  .contacto .acciones{justify-content:center}
+  .contacto .mini{color:rgba(255,255,255,.45);margin-top:18px}
+  footer{padding:28px 0;text-align:center}
+  footer p{font-family:var(--dato);font-size:12px;color:var(--grafito);margin:0}
+
+  @media (max-width:900px){
+    section,.hero{padding:40px 0}
+    .bio-grid{grid-template-columns:1fr;gap:28px}
+    .piezas,.servs,.proceso{grid-template-columns:1fr 1fr;gap:16px}
+    .personalizado{grid-template-columns:1fr;gap:18px}
+  }
+  @media (max-width:560px){ .piezas,.servs,.proceso,.imgs{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Contenido de marca · Viaje, cocina y lifestyle</div>
+    <h1>Contenido real que <em>hace desear lo que vendés.</em></h1>
+    <p class="lead">Grabo en destino y en vivo: alojamientos, gastronomía, eventos y cocina de todos los días. Para marcas que necesitan material propio o que quieren llegar a mi comunidad.</p>
+    <div class="acciones">
+      <a class="btn" href="https://ig.me/m/exploriando">Escribime por Instagram</a>
+      <a class="btn ghost" href="mailto:exploriando.info@gmail.com?subject=Colaboraci%C3%B3n%20con%20Exploriando">O por mail</a>
+    </div>
+    <div class="imgs">
+      <figure><img src="https://exploriando.page/assets/images/portfolio/parrotel.jpg" alt="Oriana en la entrada de un hotel en Sharm el Sheikh"><figcaption>Hotelería</figcaption></figure>
+      <figure><img src="https://exploriando.page/assets/images/marcas-card-dome.jpg" alt="Pareja en un domo de cristal mirando al bosque"><figcaption>Experiencias</figcaption></figure>
+    </div>
+    <div class="bullets">
+      <span>Contenido en <b>español nativo e inglés</b></span>
+      <span>Grabación en destino — <b>base en Lituania</b></span>
+      <span><b>9 años</b> documentando</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="bio">
+  <div class="wrap bio-grid">
+    <div class="bio-foto"><img src="https://exploriando.page/assets/images/marcas-hero.png" alt="Oriana y su marido"></div>
+    <div>
+      <div class="eyebrow">Quiénes somos</div>
+      <h2 class="t">Una argentina, un lituano y una cámara</h2>
+      <p style="margin-top:16px">Soy Oriana — creadora argentina de lifestyle y viajes 🇦🇷, viviendo en Lituania con mi marido lituano 🇱🇹. Hace 9 años documentamos lo que vivimos: viajes, escapadas, gastronomía y, desde hace poco, la cocina de todos los días en vivo.</p>
+      <p>Grabamos como vivimos: sin guion actuado, sin pose, con las reacciones que salen. Reacciones reales y escenas compartidas que alguien filmando solo no puede conseguir — el ángulo que necesita todo lo que se vende como experiencia.</p>
+      <p><strong>Cómo trabajo:</strong> soy yo quien produce, edita, coordina y responde. Una sola interlocutora de principio a fin, y todo acordado por escrito antes de grabar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTAFOLIO POR CATEGORÍAS -->
+<section id="portafolio">
+  <div class="wrap">
+    <div class="eyebrow">Portafolio</div>
+    <h2 class="t">Lo que produzco, por categoría</h2>
+    <p class="lead">Elegí la categoría que más se parezca a lo tuyo.</p>
+
+    <div class="filtros" role="tablist">
+      <button class="filtro" role="tab" aria-selected="true" data-cat="hoteleria">Hotelería</button>
+      <button class="filtro" role="tab" aria-selected="false" data-cat="gastronomia">Gastronomía</button>
+      <button class="filtro" role="tab" aria-selected="false" data-cat="cocina">Cocina</button>
+      <button class="filtro" role="tab" aria-selected="false" data-cat="eventos">Eventos y experiencias</button>
+    </div>
+
+    <!-- HOTELERÍA -->
+    <div class="grupo activo" id="hoteleria">
+      <p class="intro-cat">Alojamientos grabados como una estadía real: la llegada, el primer ingreso, el amanecer, los detalles. No un recorrido de ambientes, sino la secuencia que hace que alguien se imagine adentro.</p>
+      <div class="piezas">
+        <article class="pieza">
+          <div class="foto"><img src="https://exploriando.page/assets/images/portfolio/forest-domes.jpg" alt="Un día de relax en el bosque"></div>
+          <div class="txt">
+            <h3>Un día de relax en el bosque</h3>
+            <div class="lugar">Forest Domes · Vilnius, Lituania</div>
+            <p>El domo como escenario de un momento, no como listado de amenities.</p>
+            <div class="links"><a href="https://www.instagram.com/reels/DaiZmzsMRHU/">Instagram ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><img src="https://exploriando.page/assets/images/portfolio/parrotel.jpg" alt="El resort con de todo"></div>
+          <div class="txt">
+            <h3>El resort con de todo</h3>
+            <div class="lugar">Resort Paradise · Sharm el Sheikh</div>
+            <p>Recorrido con el ritmo de un día real. De una producción salieron el vertical y el video largo.</p>
+            <div class="links"><a href="https://www.youtube.com/watch?v=rCevn0IHPoQ">YouTube ↗</a><a href="https://www.instagram.com/reel/DKxV0oPs6R8/">Instagram ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><img src="https://i.ytimg.com/vi/ArpO3W5Rzhw/maxresdefault.jpg" alt="Resort en Panamá"></div>
+          <div class="txt">
+            <h3>Escapada al resort</h3>
+            <div class="lugar">Panama Resort · Panamá</div>
+            <p>Formato largo de estadía completa, con el alojamiento como protagonista de la historia.</p>
+            <div class="links"><a href="https://www.youtube.com/watch?v=ArpO3W5Rzhw">YouTube ↗</a></div>
+          </div>
+        </article>
+      </div>
+      <div class="mas-piezas" id="mas-hoteleria">
+        <div class="piezas" style="margin-top:0">
+          <article class="pieza">
+            <div class="foto"><div class="vacia">Pieza de hotelería<br>por sumar</div></div>
+            <div class="txt"><h3>Próxima producción</h3><div class="lugar">Por confirmar</div><p>Espacio reservado para el próximo alojamiento.</p></div>
+          </article>
+        </div>
+      </div>
+      <div class="centrar"><button class="btn ghost vermas-cat" data-target="mas-hoteleria">Ver más de hotelería</button></div>
+    </div>
+
+    <!-- GASTRONOMÍA -->
+    <div class="grupo" id="gastronomia">
+      <p class="intro-cat">Producto en contexto: lo que se pide, cómo llega, cómo se ve en la mesa y qué se siente al probarlo. Formatos cortos pensados para despertar ganas, no para describir una carta.</p>
+      <div class="piezas">
+        <article class="pieza">
+          <div class="foto"><img src="https://exploriando.page/assets/images/portfolio/verocafe.jpg" alt="El mejor brunch"></div>
+          <div class="txt">
+            <h3>El mejor brunch</h3>
+            <div class="lugar">Vero Cafe · Lituania</div>
+            <p>Formato corto de producto en contexto, con el foco en el momento y no en el menú.</p>
+            <div class="links"><a href="https://www.youtube.com/shorts/hthFxbQBQxc">YouTube ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><img src="https://i.ytimg.com/vi/Gw4LnyMO864/maxresdefault.jpg" alt="Experiencia gastronómica en destino"></div>
+          <div class="txt">
+            <h3>Experiencia gastronómica</h3>
+            <div class="lugar">En destino</div>
+            <p>La comida contada como parte del viaje: dónde se come, con quién y por qué vale la pena.</p>
+            <div class="links"><a href="https://www.youtube.com/watch?v=Gw4LnyMO864">YouTube ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><div class="vacia">Pieza de gastronomía<br>por sumar</div></div>
+          <div class="txt"><h3>Próxima producción</h3><div class="lugar">Por confirmar</div><p>Espacio reservado para el próximo restaurante o café.</p></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- COCINA -->
+    <div class="grupo" id="cocina">
+      <p class="intro-cat">Cocino en vivo de lunes a viernes en YouTube, una hora por día, contestando qué le pongo a cada plato. Un producto que aparece acá no se lee, se usa — y la audiencia pregunta por él sola.</p>
+      <div class="piezas">
+        <article class="pieza">
+          <div class="foto"><div class="vacia">Frame del vivo<br>de cocina</div></div>
+          <div class="txt"><h3>Vivo de cocina diario</h3><div class="lugar">YouTube · lunes a viernes</div><p>Una hora en vivo con la comunidad: receta, charla y preguntas en tiempo real.</p></div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><div class="vacia">Receta en<br>formato corto</div></div>
+          <div class="txt"><h3>Receta en vertical</h3><div class="lugar">Derivado del vivo</div><p>El mejor momento del vivo, editado como pieza vertical lista para redes.</p></div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><div class="vacia">Producto en<br>la cocina</div></div>
+          <div class="txt"><h3>Producto integrado</h3><div class="lugar">Dentro de la receta</div><p>El ingrediente o utensilio usado de verdad, en el momento en que tiene sentido.</p></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="grupo" id="eventos">
+      <p class="intro-cat">Experiencias y actividades contadas desde adentro: la anticipación, el momento y la reacción. El formato que mejor funciona para todo lo que se vende como algo para vivir una vez.</p>
+      <div class="piezas">
+        <article class="pieza">
+          <div class="foto"><img src="https://i.ytimg.com/vi/Urf1Qvxu3AU/maxresdefault.jpg" alt="Globo aerostático en Luxor"></div>
+          <div class="txt">
+            <h3>Globo aerostático</h3>
+            <div class="lugar">Luxor, Egipto</div>
+            <p>Arranca en el despegue, sin intro. Los comentarios se llenaron de gente preguntando cómo reservarlo.</p>
+            <div class="links"><a href="https://www.youtube.com/watch?v=Urf1Qvxu3AU">YouTube ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><img src="https://i.ytimg.com/vi/pvtR3abCZW0/maxresdefault.jpg" alt="Cataratas del Iguazú"></div>
+          <div class="txt">
+            <h3>Cataratas del Iguazú</h3>
+            <div class="lugar">Argentina</div>
+            <p>En vez de filmar la postal, filmé su cara viéndolas por primera vez. Eso no se puede grabar solo.</p>
+            <div class="links"><a href="https://www.youtube.com/watch?v=pvtR3abCZW0">YouTube ↗</a></div>
+          </div>
+        </article>
+        <article class="pieza">
+          <div class="foto"><div class="vacia">Cobertura<br>de evento</div></div>
+          <div class="txt"><h3>Cobertura de evento</h3><div class="lugar">Por confirmar</div><p>Experiencia del público, entrevistas y ambiente en noches de evento.</p></div>
+        </article>
+      </div>
+    </div>
+
+    <p class="mini" style="margin-top:22px">¿Querés ver todo lo que produzco? <a href="https://www.youtube.com/@exploriando" style="color:var(--azul)">Ver canal completo →</a></p>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="wrap">
+    <div class="eyebrow">Servicios</div>
+    <h2 class="t">Tres formas de trabajar conmigo</h2>
+    <p class="lead">Elegí según lo que necesites: material para tus canales, presencia en los míos, o las dos cosas.</p>
+
+    <div class="servs">
+      <!-- UGC -->
+      <div class="serv">
+        <div class="rot">Servicio 1</div>
+        <h3>Contenido UGC</h3>
+        <div class="para">Para hoteles, restaurantes, experiencias y productos</div>
+        <p>Produzco el material y te lo entrego a vos. Es tuyo: lo usás en tus redes, tu web, tus fichas de OTA y tus ads. Mi audiencia no entra en la ecuación.</p>
+        <ul>
+          <li>Videos verticales y fotos grabados en destino</li>
+          <li>Varios hooks para testear cuál convierte</li>
+          <li>En español y en inglés</li>
+        </ul>
+        <div class="detalle" id="d1">
+          <h4>Opciones disponibles</h4>
+          <div class="opcion">
+            <div class="cab"><h5>Video UGC Suelto</h5><span class="alcance">1 semana</span></div>
+            <p>Para probar el formato con una pieza.</p>
+            <ul>
+              <li>1 video vertical de 15-60s, en español o inglés</li>
+              <li>Hook y CTA definidos antes de grabar</li>
+              <li>1 ronda de ajustes y subtítulos</li>
+            </ul>
+          </div>
+          <div class="opcion">
+            <div class="cab"><h5>Librería de Contenido</h5><span class="alcance">3-4 semanas</span></div>
+            <p>Para grupos, cadenas y operadores con varias propiedades.</p>
+            <ul>
+              <li>6 videos verticales + 10 clips de historias derivados</li>
+              <li>10 fotos lifestyle para web, redes y OTAs</li>
+              <li>Set completo de formatos y guion incluido</li>
+            </ul>
+          </div>
+                              <p class="nota-der">Todas las opciones incluyen licencia de uso orgánico por 90 días. Publicidad paga, whitelisting, perpetuidad, material en crudo y exclusividad se cotizan como línea aparte en la propuesta.</p>
+        </div>
+        <button class="vermas" data-target="d1">Ver más</button>
+      </div>
+
+      <!-- INSTAGRAM -->
+      <div class="serv">
+        <div class="rot">Servicio 2</div>
+        <h3>Entretenimiento en redes</h3>
+        <div class="para">Para marcas que quieren llegar a mi comunidad de Instagram</div>
+        <p>Tu marca aparece en mi contenido de viaje y lifestyle, publicado en mis canales. El formato es el mismo con el que la gente ya me sigue, así que no se lee como un aviso.</p>
+        <ul>
+          <li>Reels e historias publicados en mis redes</li>
+          <li>Integración dentro de la historia, no una placa</li>
+          <li>Audiencia principalmente latinoamericana</li>
+        </ul>
+        <div class="detalle" id="d2">
+          <h4>Opciones disponibles</h4>
+          <div class="opcion">
+            <div class="cab"><h5>Reel publicado</h5><span class="alcance">1 pieza</span></div>
+            <p>Una aparición en mi feed, integrada en el contenido.</p>
+            <ul>
+              <li>1 reel con tu producto o lugar dentro de la historia</li>
+              <li>Guion compartido antes de grabar</li>
+              <li>Mención y link en el posteo</li>
+            </ul>
+          </div>
+          <div class="opcion">
+            <div class="cab"><h5>Reel + historias</h5><span class="alcance">1 pieza + apoyo</span></div>
+            <p>El reel más la secuencia de historias que lo acompaña.</p>
+            <ul>
+              <li>1 reel publicado en el feed</li>
+              <li>Secuencia de historias con link directo</li>
+              <li>Historias guardadas en destacados</li>
+            </ul>
+          </div>
+          <div class="opcion">
+            <div class="cab"><h5>Pack mensual</h5><span class="alcance">Por mes</span></div>
+            <p>Presencia sostenida durante todo el mes, no una aparición suelta.</p>
+            <ul>
+              <li>Varias piezas repartidas en el mes</li>
+              <li>Historias de apoyo en cada publicación</li>
+              <li>Reporte mensual de alcance y comentarios</li>
+            </ul>
+          </div>
+          <h4>A quién le llega</h4>
+          <p>Comunidad adulta de 25 a 45 años, mayoritariamente en Argentina, Panamá, Guatemala, Brasil y República Dominicana. Es el servicio indicado si tu marca vende en Latinoamérica.</p>
+          <p class="nota-der">Si además querés el material para usarlo en tus propios canales, se suma como línea aparte en la propuesta.</p>
+        </div>
+        <button class="vermas" data-target="d2">Ver más</button>
+      </div>
+
+      <!-- EN VIVO -->
+      <div class="serv">
+        <div class="rot">Servicio 3</div>
+        <h3>Entretenimiento en vivo</h3>
+        <div class="para">Para marcas de alimentos, cocina y consumo masivo</div>
+        <p>Cocino en vivo en YouTube todos los días hábiles, una hora por día. Tu producto se usa de verdad en la receta, con la comunidad preguntando en tiempo real.</p>
+        <ul>
+          <li>Mención y uso real durante el vivo</li>
+          <li>Preguntas de la audiencia respondidas al aire</li>
+          <li>El replay queda publicado con tu link</li>
+        </ul>
+        <div class="detalle" id="d3">
+          <h4>Opciones disponibles</h4>
+          <div class="opcion">
+            <div class="cab"><h5>Mención en vivo</h5><span class="alcance">1 vivo</span></div>
+            <p>Para probar el formato con una sola aparición.</p>
+            <ul>
+              <li>Tu producto usado en la receta del día, con el nombre dicho</li>
+              <li>Preguntas de la audiencia respondidas al aire</li>
+              <li>Link en la descripción del vivo y del replay</li>
+            </ul>
+          </div>
+          <div class="opcion">
+            <div class="cab"><h5>Plan mensual</h5><span class="alcance">Por mes</span></div>
+            <p>Presencia repetida, que es donde el formato rinde de verdad.</p>
+            <ul>
+              <li>Varias apariciones a lo largo del mes</li>
+              <li>Piezas verticales derivadas de los mejores momentos</li>
+              <li>Link fijo en descripciones durante todo el mes</li>
+              <li>Reporte mensual de views y comentarios</li>
+            </ul>
+          </div>
+                    <div class="opcion">
+            <div class="cab"><h5>Patrocinio de temporada</h5><span class="alcance">3 meses mínimo</span></div>
+            <p>Para quedar asociado al formato, no solo aparecer en él.</p>
+            <ul>
+              <li>Presencia sostenida durante toda la temporada</li>
+              <li>Mejor precio por mención que la compra suelta</li>
+              <li>Reporte mensual de resultados</li>
+            </ul>
+          </div>
+          <h4>A quién le llega</h4>
+          <p>Público adulto hispanohablante, principalmente en Estados Unidos, España y México. Muchos son latinos viviendo fuera de su país — si tu producto resuelve algo de esa vida, es tu cliente.</p>
+          <p class="nota-der">Si además querés las piezas para usarlas en tus propios canales, se suman como línea aparte en la propuesta.</p>
+        </div>
+        <button class="vermas" data-target="d3">Ver más</button>
+      </div>
+    </div>
+
+    <div class="personalizado">
+      <div>
+        <div class="rot">Servicio 4</div>
+        <h3>Paquete personalizado</h3>
+        <p>¿Necesitás una combinación de los tres, o algo que no está en la lista? Armamos la propuesta a medida: producción y difusión se cotizan por separado, para que sepas exactamente qué estás pagando en cada línea.</p>
+      </div>
+      <a class="btn" href="#contacto">Armemos el tuyo</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA INTERMEDIO -->
+<section class="osc">
+  <div class="wrap">
+    <h2 class="t">¿Qué tenés para mostrar?</h2>
+    <p class="lead" style="color:rgba(255,255,255,.8);max-width:46em;margin-top:12px">Un lugar, un plato, una experiencia, un producto, un evento. Lo que sea, lo grabo como lo que realmente es: algo que la gente quiere vivir o probar.</p>
+    <p style="margin-bottom:22px"><strong>Empecemos fácil:</strong> probá el formato con una pieza suelta. Si funciona, escalamos a campaña o a un plan mensual.</p>
+    <div class="acciones">
+      <a class="btn claro" href="https://ig.me/m/exploriando">Escribime por Instagram</a>
+      <a class="btn linea" href="mailto:exploriando.info@gmail.com?subject=Colaboraci%C3%B3n%20con%20Exploriando">O por mail</a>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO TRABAJO -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Cómo trabajo</div>
+    <h2 class="t">Un proceso claro de punta a punta</h2>
+    <p class="lead">Para que sepas qué pasa, cuándo, y qué recibís.</p>
+    <div class="proceso">
+      <div class="pz"><b>01</b><h4>Visión creativa</h4><ul><li>Brief: qué querés lograr y para qué canal</li><li>Entregables y formatos definidos</li><li>Ideas y hooks propuestos antes de grabar</li><li>Objetivos por escrito</li></ul></div>
+      <div class="pz"><b>02</b><h4>Contrato + seña</h4><ul><li>50% del pago al firmar</li><li>Licencia definida por escrito</li><li>Fecha de grabación acordada</li></ul></div>
+      <div class="pz"><b>03</b><h4>Producción</h4><ul><li>Grabación en destino o en vivo</li><li>Primer corte hasta 7 días después</li><li>Una ronda de ajustes incluida</li></ul></div>
+      <div class="pz"><b>04</b><h4>Entrega y medición</h4><ul><li>50% restante al aprobar</li><li>Archivos listos para publicar</li><li>Reporte a 30 y 60 días</li></ul></div>
+    </div>
+    <div class="tres-datos">
+      <h3>Para cotizarte necesito 3 datos</h3>
+      <ol>
+        <li>Qué querés lograr con el contenido (más reservas, más consultas, mejores fichas)</li>
+        <li>Dónde lo vas a usar (orgánico, publicidad paga, web/OTAs) o a qué mercado le querés hablar</li>
+        <li>Tu fecha ideal</li>
+      </ol>
+      <div class="acciones">
+        <a class="btn" href="https://ig.me/m/exploriando">Escribime por Instagram</a>
+        <a class="btn ghost" href="mailto:exploriando.info@gmail.com?subject=Cotizaci%C3%B3n">O por mail</a>
+      </div>
+      <p class="mini" style="margin:14px 0 0">Mandámelos por DM o mail y en 24-48h tenés propuesta con precio cerrado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto osc" id="contacto">
+  <div class="wrap">
+    <h2 class="t">¿Listo para trabajar juntos?</h2>
+    <p>Contame qué querés mostrar y te paso una propuesta a medida.</p>
+    <div class="acciones">
+      <a class="btn claro" href="https://ig.me/m/exploriando">Escribime por Instagram</a>
+      <a class="btn linea" href="mailto:exploriando.info@gmail.com?subject=Colaboraci%C3%B3n%20con%20Exploriando">exploriando.info@gmail.com</a>
+    </div>
+    <p class="mini">Sin compromiso — la primera consulta es gratis</p>
+  </div>
+</section>
+
+<footer><div class="wrap"><p>Exploriando · Hecho desde Kaunas, Lituania · Para toda Latinoamérica y Europa</p></div></footer>
+
+<script>
+  // filtros de portafolio
+  var filtros=document.querySelectorAll('.filtro');
+  filtros.forEach(function(f){
+    f.addEventListener('click',function(){
+      filtros.forEach(function(x){x.setAttribute('aria-selected','false')});
+      f.setAttribute('aria-selected','true');
+      document.querySelectorAll('.grupo').forEach(function(g){g.classList.remove('activo')});
+      document.getElementById(f.dataset.cat).classList.add('activo');
+    });
+  });
+  // ver más dentro de una categoría
+  document.querySelectorAll('.vermas-cat').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.target);
+      var abierto=el.classList.toggle('abierto');
+      b.textContent=abierto?'Ver menos':'Ver más de hotelería';
+    });
+  });
+  // ver más de servicios
+  document.querySelectorAll('.vermas').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.target);
+      var abierto=el.classList.toggle('abierto');
+      b.textContent=abierto?'Ver menos':'Ver más';
+    });
+  });
+</script>
+
+</body>
+</html>
