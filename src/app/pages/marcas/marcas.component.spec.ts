@@ -10,6 +10,7 @@ import { TRANSLATIONS } from '../../translations/translations';
 
 describe('MarcasComponent', () => {
     let fixture: ComponentFixture<MarcasComponent>;
+    let compiled: HTMLElement;
     let trackSpy: Mock;
     let lang: LanguageService;
 
@@ -24,6 +25,7 @@ describe('MarcasComponent', () => {
         lang = TestBed.inject(LanguageService);
         lang.set('es');
         fixture.detectChanges();
+        compiled = fixture.nativeElement as HTMLElement;
     });
 
     it('crea el componente', () => {
@@ -52,14 +54,61 @@ describe('MarcasComponent', () => {
         expect(packageCall![1].channel).toBe('instagram');
     });
 
-    it('renderiza las secciones nuevas del media-kit (quién soy, hoteles, precios)', () => {
-        const compiled = fixture.nativeElement as HTMLElement;
+    it('renderiza las secciones del media-kit', () => {
         expect(compiled.querySelector('.marcas-about'), 'quién soy + audiencia').toBeTruthy();
         expect(compiled.querySelector('.marcas-hoteles'), 'hoteles & experiencias').toBeTruthy();
-        expect(compiled.querySelector('.ugc__packages'), 'grilla de precios').toBeTruthy();
-        // 3 servicios visibles + 3 que se despliegan con "Ver más servicios".
-        expect(compiled.querySelectorAll('.ugc__package').length, '6 servicios').toBe(6);
-        expect(compiled.querySelector('#servicios-extra')?.hasAttribute('hidden'), 'los extra arrancan ocultos').toBe(true);
+        expect(compiled.querySelector('.marcas-servicios'), 'servicios').toBeTruthy();
+    });
+
+    // ─── Servicios ────────────────────────────────────────────────────────────
+
+    it('rinde los tres servicios más la tarjeta a medida', () => {
+        const esperados = TRANSLATIONS.es.ugc.servicios.items.length;
+        expect(compiled.querySelectorAll('.marcas-serv').length).toBe(esperados + 1);
+        expect(compiled.querySelector('.marcas-serv--custom')).toBeTruthy();
+    });
+
+    it('las opciones arrancan cerradas pero están en el HTML', () => {
+        // `hidden` y no @if: así quedan prerenderizadas para Google, pero fuera
+        // del tabulador y del lector de pantalla mientras están cerradas.
+        const detalles = Array.from(
+            compiled.querySelectorAll<HTMLElement>('.marcas-serv__detalle'),
+        );
+        expect(detalles.length).toBeGreaterThan(0);
+        for (const d of detalles) {
+            expect(d.hasAttribute('hidden')).toBe(true);
+            expect(d.textContent?.trim().length).toBeGreaterThan(0);
+        }
+    });
+
+    it('desplegar un servicio no abre los demás', () => {
+        const componente = fixture.componentInstance;
+        componente.toggleService(1);
+        fixture.detectChanges();
+
+        expect(componente.isServiceOpen(1)).toBe(true);
+        expect(componente.isServiceOpen(0)).toBe(false);
+        expect(componente.isServiceOpen(2)).toBe(false);
+
+        const detalles = compiled.querySelectorAll<HTMLElement>('.marcas-serv__detalle');
+        expect(detalles[1].hasAttribute('hidden')).toBe(false);
+        expect(detalles[0].hasAttribute('hidden')).toBe(true);
+    });
+
+    it('mantiene el Piloto Medido entre las opciones de UGC', () => {
+        // Es la opción que ofrece medición a 60 días: la maqueta la eliminaba
+        // y la decisión fue conservarla.
+        const ugc = TRANSLATIONS.es.ugc.servicios.items[0];
+        expect(ugc.options.map((o) => o.name)).toContain('Piloto Medido');
+    });
+
+    it('cada servicio tiene opciones y letra chica en los tres idiomas', () => {
+        for (const lang of ['es', 'en', 'pt'] as const) {
+            for (const serv of TRANSLATIONS[lang].ugc.servicios.items) {
+                expect(serv.options.length, `${lang}/${serv.title}`).toBeGreaterThan(0);
+                expect(serv.note.trim().length, `${lang}/${serv.title}`).toBeGreaterThan(0);
+            }
+        }
     });
 
     it('oculta la sección de testimonios mientras no haya items', () => {
@@ -83,16 +132,71 @@ describe('MarcasComponent', () => {
 
     // ─── Portafolio: piezas sin frame ──────────────────────────────────────────
 
-    it('no expone piezas que todavía no tienen con qué dibujarse', () => {
-        // Una pieza sólo de Instagram sin frame propio armaría `<img src=".jpg">`.
-        // El filtro `renderable` las deja fuera hasta que llegue la imagen.
+    it('toda pieza visible lleva a algún lado', () => {
+        // Una pieza sin frame se dibuja con un bloque neutro, pero sigue
+        // teniendo que llevar al reel o al video: una tarjeta sin destino no
+        // es portafolio, es relleno.
         const componente = fixture.componentInstance;
-        const todas = [...componente.portfolioFeatured, ...componente.portfolioRest];
 
-        expect(todas.length).toBeGreaterThan(0);
-        for (const piece of todas) {
-            expect(piece.id || piece.thumb, piece.title).toBeTruthy();
+        let total = 0;
+        for (const cat of componente.categories) {
+            componente.selectCategory(cat);
+            for (const piece of componente.visiblePieces()) {
+                expect(piece.yt || piece.ig || piece.id, piece.title).toBeTruthy();
+                total++;
+            }
         }
+        expect(total).toBeGreaterThan(0);
+    });
+
+    // ─── Portafolio por categorías ────────────────────────────────────────────
+
+    it('rinde una pestaña por categoría, con una sola en el tabulador', () => {
+        const tabs = Array.from(
+            compiled.querySelectorAll<HTMLButtonElement>('.marcas-portfolio__tab'),
+        );
+        expect(tabs).toHaveLength(fixture.componentInstance.categories.length);
+
+        const enTabulador = tabs.filter((t) => t.tabIndex === 0);
+        expect(enTabulador).toHaveLength(1);
+    });
+
+    it('cambiar de pestaña cambia las piezas que se muestran', () => {
+        const componente = fixture.componentInstance;
+        componente.selectCategory('hoteleria');
+        fixture.detectChanges();
+        const hoteleria = componente.visiblePieces().map((p) => p.title);
+
+        componente.selectCategory('experiencias');
+        fixture.detectChanges();
+        const experiencias = componente.visiblePieces().map((p) => p.title);
+
+        expect(hoteleria.length).toBeGreaterThan(0);
+        expect(experiencias.length).toBeGreaterThan(0);
+        expect(hoteleria).not.toEqual(experiencias);
+    });
+
+    it('hoy ninguna categoría está vacía, y el estado vacío sigue listo', () => {
+        // Las seis tienen piezas. El bloque de vacío queda escrito y traducido
+        // para la próxima categoría que se abra (Tecnología, por ejemplo).
+        const componente = fixture.componentInstance;
+        for (const cat of componente.categories) {
+            componente.selectCategory(cat);
+            expect(componente.visiblePieces().length, cat).toBeGreaterThan(0);
+        }
+
+        for (const lang of ['es', 'en', 'pt'] as const) {
+            const vacio = TRANSLATIONS[lang].ugc.portfolioEmpty;
+            expect(vacio.title.trim().length, lang).toBeGreaterThan(0);
+            expect(vacio.note.trim().length, lang).toBeGreaterThan(0);
+        }
+    });
+
+    it('trackea qué categoría eligió el visitante', () => {
+        fixture.componentInstance.selectCategory('experiencias');
+        expect(trackSpy).toHaveBeenCalledWith('portfolio_category_click', {
+            category: 'experiencias',
+        });
     });
 
     it('ninguna tarjeta del portafolio apunta a una imagen vacía', () => {
