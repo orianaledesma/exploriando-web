@@ -8,6 +8,7 @@ import { RevealDirective } from '../../directives/reveal.directive';
 import { LiteYoutubeComponent } from '../../components/lite-youtube/lite-youtube.component';
 import { ProcesoTimelineComponent } from '../../components/proceso-timeline/proceso-timeline.component';
 import { HeroCardsComponent } from '../../components/hero-cards/hero-cards.component';
+import { YOUTUBE_CHANNEL_URL } from '../../data/links';
 
 // Contacto directo. Decisión Ori 2026-08-29: casi todas las respuestas de
 // marcas llegan por DM, así que sacamos el paso intermedio de agendar llamada.
@@ -18,8 +19,6 @@ const CONTACT_MAIL_URL =
 /** Mismo buzón, asunto propio del bloque de cotización de servicios. */
 const QUOTE_MAIL_URL =
   'mailto:exploriando.info@gmail.com?subject=Cotizaci%C3%B3n%20de%20contenido';
-
-const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@exploriando';
 
 /**
  * Los dos frames en abanico del hero. Rutas sin extensión: se sirve `.webp`
