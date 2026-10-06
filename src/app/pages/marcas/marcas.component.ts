@@ -120,12 +120,11 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/reel/DKxV0oPs6R8/' },
   },
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/3krantai
     id: '', category: 'hoteleria',
     title: 'Casa del lago',
     location: '3Krantai',
     blurb: '',
-    thumb: '',
+    thumb: '/assets/images/portfolio/3krantai',
     ig: { url: 'https://www.instagram.com/reel/DdJlhUnOEU3/' },
   },
 
@@ -148,12 +147,11 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/reels/DK3wB8EsnWb/' },
   },
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/cafeteria
     id: '', category: 'gastronomia',
     title: 'Cafetería',
     location: '',
     blurb: '',
-    thumb: '',
+    thumb: '/assets/images/portfolio/cafeteria',
     ig: { url: 'https://www.instagram.com/reel/DKIPVCEsq71/' },
   },
 
@@ -188,22 +186,20 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
   },
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/boxeo
     id: '', category: 'experiencias',
     title: 'Boxeo',
     location: '',
     blurb: '',
-    thumb: '',
+    thumb: '/assets/images/portfolio/boxeo',
     ig: { url: 'https://www.instagram.com/reel/Ddyf0VhO48j/' },
   },
 
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/who-win
     id: '', category: 'experiencias',
     title: 'Who win?',
     location: '',
     blurb: '',
-    thumb: '',
+    thumb: '/assets/images/portfolio/who-win',
     ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
   },
   {
@@ -228,12 +224,11 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/exploriando/' },
   },
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/unboxing
     id: '', category: 'moda',
     title: 'Unboxing',
     location: '',
     blurb: '',
-    thumb: '',
+    thumb: '/assets/images/portfolio/unboxing',
     ig: { url: 'https://www.instagram.com/reel/DRCoQWYjBnO/' },
   },
   {
