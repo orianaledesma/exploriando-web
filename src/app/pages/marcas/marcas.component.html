@@ -195,27 +195,6 @@
   </section>
 
   <!-- 4 · Hoteles & experiencias (entrada de baja fricción) -->
-  <section class="marcas-hoteles" aria-labelledby="hoteles-title">
-    <div class="container marcas-hoteles__inner" appReveal>
-      <h2 id="hoteles-title">{{ t().hoteles.title }}</h2>
-      <p class="marcas-hoteles__body">{{ t().hoteles.body }}</p>
-      <p class="marcas-hoteles__start">
-        <strong>{{ t().hoteles.startTitle }}</strong> {{ t().hoteles.startBody }}
-      </p>
-      <div class="contact-pair">
-        <a class="btn btn--primary btn--lg" [href]="instagramUrl"
-           target="_blank" rel="noopener noreferrer"
-           aria-label="Escribir a Exploriando por Instagram"
-           (click)="onContactClick('hoteles', 'instagram')">
-          {{ t().contact.instagram }}
-        </a>
-        <a class="btn btn--outline btn--lg" [href]="mailUrl"
-           (click)="onContactClick('hoteles', 'mail')">
-          {{ t().contact.mail }}
-        </a>
-      </div>
-    </div>
-  </section>
 
   <!-- 5 · Testimonios (oculto mientras no haya) -->
   @if (t().testimonials.length) {
@@ -311,46 +290,75 @@
       </div>
 
       <p class="marcas-rights">{{ t().rightsNote }}</p>
+    </div>
+  </section>
 
-      <!-- Línea de tiempo del proceso: entre los servicios y el CTA de cotización. -->
-      <app-proceso-timeline
-        class="marcas-proceso-block"
-        [title]="t().proceso.title"
-        [subtitle]="t().proceso.subtitle"
-        [steps]="t().proceso.steps" />
-
-      <!-- Puente al taller. OCULTO: /taller todavía no existe. Cuando la página
-           esté publicada, poner MOSTRAR_TALLER = true en el componente. -->
-      @if (mostrarTaller) {
-        <div class="marcas-taller" appReveal>
-          <p class="marcas-taller__title">{{ t().taller.title }}</p>
-          <p class="marcas-taller__text">{{ t().taller.text }}</p>
-          <a class="btn btn--outline" routerLink="/taller">{{ t().taller.cta }}</a>
-        </div>
-      }
-
-      <!-- CTA de cotización: reemplaza a la llamada agendada. -->
-      <div class="marcas-quote" appReveal>
-        <p class="marcas-quote__title">{{ t().quote.title }}</p>
-        <ol class="marcas-quote__list">
-          @for (item of t().quote.items; track item) {
-            <li>{{ item }}</li>
-          }
-        </ol>
-        <p class="marcas-quote__closing">{{ t().quote.closing }}</p>
-        <div class="contact-pair">
-          <a class="btn btn--primary" [href]="instagramUrl"
-             target="_blank" rel="noopener noreferrer"
-             aria-label="Escribir a Exploriando por Instagram"
-             (click)="onContactClick('package', 'instagram')">
-            {{ t().contact.instagram }}
-          </a>
-          <a class="btn btn--outline" [href]="quoteMailUrl"
-             (click)="onContactClick('package', 'mail')">
-            {{ t().contact.mail }}
-          </a>
-        </div>
+  <section class="marcas-hoteles" aria-labelledby="hoteles-title">
+    <div class="container marcas-hoteles__inner" appReveal>
+      <h2 id="hoteles-title">{{ t().hoteles.title }}</h2>
+      <p class="marcas-hoteles__body">{{ t().hoteles.body }}</p>
+      <p class="marcas-hoteles__start">
+        <strong>{{ t().hoteles.startTitle }}</strong> {{ t().hoteles.startBody }}
+      </p>
+      <div class="contact-pair">
+        <a class="btn btn--primary btn--lg" [href]="instagramUrl"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Escribir a Exploriando por Instagram"
+           (click)="onContactClick('hoteles', 'instagram')">
+          {{ t().contact.instagram }}
+        </a>
+        <a class="btn btn--outline btn--lg" [href]="mailUrl"
+           (click)="onContactClick('hoteles', 'mail')">
+          {{ t().contact.mail }}
+        </a>
       </div>
+    </div>
+  </section>
+
+  <!-- Cómo trabajo + cotización. La maqueta v2 los pone después de la
+       invitación: primero el trabajo, después la oferta, después la
+       invitación y recién ahí el proceso y el pedido de presupuesto. -->
+  <section class="marcas-proceso" aria-labelledby="proceso-title">
+    <div class="container">
+        <!-- Línea de tiempo del proceso: entre los servicios y el CTA de cotización. -->
+        <app-proceso-timeline
+          class="marcas-proceso-block"
+          [title]="t().proceso.title"
+          [subtitle]="t().proceso.subtitle"
+          [steps]="t().proceso.steps" />
+
+        <!-- Puente al taller. OCULTO: /taller todavía no existe. Cuando la página
+             esté publicada, poner MOSTRAR_TALLER = true en el componente. -->
+        @if (mostrarTaller) {
+          <div class="marcas-taller" appReveal>
+            <p class="marcas-taller__title">{{ t().taller.title }}</p>
+            <p class="marcas-taller__text">{{ t().taller.text }}</p>
+            <a class="btn btn--outline" routerLink="/taller">{{ t().taller.cta }}</a>
+          </div>
+        }
+
+        <!-- CTA de cotización: reemplaza a la llamada agendada. -->
+        <div class="marcas-quote" appReveal>
+          <p class="marcas-quote__title">{{ t().quote.title }}</p>
+          <ol class="marcas-quote__list">
+            @for (item of t().quote.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ol>
+          <p class="marcas-quote__closing">{{ t().quote.closing }}</p>
+          <div class="contact-pair">
+            <a class="btn btn--primary" [href]="instagramUrl"
+               target="_blank" rel="noopener noreferrer"
+               aria-label="Escribir a Exploriando por Instagram"
+               (click)="onContactClick('package', 'instagram')">
+              {{ t().contact.instagram }}
+            </a>
+            <a class="btn btn--outline" [href]="quoteMailUrl"
+               (click)="onContactClick('package', 'mail')">
+              {{ t().contact.mail }}
+            </a>
+          </div>
+        </div>
     </div>
   </section>
 
