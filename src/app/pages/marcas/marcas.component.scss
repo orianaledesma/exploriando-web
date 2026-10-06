@@ -228,6 +228,57 @@
   }
 }
 
+// Pestañas de categoría. Pastilla sobre la sección clara: la activa se rellena
+// con --color-blue-mid (7.14:1 con el blanco) porque --color-blue da 3.88:1 y
+// no sostiene texto. El borde de las inactivas es navy al 55% → 3.67:1, sobre
+// el mínimo de 3:1 que pide WCAG para los bordes de un control.
+.marcas-portfolio__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.marcas-portfolio__tab {
+  // 44px de alto mínimo: target táctil
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid rgba(11, 31, 74, 0.55);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  // solo color: sin transform no hace falta la salvedad de reduced-motion
+  transition: background-color var(--transition), border-color var(--transition);
+
+  &:hover {
+    border-color: var(--color-blue-mid);
+    background: var(--color-accent-dim);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blue-mid);
+    outline-offset: 2px;
+  }
+
+  &[aria-selected='true'] {
+    border-color: transparent;
+    background: var(--color-blue-mid);
+    color: var(--color-text-on-accent);
+  }
+}
+
+.marcas-portfolio__cat-intro {
+  margin-bottom: var(--space-lg);
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
 .marcas-portfolio__expand {
   display: flex;
   justify-content: center;
