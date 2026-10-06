@@ -174,6 +174,14 @@ const PORTFOLIO: PortfolioPiece[] = [
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=BNiXo2zVeok' },
   },
+  {
+    id: 'GPIOXYanTus', category: 'cocina',
+    title: 'Ñoquis caseros del 29',
+    location: 'Vivo de cocina · YouTube',
+    blurb: 'Una tradición argentina cocinada en vivo, con la comunidad siguiéndola paso a paso.',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=GPIOXYanTus' },
+  },
 
   // ── Experiencias ───────────────────────────────────────────────────────────
   {
@@ -202,15 +210,6 @@ const PORTFOLIO: PortfolioPiece[] = [
     thumb: '/assets/images/portfolio/who-win',
     ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
   },
-  {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/eurocopa
-    id: '', category: 'experiencias',
-    title: 'Eurocopa',
-    location: '',
-    blurb: '',
-    thumb: '',
-    ig: { url: 'https://www.instagram.com/reel/C8e8oxjsFjW/' },
-  },
 
   // ── Moda y retail ──────────────────────────────────────────────────────────
   {
@@ -230,16 +229,6 @@ const PORTFOLIO: PortfolioPiece[] = [
     blurb: '',
     thumb: '/assets/images/portfolio/unboxing',
     ig: { url: 'https://www.instagram.com/reel/DRCoQWYjBnO/' },
-  },
-  {
-    // TODO(Ori): falta el frame vertical 9:16 y el nombre del producto
-    // → assets/images/portfolio/producto
-    id: '', category: 'moda',
-    title: 'Producto en uso',
-    location: '',
-    blurb: '',
-    thumb: '',
-    ig: { url: 'https://www.instagram.com/reel/DS4-h81jmpk/' },
   },
 ];
 
