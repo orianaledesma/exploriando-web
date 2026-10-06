@@ -101,7 +101,7 @@
 
         @if (piecesByCategory()[cat].length) {
           <div class="marcas-video-grid">
-            @for (piece of piecesByCategory()[cat]; track piece.title; let i = $index) {
+            @for (piece of piecesByCategory()[cat]; track piece.key; let i = $index) {
               <div class="marcas-video-card" appReveal [delay]="60 + i * 60">
 
                 @if (piece.id) {
@@ -116,7 +116,7 @@
                        linkea al reel en su plataforma. -->
                   <a class="marcas-video-card__player marcas-video-card__player--link"
                      [href]="piece.ig?.url" target="_blank" rel="noopener"
-                     [attr.aria-label]="'Ver \'' + piece.title + '\' en Instagram (abre en pestaña nueva)'">
+                     [attr.aria-label]="pieceLinkLabel(piece.title)">
                     @if (piece.thumb) {
                       <picture>
                         <source [srcset]="piece.thumb + '.webp'" type="image/webp" />
@@ -151,7 +151,7 @@
                   <div class="marcas-video-card__links">
                     @if (piece.yt; as yt) {
                       <a class="vstat" [href]="yt.url" target="_blank"
-                         rel="noopener" aria-label="Ver en YouTube (abre en pestaña nueva)">
+                         rel="noopener" [attr.aria-label]="t().portfolioLinks.yt">
                         <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
                           <path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/>
                         </svg>
@@ -160,7 +160,7 @@
                     }
                     @if (piece.ig; as ig) {
                       <a class="vstat" [href]="ig.url" target="_blank"
-                         rel="noopener" aria-label="Ver en Instagram (abre en pestaña nueva)">
+                         rel="noopener" [attr.aria-label]="t().portfolioLinks.ig">
                         <svg class="vstat__ico" viewBox="0 0 24 24" aria-hidden="true">
                           <path fill="none" stroke="currentColor" stroke-width="2" d="M2 8a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6Z"/>
                           <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>

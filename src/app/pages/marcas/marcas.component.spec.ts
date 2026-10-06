@@ -32,6 +32,70 @@ describe('MarcasComponent', () => {
         expect(fixture.componentInstance).toBeTruthy();
     });
 
+    describe('traducción de las piezas del portafolio', () => {
+        /**
+         * Hay una sola URL de /marcas y el idioma se cambia en el cliente, así
+         * que el prerender sólo prueba el español. Estos casos son la única
+         * cobertura de inglés y portugués.
+         */
+        const titulosEsperados = {
+            es: 'Un día de relax en el bosque',
+            en: 'A quiet day in the forest',
+            pt: 'Um dia de descanso na floresta',
+        } as const;
+
+        for (const [idioma, titulo] of Object.entries(titulosEsperados)) {
+            it(`muestra los títulos en ${idioma}`, () => {
+                lang.set(idioma as 'es' | 'en' | 'pt');
+                fixture.detectChanges();
+
+                const titulos = Array.from(
+                    compiled.querySelectorAll('.marcas-video-card__title'),
+                ).map((el) => el.textContent?.trim());
+
+                expect(titulos).toContain(titulo);
+            });
+        }
+
+        it('traduce el aria-label del frame, con el título interpolado', () => {
+            lang.set('en');
+            fixture.detectChanges();
+
+            const frame = compiled.querySelector('.marcas-video-card__player--link');
+            const etiqueta = frame?.getAttribute('aria-label') ?? '';
+
+            expect(etiqueta).toContain('opens in a new tab');
+            expect(etiqueta).toContain('A quiet day in the forest');
+            // El wrapper no puede quedar en español mientras el título se traduce.
+            expect(etiqueta).not.toContain('pestaña');
+        });
+
+        it('traduce los aria-label de los links de plataforma', () => {
+            lang.set('pt');
+            fixture.detectChanges();
+
+            const etiquetas = Array.from(compiled.querySelectorAll('.marcas-video-card__links a'))
+                .map((a) => a.getAttribute('aria-label') ?? '');
+
+            expect(etiquetas.some((e) => e.includes('abre em nova aba'))).toBe(true);
+            expect(etiquetas.every((e) => !e.includes('pestaña'))).toBe(true);
+        });
+
+        it('cada pieza tiene texto en los tres idiomas', () => {
+            const piezas = fixture.componentInstance.piecesByCategory();
+            const claves = Object.values(piezas).flat().map((p) => p.key);
+
+            expect(claves.length).toBeGreaterThan(0);
+            for (const idioma of ['es', 'en', 'pt'] as const) {
+                const copy = TRANSLATIONS[idioma].ugc.portfolioPieces;
+                for (const clave of claves) {
+                    // El título es obligatorio; lugar y descripción pueden faltar.
+                    expect(copy[clave]?.title, `${clave} en ${idioma}`).toBeTruthy();
+                }
+            }
+        });
+    });
+
     it('trackea marcas_form_click con location=hero al clickear el CTA del hero', () => {
         const heroLink = fixture.debugElement.query(By.css('.marcas-hero a.btn--primary'));
         heroLink.triggerEventHandler('click', new MouseEvent('click'));

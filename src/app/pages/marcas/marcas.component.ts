@@ -3,7 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
 import { AnalyticsService } from '../../services/analytics.service';
-import { TRANSLATIONS } from '../../translations/translations';
+import { TRANSLATIONS, type PortfolioPieceKey } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { LiteYoutubeComponent } from '../../components/lite-youtube/lite-youtube.component';
 import { ProcesoTimelineComponent } from '../../components/proceso-timeline/proceso-timeline.component';
@@ -61,21 +61,31 @@ export const CATEGORIES = [
 export type CategoryId = (typeof CATEGORIES)[number];
 
 interface PortfolioPiece {
+  /**
+   * Clave del texto traducido en `portfolioPieces`. El título, el lugar y la
+   * descripción viven en translations.ts: acá queda sólo lo estructural, que
+   * es igual en los tres idiomas.
+   */
+  key: PortfolioPieceKey;
   /** ID de YouTube. Vacío → la pieza vive sólo en Instagram (tarjeta sin player). */
   id: string;
   category: CategoryId;
+  /** Frame vertical 9:16 propio, sin extensión (.webp + fallback .jpg). */
+  thumb: string;
+  yt?: PlatformLink;
+  ig?: PlatformLink;
+}
+
+/** Una pieza con su texto ya resuelto al idioma activo, lista para la tarjeta. */
+interface PortfolioCard extends PortfolioPiece {
   title: string;
-  /** Destino y/o marca, se muestra bajo el título. */
+  /** Destino y/o marca, se muestra bajo el título. Vacío → se omite la línea. */
   location: string;
   /**
    * Una línea sobre el enfoque de la pieza. Es lo que diferencia un portafolio
    * de una galería: dice por qué se grabó así, no sólo qué se ve.
    */
   blurb: string;
-  /** Frame vertical 9:16 propio, sin extensión (.webp + fallback .jpg). */
-  thumb: string;
-  yt?: PlatformLink;
-  ig?: PlatformLink;
 }
 
 /**
@@ -102,54 +112,36 @@ function renderable(piece: PortfolioPiece): boolean {
 const PORTFOLIO: PortfolioPiece[] = [
   // ── Hotelería ──────────────────────────────────────────────────────────────
   {
-    id: '', category: 'hoteleria',
-    title: 'Un día de relax en el bosque',
-    location: 'Forest Domes · Vilnius, Lituania',
-    blurb: 'El domo como escenario de un momento, no como listado de amenities.',
+    key: 'forest-domes', id: '', category: 'hoteleria',
     thumb: '/assets/images/portfolio/forest-domes',
     ig: { url: 'https://www.instagram.com/reels/DaiZmzsMRHU/' },
   },
   {
-    id: 'rCevn0IHPoQ', category: 'hoteleria',
-    title: 'El resort con de todo',
-    location: 'Resort Paradise · Sharm el Sheikh',
-    blurb: 'Recorrido con el ritmo de un día real. De una producción salieron el vertical y el video largo.',
+    key: 'parrotel', id: 'rCevn0IHPoQ', category: 'hoteleria',
     thumb: '/assets/images/portfolio/parrotel',
     yt: { url: 'https://www.youtube.com/watch?v=rCevn0IHPoQ' },
     ig: { url: 'https://www.instagram.com/reel/DKxV0oPs6R8/' },
   },
   {
-    id: '', category: 'hoteleria',
-    title: 'Casa del lago',
-    location: '3Krantai',
-    blurb: '',
+    key: 'casa-del-lago', id: '', category: 'hoteleria',
     thumb: '/assets/images/portfolio/3krantai',
     ig: { url: 'https://www.instagram.com/reel/DdJlhUnOEU3/' },
   },
 
   // ── Gastronomía ────────────────────────────────────────────────────────────
   {
-    id: 'hthFxbQBQxc', category: 'gastronomia',
-    title: 'El mejor brunch',
-    location: 'Vero Cafe · Lituania',
-    blurb: 'Lo que se pide, cómo llega y qué se siente al probarlo.',
+    key: 'vero-cafe', id: 'hthFxbQBQxc', category: 'gastronomia',
     thumb: '/assets/images/portfolio/verocafe',
     yt: { url: 'https://www.youtube.com/shorts/hthFxbQBQxc' },
   },
   {
-    id: 'Gw4LnyMO864', category: 'gastronomia',
-    title: 'Experiencia gastronómica',
-    location: 'Sharm el Sheikh',
-    blurb: 'Producto en contexto, con la mesa y la reacción en el mismo plano.',
+    key: 'sharm-gastro', id: 'Gw4LnyMO864', category: 'gastronomia',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=Gw4LnyMO864' },
     ig: { url: 'https://www.instagram.com/reels/DK3wB8EsnWb/' },
   },
   {
-    id: '', category: 'gastronomia',
-    title: 'Cafetería',
-    location: '',
-    blurb: '',
+    key: 'cafeteria', id: '', category: 'gastronomia',
     thumb: '/assets/images/portfolio/cafeteria',
     ig: { url: 'https://www.instagram.com/reel/DKIPVCEsq71/' },
   },
@@ -158,74 +150,49 @@ const PORTFOLIO: PortfolioPiece[] = [
   // Los vivos son horizontales: el poster lo deriva lite-youtube del propio
   // YouTube, así que no necesitan frame vertical propio.
   {
-    id: 'c5aac8OX40c', category: 'cocina',
-    title: 'Empanadas argentinas',
-    location: 'Vivo de cocina · YouTube',
-    blurb: 'Una receta entera en vivo, con la comunidad preguntando mientras se cocina.',
+    key: 'empanadas', id: 'c5aac8OX40c', category: 'cocina',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=c5aac8OX40c' },
   },
   {
-    id: 'BNiXo2zVeok', category: 'cocina',
-    title: 'Pastel de papa',
-    location: 'Vivo de cocina · YouTube',
-    blurb: 'El formato diario: una hora de cocina y preguntas respondidas al aire.',
+    key: 'pastel-papa', id: 'BNiXo2zVeok', category: 'cocina',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=BNiXo2zVeok' },
   },
   {
-    id: 'GPIOXYanTus', category: 'cocina',
-    title: 'Ñoquis caseros del 29',
-    location: 'Vivo de cocina · YouTube',
-    blurb: 'Una tradición argentina cocinada en vivo, con la comunidad siguiéndola paso a paso.',
+    key: 'noquis', id: 'GPIOXYanTus', category: 'cocina',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=GPIOXYanTus' },
   },
 
   // ── Experiencias ───────────────────────────────────────────────────────────
   {
-    id: 'Urf1Qvxu3AU', category: 'experiencias',
-    title: 'Globo aerostático',
-    location: 'Luxor, Egipto',
-    blurb: 'La anticipación, el momento y la reacción, en ese orden.',
+    key: 'globo', id: 'Urf1Qvxu3AU', category: 'experiencias',
     thumb: '/assets/images/portfolio/globos',
     yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU' },
     ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
   },
   {
-    id: '', category: 'experiencias',
-    title: 'Boxeo',
-    location: '',
-    blurb: '',
+    key: 'boxeo', id: '', category: 'experiencias',
     thumb: '/assets/images/portfolio/boxeo',
     ig: { url: 'https://www.instagram.com/reel/Ddyf0VhO48j/' },
   },
-
   {
-    id: '', category: 'experiencias',
-    title: 'Who win?',
-    location: '',
-    blurb: '',
+    key: 'who-win', id: '', category: 'experiencias',
     thumb: '/assets/images/portfolio/who-win',
     ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
   },
 
   // ── Moda y retail ──────────────────────────────────────────────────────────
   {
-    id: '5WDRY-KvFSM', category: 'moda',
-    title: 'Shopping',
-    location: 'Panamá',
-    blurb: 'Producto en uso, con el recorrido como hilo.',
+    key: 'shopping', id: '5WDRY-KvFSM', category: 'moda',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=5WDRY-KvFSM' },
     // Sin link directo al reel → fallback al perfil (reemplazar si aparece).
     ig: { url: 'https://www.instagram.com/exploriando/' },
   },
   {
-    id: '', category: 'moda',
-    title: 'Unboxing',
-    location: '',
-    blurb: '',
+    key: 'unboxing', id: '', category: 'moda',
     thumb: '/assets/images/portfolio/unboxing',
     ig: { url: 'https://www.instagram.com/reel/DRCoQWYjBnO/' },
   },
@@ -271,14 +238,28 @@ export class MarcasComponent {
    * renderizan completos y se ocultan con `hidden`, así las 16 piezas quedan
    * en el HTML prerenderizado. Rendiendo sólo la activa, Google veía tres.
    */
-  readonly piecesByCategory = computed(() =>
-    Object.fromEntries(
-      CATEGORIES.map((c) => [c, PORTFOLIO.filter((p) => p.category === c && renderable(p))]),
-    ) as Record<CategoryId, PortfolioPiece[]>,
-  );
+  readonly piecesByCategory = computed(() => {
+    const copy = this.t().portfolioPieces;
+    const card = (p: PortfolioPiece): PortfolioCard => ({ ...p, ...copy[p.key] });
+    return Object.fromEntries(
+      CATEGORIES.map((c) => [
+        c,
+        PORTFOLIO.filter((p) => p.category === c && renderable(p)).map(card),
+      ]),
+    ) as Record<CategoryId, PortfolioCard[]>;
+  });
 
   /** Piezas de la categoría abierta. */
   readonly visiblePieces = computed(() => this.piecesByCategory()[this.activeCategory()]);
+
+  /**
+   * Etiqueta accesible del link de una pieza. El título va interpolado en la
+   * plantilla traducida, no concatenado: en inglés y portugués el orden de las
+   * palabras no es el mismo que en español.
+   */
+  pieceLinkLabel(title: string): string {
+    return this.t().portfolioLinks.piece.replace('{title}', title);
+  }
 
 
   selectCategory(category: CategoryId): void {
