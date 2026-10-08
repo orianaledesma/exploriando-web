@@ -55,16 +55,15 @@ export const CATEGORIES = [
   'gastronomia',
   'cocina',
   'experiencias',
-  'moda',
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number];
 
 interface PortfolioPiece {
   /**
-   * Clave del texto traducido en `portfolioPieces`. El título, el lugar y la
-   * descripción viven en translations.ts: acá queda sólo lo estructural, que
-   * es igual en los tres idiomas.
+   * Clave del texto traducido en `portfolioPieces`. El título y el lugar viven
+   * en translations.ts: acá queda sólo lo estructural, que es igual en los
+   * tres idiomas.
    */
   key: PortfolioPieceKey;
   /** ID de YouTube. Vacío → la pieza vive sólo en Instagram (tarjeta sin player). */
@@ -178,19 +177,6 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
   },
 
-  // ── Moda y retail ──────────────────────────────────────────────────────────
-  {
-    key: 'shopping', id: '5WDRY-KvFSM', category: 'moda',
-    thumb: '',
-    yt: { url: 'https://www.youtube.com/watch?v=5WDRY-KvFSM' },
-    // Sin link directo al reel → fallback al perfil (reemplazar si aparece).
-    ig: { url: 'https://www.instagram.com/exploriando/' },
-  },
-  {
-    key: 'unboxing', id: '', category: 'moda',
-    thumb: '/assets/images/portfolio/unboxing',
-    ig: { url: 'https://www.instagram.com/reel/DRCoQWYjBnO/' },
-  },
 ];
 
 

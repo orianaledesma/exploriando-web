@@ -11,8 +11,7 @@ export type PortfolioPieceKey =
   | 'forest-domes' | 'parrotel' | 'casa-del-lago'
   | 'vero-cafe' | 'sharm-gastro' | 'cafeteria'
   | 'empanadas' | 'pastel-papa' | 'noquis'
-  | 'globo' | 'boxeo' | 'who-win'
-  | 'shopping' | 'unboxing';
+  | 'globo' | 'boxeo' | 'who-win';
 
 interface NavLink        { label: string; href: string; }
 /** Una opción contratable dentro de un servicio. */
@@ -119,7 +118,7 @@ interface AppTranslations {
      * que convierte la pestaña en un argumento de venta y no en un filtro.
      */
     portfolioCategories: Record<
-      'hoteleria' | 'gastronomia' | 'cocina' | 'experiencias' | 'moda',
+      'hoteleria' | 'gastronomia' | 'cocina' | 'experiencias',
       { label: string; intro: string }
     >;
     /** Tarjeta que ocupa el lugar de una categoría todavía sin piezas. */
@@ -512,10 +511,6 @@ const es: AppTranslations = {
         label: 'Experiencias',
         intro: 'Experiencias y actividades contadas desde adentro: la anticipación, el momento y la reacción. El formato que mejor funciona cuando lo que se vende es algo que se siente.',
       },
-      moda: {
-        label: 'Moda',
-        intro: 'Producto en uso y en recorrido: cómo se ve puesto, cómo se elige, qué se lleva. Pensado para tiendas y marcas que venden algo que se prueba.',
-      },
     },
     portfolioEmpty: {
       title: 'Próxima producción',
@@ -534,8 +529,6 @@ const es: AppTranslations = {
       globo: { title: 'Globo aerostático', location: 'Luxor, Egipto' },
       boxeo: { title: 'Boxeo', location: 'Lituania' },
       'who-win': { title: 'Who win?', location: 'Lituania' },
-      shopping: { title: 'Shopping', location: 'Panamá' },
-      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Ver «{title}» en Instagram (abre en pestaña nueva)',
@@ -1222,10 +1215,6 @@ const en: AppTranslations = {
         label: 'Experiences',
         intro: 'Experiences told from the inside: the build-up, the moment, the reaction. The format that works best when what you sell is something people feel.',
       },
-      moda: {
-        label: 'Fashion',
-        intro: 'Product worn and shopped for: how it looks on, how it gets picked, what goes home. Built for stores and brands selling something you try on.',
-      },
     },
     portfolioEmpty: {
       title: 'Next production',
@@ -1244,8 +1233,6 @@ const en: AppTranslations = {
       globo: { title: 'Hot air balloon', location: 'Luxor, Egypt' },
       boxeo: { title: 'Boxing', location: 'Lithuania' },
       'who-win': { title: 'Who win?', location: 'Lithuania' },
-      shopping: { title: 'Shopping', location: 'Panama' },
-      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Watch “{title}” on Instagram (opens in a new tab)',
@@ -1928,10 +1915,6 @@ const pt: AppTranslations = {
         label: 'Experiências',
         intro: 'Experiências contadas de dentro: a expectativa, o momento e a reação. O formato que melhor funciona quando o que se vende é algo que se sente.',
       },
-      moda: {
-        label: 'Moda',
-        intro: 'Produto em uso e em percurso: como fica vestido, como se escolhe, o que se leva. Pensado para lojas e marcas que vendem algo que se experimenta.',
-      },
     },
     portfolioEmpty: {
       title: 'Próxima produção',
@@ -1950,8 +1933,6 @@ const pt: AppTranslations = {
       globo: { title: 'Balão de ar quente', location: 'Luxor, Egito' },
       boxeo: { title: 'Boxe', location: 'Lituânia' },
       'who-win': { title: 'Who win?', location: 'Lituânia' },
-      shopping: { title: 'Shopping', location: 'Panamá' },
-      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Ver «{title}» no Instagram (abre em nova aba)',
