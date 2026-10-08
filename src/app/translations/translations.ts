@@ -126,12 +126,12 @@ interface AppTranslations {
     portfolioEmpty: { title: string; note: string };
     /**
      * Texto de cada pieza. Lo estructural (id, frame, links) vive en el
-     * componente; acá sólo lo que cambia de idioma. `location` y `blurb`
-     * vacíos son válidos: la tarjeta omite esa línea.
+     * componente; acá sólo lo que cambia de idioma. Un `location` vacío es
+     * válido: la tarjeta omite esa línea.
      */
     portfolioPieces: Record<
       PortfolioPieceKey,
-      { title: string; location: string; blurb: string }
+      { title: string; location: string }
     >;
     /**
      * Etiquetas accesibles de los links de cada tarjeta. `piece` lleva el
@@ -522,56 +522,20 @@ const es: AppTranslations = {
       note: 'Esta categoría todavía no tiene piezas publicadas.',
     },
     portfolioPieces: {
-      'forest-domes': {
-        title: 'Un día de relax en el bosque',
-        location: 'Forest Domes · Vilnius, Lituania',
-        blurb: 'El domo como escenario de un momento, no como listado de amenities.',
-      },
-      parrotel: {
-        title: 'El resort con de todo',
-        location: 'Resort Paradise · Sharm el Sheikh',
-        blurb: 'Recorrido con el ritmo de un día real. De una producción salieron el vertical y el video largo.',
-      },
-      'casa-del-lago': { title: 'Casa del lago', location: '3Krantai', blurb: '' },
-      'vero-cafe': {
-        title: 'El mejor brunch',
-        location: 'Vero Cafe · Lituania',
-        blurb: 'Lo que se pide, cómo llega y qué se siente al probarlo.',
-      },
-      'sharm-gastro': {
-        title: 'Experiencia gastronómica',
-        location: 'Sharm el Sheikh',
-        blurb: 'Producto en contexto, con la mesa y la reacción en el mismo plano.',
-      },
-      cafeteria: { title: 'Cafetería', location: '', blurb: '' },
-      empanadas: {
-        title: 'Empanadas argentinas',
-        location: 'Vivo de cocina · YouTube',
-        blurb: 'Una receta entera en vivo, con la comunidad preguntando mientras se cocina.',
-      },
-      'pastel-papa': {
-        title: 'Pastel de papa',
-        location: 'Vivo de cocina · YouTube',
-        blurb: 'El formato diario: una hora de cocina y preguntas respondidas al aire.',
-      },
-      noquis: {
-        title: 'Ñoquis caseros del 29',
-        location: 'Vivo de cocina · YouTube',
-        blurb: 'Una tradición argentina cocinada en vivo, con la comunidad siguiéndola paso a paso.',
-      },
-      globo: {
-        title: 'Globo aerostático',
-        location: 'Luxor, Egipto',
-        blurb: 'La anticipación, el momento y la reacción, en ese orden.',
-      },
-      boxeo: { title: 'Boxeo', location: '', blurb: '' },
-      'who-win': { title: 'Who win?', location: '', blurb: '' },
-      shopping: {
-        title: 'Shopping',
-        location: 'Panamá',
-        blurb: 'Producto en uso, con el recorrido como hilo.',
-      },
-      unboxing: { title: 'Unboxing', location: '', blurb: '' },
+      'forest-domes': { title: 'Un día de relax en el bosque', location: 'Forest Domes · Vilnius, Lituania' },
+      parrotel: { title: 'El resort con de todo', location: 'Resort Paradise · Sharm el Sheikh' },
+      'casa-del-lago': { title: 'Casa del lago', location: '3Krantai' },
+      'vero-cafe': { title: 'El mejor brunch', location: 'Vero Cafe · Lituania' },
+      'sharm-gastro': { title: 'Experiencia gastronómica', location: 'Sharm el Sheikh' },
+      cafeteria: { title: 'Cafetería', location: '' },
+      empanadas: { title: 'Empanadas argentinas', location: 'Vivo de cocina · YouTube' },
+      'pastel-papa': { title: 'Pastel de papa', location: 'Vivo de cocina · YouTube' },
+      noquis: { title: 'Ñoquis caseros del 29', location: 'Vivo de cocina · YouTube' },
+      globo: { title: 'Globo aerostático', location: 'Luxor, Egipto' },
+      boxeo: { title: 'Boxeo', location: '' },
+      'who-win': { title: 'Who win?', location: '' },
+      shopping: { title: 'Shopping', location: 'Panamá' },
+      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Ver «{title}» en Instagram (abre en pestaña nueva)',
@@ -1268,56 +1232,20 @@ const en: AppTranslations = {
       note: 'No published pieces in this category yet.',
     },
     portfolioPieces: {
-      'forest-domes': {
-        title: 'A quiet day in the forest',
-        location: 'Forest Domes · Vilnius, Lithuania',
-        blurb: 'The dome as the setting for a moment, not as a list of amenities.',
-      },
-      parrotel: {
-        title: 'The resort that has everything',
-        location: 'Resort Paradise · Sharm el Sheikh',
-        blurb: 'A walkthrough paced like a real day. One shoot produced both the vertical and the long video.',
-      },
-      'casa-del-lago': { title: 'Lakeside house', location: '3Krantai', blurb: '' },
-      'vero-cafe': {
-        title: 'The best brunch',
-        location: 'Vero Cafe · Lithuania',
-        blurb: 'What you order, how it arrives and what it feels like to taste it.',
-      },
-      'sharm-gastro': {
-        title: 'A dining experience',
-        location: 'Sharm el Sheikh',
-        blurb: 'The product in context, with the table and the reaction in the same frame.',
-      },
-      cafeteria: { title: 'Coffee shop', location: '', blurb: '' },
-      empanadas: {
-        title: 'Argentine empanadas',
-        location: 'Cooking live · YouTube',
-        blurb: 'A whole recipe live, with the community asking questions while it cooks.',
-      },
-      'pastel-papa': {
-        title: 'Argentine potato pie',
-        location: 'Cooking live · YouTube',
-        blurb: 'The daily format: an hour of cooking and questions answered on air.',
-      },
-      noquis: {
-        title: 'Homemade gnocchi for the 29th',
-        location: 'Cooking live · YouTube',
-        blurb: 'An Argentine tradition cooked live, with the community following step by step.',
-      },
-      globo: {
-        title: 'Hot air balloon',
-        location: 'Luxor, Egypt',
-        blurb: 'The build-up, the moment and the reaction, in that order.',
-      },
-      boxeo: { title: 'Boxing', location: '', blurb: '' },
-      'who-win': { title: 'Who win?', location: '', blurb: '' },
-      shopping: {
-        title: 'Shopping',
-        location: 'Panama',
-        blurb: 'The product in use, with the walkthrough as the thread.',
-      },
-      unboxing: { title: 'Unboxing', location: '', blurb: '' },
+      'forest-domes': { title: 'A quiet day in the forest', location: 'Forest Domes · Vilnius, Lithuania' },
+      parrotel: { title: 'The resort that has everything', location: 'Resort Paradise · Sharm el Sheikh' },
+      'casa-del-lago': { title: 'Lakeside house', location: '3Krantai' },
+      'vero-cafe': { title: 'The best brunch', location: 'Vero Cafe · Lithuania' },
+      'sharm-gastro': { title: 'A dining experience', location: 'Sharm el Sheikh' },
+      cafeteria: { title: 'Coffee shop', location: '' },
+      empanadas: { title: 'Argentine empanadas', location: 'Cooking live · YouTube' },
+      'pastel-papa': { title: 'Argentine potato pie', location: 'Cooking live · YouTube' },
+      noquis: { title: 'Homemade gnocchi for the 29th', location: 'Cooking live · YouTube' },
+      globo: { title: 'Hot air balloon', location: 'Luxor, Egypt' },
+      boxeo: { title: 'Boxing', location: '' },
+      'who-win': { title: 'Who win?', location: '' },
+      shopping: { title: 'Shopping', location: 'Panama' },
+      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Watch “{title}” on Instagram (opens in a new tab)',
@@ -2010,56 +1938,20 @@ const pt: AppTranslations = {
       note: 'Esta categoria ainda não tem peças publicadas.',
     },
     portfolioPieces: {
-      'forest-domes': {
-        title: 'Um dia de descanso na floresta',
-        location: 'Forest Domes · Vilnius, Lituânia',
-        blurb: 'O domo como cenário de um momento, não como lista de amenities.',
-      },
-      parrotel: {
-        title: 'O resort com tudo',
-        location: 'Resort Paradise · Sharm el Sheikh',
-        blurb: 'Percurso no ritmo de um dia real. De uma produção saíram o vertical e o vídeo longo.',
-      },
-      'casa-del-lago': { title: 'Casa do lago', location: '3Krantai', blurb: '' },
-      'vero-cafe': {
-        title: 'O melhor brunch',
-        location: 'Vero Cafe · Lituânia',
-        blurb: 'O que se pede, como chega e o que se sente ao provar.',
-      },
-      'sharm-gastro': {
-        title: 'Experiência gastronômica',
-        location: 'Sharm el Sheikh',
-        blurb: 'Produto em contexto, com a mesa e a reação no mesmo plano.',
-      },
-      cafeteria: { title: 'Cafeteria', location: '', blurb: '' },
-      empanadas: {
-        title: 'Empanadas argentinas',
-        location: 'Ao vivo de cozinha · YouTube',
-        blurb: 'Uma receita inteira ao vivo, com a comunidade perguntando enquanto se cozinha.',
-      },
-      'pastel-papa': {
-        title: 'Torta de batata argentina',
-        location: 'Ao vivo de cozinha · YouTube',
-        blurb: 'O formato diário: uma hora de cozinha e perguntas respondidas ao vivo.',
-      },
-      noquis: {
-        title: 'Nhoque caseiro do dia 29',
-        location: 'Ao vivo de cozinha · YouTube',
-        blurb: 'Uma tradição argentina cozinhada ao vivo, com a comunidade acompanhando passo a passo.',
-      },
-      globo: {
-        title: 'Balão de ar quente',
-        location: 'Luxor, Egito',
-        blurb: 'A expectativa, o momento e a reação, nessa ordem.',
-      },
-      boxeo: { title: 'Boxe', location: '', blurb: '' },
-      'who-win': { title: 'Who win?', location: '', blurb: '' },
-      shopping: {
-        title: 'Shopping',
-        location: 'Panamá',
-        blurb: 'Produto em uso, com o percurso como fio condutor.',
-      },
-      unboxing: { title: 'Unboxing', location: '', blurb: '' },
+      'forest-domes': { title: 'Um dia de descanso na floresta', location: 'Forest Domes · Vilnius, Lituânia' },
+      parrotel: { title: 'O resort com tudo', location: 'Resort Paradise · Sharm el Sheikh' },
+      'casa-del-lago': { title: 'Casa do lago', location: '3Krantai' },
+      'vero-cafe': { title: 'O melhor brunch', location: 'Vero Cafe · Lituânia' },
+      'sharm-gastro': { title: 'Experiência gastronômica', location: 'Sharm el Sheikh' },
+      cafeteria: { title: 'Cafeteria', location: '' },
+      empanadas: { title: 'Empanadas argentinas', location: 'Ao vivo de cozinha · YouTube' },
+      'pastel-papa': { title: 'Torta de batata argentina', location: 'Ao vivo de cozinha · YouTube' },
+      noquis: { title: 'Nhoque caseiro do dia 29', location: 'Ao vivo de cozinha · YouTube' },
+      globo: { title: 'Balão de ar quente', location: 'Luxor, Egito' },
+      boxeo: { title: 'Boxe', location: '' },
+      'who-win': { title: 'Who win?', location: '' },
+      shopping: { title: 'Shopping', location: 'Panamá' },
+      unboxing: { title: 'Unboxing', location: '' },
     },
     portfolioLinks: {
       piece: 'Ver «{title}» no Instagram (abre em nova aba)',

@@ -81,11 +81,6 @@ interface PortfolioCard extends PortfolioPiece {
   title: string;
   /** Destino y/o marca, se muestra bajo el título. Vacío → se omite la línea. */
   location: string;
-  /**
-   * Una línea sobre el enfoque de la pieza. Es lo que diferencia un portafolio
-   * de una galería: dice por qué se grabó así, no sólo qué se ve.
-   */
-  blurb: string;
 }
 
 /**
@@ -106,8 +101,8 @@ function renderable(piece: PortfolioPiece): boolean {
  *
  * Hasta 2026-10-05 eran dos listas (destacadas + "ver más"); la maqueta v2 las
  * reemplaza por categorías, así que el orden dentro de cada una es el orden en
- * que se muestran. `blurb` dice el enfoque, no el contenido: es lo que separa
- * un portafolio de una galería.
+ * que se muestran. La tarjeta muestra título y lugar: la pieza se explica
+ * sola al verla, y la línea de enfoque alargaba la grilla sin agregar nada.
  */
 const PORTFOLIO: PortfolioPiece[] = [
   // ── Hotelería ──────────────────────────────────────────────────────────────

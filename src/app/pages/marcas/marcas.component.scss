@@ -370,7 +370,7 @@
     /*
      * `flex: 1` es lo que hace que `margin-top: auto` de los links funcione:
      * sin esto el bloque mide lo que mide su texto, y en una grilla donde unas
-     * piezas tienen descripción y otras no, los links quedaban a distintas
+     * piezas muestran el lugar y otras no, los links quedaban a distintas
      * alturas en cada tarjeta.
      */
     flex: 1;
