@@ -106,7 +106,7 @@ jobs:
           esperado="${{ steps.artefacto.outputs.main }}"
           for i in $(seq 1 12); do
             publicado=$(curl -sL --max-time 20 https://exploriando.page/ \
-              | grep -o 'main-[A-Z0-9]*\.js' | head -1 || true)
+              | grep -o 'main-[A-Za-z0-9_-]*\.js' | head -1 || true)
             if [ "$publicado" = "$esperado" ]; then
               echo "Producción sirve $publicado — deploy confirmado."
               exit 0

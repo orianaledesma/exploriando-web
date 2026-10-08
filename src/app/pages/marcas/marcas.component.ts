@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DOCUMENT, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
 import { AnalyticsService } from '../../services/analytics.service';
-import { TRANSLATIONS } from '../../translations/translations';
+import { TRANSLATIONS, type PortfolioPieceKey } from '../../translations/translations';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { LiteYoutubeComponent } from '../../components/lite-youtube/lite-youtube.component';
 import { ProcesoTimelineComponent } from '../../components/proceso-timeline/proceso-timeline.component';
 import { HeroCardsComponent } from '../../components/hero-cards/hero-cards.component';
+import { YOUTUBE_CHANNEL_URL } from '../../data/links';
+import { SeoService } from '../../services/seo.service';
 
 // Contacto directo. Decisión Ori 2026-08-29: casi todas las respuestas de
 // marcas llegan por DM, así que sacamos el paso intermedio de agendar llamada.
@@ -18,8 +20,6 @@ const CONTACT_MAIL_URL =
 /** Mismo buzón, asunto propio del bloque de cotización de servicios. */
 const QUOTE_MAIL_URL =
   'mailto:exploriando.info@gmail.com?subject=Cotizaci%C3%B3n%20de%20contenido';
-
-const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@exploriando';
 
 /**
  * Los dos frames en abanico del hero. Rutas sin extensión: se sirve `.webp`
@@ -47,120 +47,138 @@ interface PlatformLink {
  * vende PRODUCCIÓN, no alcance, así que las tarjetas ya no muestran cifras;
  * queda el link a cada posteo para quien quiera ver los números en la fuente.
  */
+/**
+ * Categorías del portafolio. El id une la pieza con su etiqueta e intro
+ * traducidas; el orden de esta lista es el orden de las pestañas.
+ */
+export const CATEGORIES = [
+  'hoteleria',
+  'experiencias',
+  'gastronomia',
+  'cocina',
+] as const;
+
+export type CategoryId = (typeof CATEGORIES)[number];
+
 interface PortfolioPiece {
+  /**
+   * Clave del texto traducido en `portfolioPieces`. El título y el lugar viven
+   * en translations.ts: acá queda sólo lo estructural, que es igual en los
+   * tres idiomas.
+   */
+  key: PortfolioPieceKey;
   /** ID de YouTube. Vacío → la pieza vive sólo en Instagram (tarjeta sin player). */
   id: string;
-  category: string;
-  title: string;
-  /** Destino y/o marca, se muestra bajo el título. */
-  location: string;
+  category: CategoryId;
   /** Frame vertical 9:16 propio, sin extensión (.webp + fallback .jpg). */
   thumb: string;
   yt?: PlatformLink;
   ig?: PlatformLink;
 }
 
-/**
- * Una pieza se puede mostrar si tiene con qué dibujar la tarjeta: o un video de
- * YouTube (el poster lo deriva `lite-youtube`) o un frame propio.
- *
- * Sin ninguno de los dos, el template armaría `<img src=".jpg">` y la tarjeta
- * saldría rota. Filtrar acá deja cargar una pieza con su link y su categoría
- * antes de tener la imagen: el día que el frame aparece, se publica sola.
- */
-function renderable(piece: PortfolioPiece): boolean {
-  return Boolean(piece.id || piece.thumb);
+/** Una pieza con su texto ya resuelto al idioma activo, lista para la tarjeta. */
+interface PortfolioCard extends PortfolioPiece {
+  title: string;
+  /** Destino y/o marca, se muestra bajo el título. Vacío → se omite la línea. */
+  location: string;
 }
 
-/** Las 3 piezas destacadas. El resto se despliega con "Ver más". */
-const PORTFOLIO_FEATURED: PortfolioPiece[] = [
+/**
+ * Una pieza se muestra si tiene a dónde llevar: un video de YouTube, un frame
+ * propio, o al menos un link a la plataforma donde vive.
+ *
+ * Cuando no hay imagen, la tarjeta dibuja un bloque neutro en su lugar en vez
+ * de armar `<img src=".jpg">`. Eso permite publicar una pieza con su link el
+ * mismo día, sin esperar al frame: el visitante igual puede ir a verla, y
+ * cuando la imagen aparece la tarjeta mejora sola.
+ */
+function renderable(piece: PortfolioPiece): boolean {
+  return Boolean(piece.id || piece.thumb || piece.ig || piece.yt);
+}
+
+/**
+ * Las piezas del portafolio, agrupadas en pestañas por categoría.
+ *
+ * Hasta 2026-10-05 eran dos listas (destacadas + "ver más"); la maqueta v2 las
+ * reemplaza por categorías, así que el orden dentro de cada una es el orden en
+ * que se muestran. La tarjeta muestra título y lugar: la pieza se explica
+ * sola al verla, y la línea de enfoque alargaba la grilla sin agregar nada.
+ */
+const PORTFOLIO: PortfolioPiece[] = [
+  // ── Hotelería ──────────────────────────────────────────────────────────────
   {
-    id: '', category: 'Alojamientos',
-    title: 'Un día de relax en el bosque',
-    location: 'Forest Domes · Vilnius, Lituania',
+    key: 'forest-domes', id: '', category: 'hoteleria',
     thumb: '/assets/images/portfolio/forest-domes',
     ig: { url: 'https://www.instagram.com/reels/DaiZmzsMRHU/' },
   },
   {
-    id: 'hthFxbQBQxc', category: 'Gastronomía',
-    title: 'El mejor brunch',
-    location: 'Vero Cafe · Lituania',
-    thumb: '/assets/images/portfolio/verocafe',
-    yt: { url: 'https://www.youtube.com/shorts/hthFxbQBQxc' },
-  },
-  {
-    id: 'rCevn0IHPoQ', category: 'Alojamientos',
-    title: 'El resort con de todo',
-    location: 'Resort Paradise · Sharm el Sheikh',
+    key: 'parrotel', id: 'rCevn0IHPoQ', category: 'hoteleria',
     thumb: '/assets/images/portfolio/parrotel',
     yt: { url: 'https://www.youtube.com/watch?v=rCevn0IHPoQ' },
     ig: { url: 'https://www.instagram.com/reel/DKxV0oPs6R8/' },
   },
-];
+  {
+    key: 'casa-del-lago', id: '', category: 'hoteleria',
+    thumb: '/assets/images/portfolio/3krantai',
+    ig: { url: 'https://www.instagram.com/reel/DdJlhUnOEU3/' },
+  },
 
-/** Trabajos anteriores — ocultos hasta que el visitante toca "Ver más". */
-const PORTFOLIO_REST: PortfolioPiece[] = [
+  // ── Experiencias ───────────────────────────────────────────────────────────
   {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/entrevista-eventos
-    // (.webp + .jpg). Hasta que exista, `renderable` deja la pieza fuera de la grilla.
-    // Confirmar también título y lugar/marca.
-    id: '', category: 'Eventos',
-    title: 'Entrevistas en el evento',
-    location: '',
-    thumb: '',
-    ig: { url: 'https://www.instagram.com/p/Ddw1i_du6JZ/' },
-  },
-  {
-    // TODO(Ori): falta el frame vertical 9:16 → assets/images/portfolio/hospedaje
-    // (.webp + .jpg). Confirmar también título y lugar/marca.
-    id: '', category: 'Alojamientos',
-    title: 'Un hospedaje por dentro',
-    location: '',
-    thumb: '',
-    ig: { url: 'https://www.instagram.com/p/DdJlhUnOEU3/' },
-  },
-  {
-    id: 'Urf1Qvxu3AU', category: 'Eventos',
-    title: 'Globo aerostático',
-    location: 'Luxor, Egipto',
+    key: 'globo', id: 'Urf1Qvxu3AU', category: 'experiencias',
     thumb: '/assets/images/portfolio/globos',
     yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU' },
     ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
   },
   {
-    id: 'ArpO3W5Rzhw', category: 'Alojamientos',
-    title: 'Panama Resort',
-    location: 'Panamá',
-    thumb: '',
-    yt: { url: 'https://www.youtube.com/watch?v=ArpO3W5Rzhw' },
-    ig: { url: 'https://www.instagram.com/reel/CxGR0O8gm5h/' },
+    key: 'boxeo', id: '', category: 'experiencias',
+    thumb: '/assets/images/portfolio/boxeo',
+    ig: { url: 'https://www.instagram.com/reel/Ddyf0VhO48j/' },
   },
   {
-    id: 'pvtR3abCZW0', category: 'Eventos',
-    title: 'Cataratas del Iguazú',
-    location: 'Misiones, Argentina',
-    thumb: '',
-    yt: { url: 'https://www.youtube.com/watch?v=pvtR3abCZW0' },
-    ig: { url: 'https://www.instagram.com/reel/C2Se6VJAIMk/' },
+    key: 'who-win', id: '', category: 'experiencias',
+    thumb: '/assets/images/portfolio/who-win',
+    ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
+  },
+
+  // ── Gastronomía ────────────────────────────────────────────────────────────
+  {
+    key: 'vero-cafe', id: 'hthFxbQBQxc', category: 'gastronomia',
+    thumb: '/assets/images/portfolio/verocafe',
+    yt: { url: 'https://www.youtube.com/shorts/hthFxbQBQxc' },
   },
   {
-    id: 'Gw4LnyMO864', category: 'Gastronomía',
-    title: 'Experiencia gastronómica',
-    location: 'Sharm el Sheikh',
+    key: 'sharm-gastro', id: 'Gw4LnyMO864', category: 'gastronomia',
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=Gw4LnyMO864' },
     ig: { url: 'https://www.instagram.com/reels/DK3wB8EsnWb/' },
   },
   {
-    id: '5WDRY-KvFSM', category: 'Moda',
-    title: 'Shopping',
-    location: 'Panamá',
+    key: 'cafeteria', id: '', category: 'gastronomia',
+    thumb: '/assets/images/portfolio/cafeteria',
+    ig: { url: 'https://www.instagram.com/reel/DKIPVCEsq71/' },
+  },
+
+  // ── Cocina (vivos) ─────────────────────────────────────────────────────────
+  // Los vivos son horizontales: el poster lo deriva lite-youtube del propio
+  // YouTube, así que no necesitan frame vertical propio.
+  {
+    key: 'empanadas', id: 'c5aac8OX40c', category: 'cocina',
     thumb: '',
-    yt: { url: 'https://www.youtube.com/watch?v=5WDRY-KvFSM' },
-    // Sin link directo al reel → fallback al perfil (reemplazar si aparece).
-    ig: { url: 'https://www.instagram.com/exploriando/' },
+    yt: { url: 'https://www.youtube.com/watch?v=c5aac8OX40c' },
+  },
+  {
+    key: 'pastel-papa', id: 'BNiXo2zVeok', category: 'cocina',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=BNiXo2zVeok' },
+  },
+  {
+    key: 'noquis', id: 'GPIOXYanTus', category: 'cocina',
+    thumb: '',
+    yt: { url: 'https://www.youtube.com/watch?v=GPIOXYanTus' },
   },
 ];
+
 
 @Component({
   selector: 'app-marcas',
@@ -176,6 +194,8 @@ export class MarcasComponent {
   private readonly lang = inject(LanguageService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
+  private readonly doc = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly analytics = inject(AnalyticsService);
 
@@ -185,30 +205,100 @@ export class MarcasComponent {
   readonly quoteMailUrl = QUOTE_MAIL_URL;
   readonly youtubeChannelUrl = YOUTUBE_CHANNEL_URL;
 
-  readonly portfolioFeatured = PORTFOLIO_FEATURED.filter(renderable);
-  readonly portfolioRest = PORTFOLIO_REST.filter(renderable);
+  readonly categories = CATEGORIES;
 
-  private readonly _extraServicesVisible = signal(false);
-  /** `true` cuando el visitante desplegó los 3 servicios extra. */
-  readonly extraServicesVisible = this._extraServicesVisible.asReadonly();
+  /** Categoría abierta. Arranca en la primera que tenga piezas publicadas. */
+  private readonly _activeCategory = signal<CategoryId>(
+    CATEGORIES.find((c) => PORTFOLIO.some((p) => p.category === c && renderable(p)))
+      ?? CATEGORIES[0],
+  );
+  readonly activeCategory = this._activeCategory.asReadonly();
 
-  toggleExtraServices(): void {
-    const next = !this._extraServicesVisible();
-    this._extraServicesVisible.set(next);
-    if (next) this.analytics.track('servicios_ver_mas');
+  /**
+   * Piezas publicables agrupadas por categoría.
+   *
+   * Se calculan todas, no sólo las de la pestaña abierta: los paneles se
+   * renderizan completos y se ocultan con `hidden`, así las 16 piezas quedan
+   * en el HTML prerenderizado. Rendiendo sólo la activa, Google veía tres.
+   */
+  readonly piecesByCategory = computed(() => {
+    const copy = this.t().portfolioPieces;
+    const card = (p: PortfolioPiece): PortfolioCard => ({ ...p, ...copy[p.key] });
+    return Object.fromEntries(
+      CATEGORIES.map((c) => [
+        c,
+        PORTFOLIO.filter((p) => p.category === c && renderable(p)).map(card),
+      ]),
+    ) as Record<CategoryId, PortfolioCard[]>;
+  });
+
+  /** Piezas de la categoría abierta. */
+  readonly visiblePieces = computed(() => this.piecesByCategory()[this.activeCategory()]);
+
+  /**
+   * Etiqueta accesible del link de una pieza. El título va interpolado en la
+   * plantilla traducida, no concatenado: en inglés y portugués el orden de las
+   * palabras no es el mismo que en español.
+   */
+  pieceLinkLabel(title: string): string {
+    return this.t().portfolioLinks.piece.replace('{title}', title);
+  }
+
+
+  selectCategory(category: CategoryId): void {
+    this._activeCategory.set(category);
+    this.analytics.track('portfolio_category_click', { category });
+  }
+
+  /**
+   * Flechas para moverse entre pestañas, Home/End a los extremos.
+   * Sin esto las seis pestañas son seis paradas sueltas del tabulador, que es
+   * justo lo que el patrón ARIA de tablist existe para evitar.
+   */
+  onCategoryKeydown(event: KeyboardEvent, index: number): void {
+    const last = CATEGORIES.length - 1;
+    let next: number | null = null;
+
+    switch (event.key) {
+      case 'ArrowRight': next = index === last ? 0 : index + 1; break;
+      case 'ArrowLeft':  next = index === 0 ? last : index - 1; break;
+      case 'Home':       next = 0; break;
+      case 'End':        next = last; break;
+      default: return;
+    }
+
+    event.preventDefault();
+    this.selectCategory(CATEGORIES[next]);
+    const tabs = (event.currentTarget as HTMLElement).parentElement?.children;
+    (tabs?.[next] as HTMLElement | undefined)?.focus();
+  }
+
+  /**
+   * Índices de los servicios con sus opciones desplegadas.
+   *
+   * Arrancan cerrados a propósito: los tres servicios con todas sus opciones
+   * abiertas son más de cien líneas de texto, y quien llega no sabe todavía
+   * cuál de los tres le sirve. Primero elige, después profundiza.
+   */
+  private readonly _openServices = signal<ReadonlySet<number>>(new Set());
+
+  isServiceOpen(index: number): boolean {
+    return this._openServices().has(index);
+  }
+
+  toggleService(index: number): void {
+    const next = new Set(this._openServices());
+    if (next.has(index)) {
+      next.delete(index);
+    } else {
+      next.add(index);
+      this.analytics.track('servicios_ver_mas', { servicio: index + 1 });
+    }
+    this._openServices.set(next);
   }
 
   readonly heroCards     = HERO_CARDS;
   readonly mostrarTaller = MOSTRAR_TALLER;
-
-  private readonly _restVisible = signal(false);
-  /** `true` cuando el visitante desplegó los trabajos anteriores. */
-  readonly restVisible = this._restVisible.asReadonly();
-
-  showRest(): void {
-    this._restVisible.set(true);
-    this.analytics.track('portfolio_ver_mas');
-  }
 
   private readonly previousTitle = this.title.getTitle();
   private readonly previousDescription =
@@ -223,6 +313,9 @@ export class MarcasComponent {
     this.meta.getTag('name="twitter:title"')?.content ?? '';
   private readonly previousTwitterDescription =
     this.meta.getTag('name="twitter:description"')?.content ?? '';
+  private readonly previousCanonical =
+    this.doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href
+    ?? 'https://exploriando.page';
 
   constructor() {
     effect(() => {
@@ -234,6 +327,9 @@ export class MarcasComponent {
       this.meta.updateTag({ property: 'og:url', content: 'https://exploriando.page/marcas' });
       this.meta.updateTag({ name: 'twitter:title', content: meta.title });
       this.meta.updateTag({ name: 'twitter:description', content: meta.description });
+      // Sin esto la página hereda el canonical estático de index.html, que
+      // apunta a la home: Google lee /marcas como un duplicado de la portada.
+      this.seo.setCanonicalPath('/marcas');
     });
 
     this.destroyRef.onDestroy(() => {
@@ -244,6 +340,7 @@ export class MarcasComponent {
       this.meta.updateTag({ property: 'og:url', content: this.previousOgUrl });
       this.meta.updateTag({ name: 'twitter:title', content: this.previousTwitterTitle });
       this.meta.updateTag({ name: 'twitter:description', content: this.previousTwitterDescription });
+      this.seo.setCanonicalPath(this.previousCanonical);
     });
   }
 

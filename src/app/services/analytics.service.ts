@@ -16,8 +16,8 @@ export type AnalyticsEvent =
   | 'marcas_form_click'       // click outbound al Google Form de marcas (param `location` distingue hero/package/final_cta)
   | 'en_vivo_click'            // CTA al vivo (param `location`: hero | section)
   | 'guias_premium_click'      // CTA/compra de una guía premium (param `guia`)
-  | 'servicios_ver_mas'        // despliega los 3 servicios extra en /marcas
-  | 'portfolio_ver_mas'        // despliega los trabajos anteriores en /marcas
+  | 'servicios_ver_mas'        // despliega las opciones de un servicio en /marcas (param `servicio`)
+  | 'portfolio_category_click' // pestaña de categoría del portafolio en /marcas (param `category`)
   | 'marcas_teaser_click'     // CTA del teaser B2B en el landing → deriva a /marcas
   | 'viajero_creador_youtube_click'  // CTA al canal de YouTube (watch hours)
   | 'viajero_creador_session_click'  // CTA a reservar sesión 1:1 (Calendly)
