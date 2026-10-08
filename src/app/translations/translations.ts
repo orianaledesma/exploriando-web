@@ -118,7 +118,7 @@ interface AppTranslations {
      * que convierte la pestaña en un argumento de venta y no en un filtro.
      */
     portfolioCategories: Record<
-      'hoteleria' | 'gastronomia' | 'cocina' | 'experiencias',
+      'hoteleria' | 'experiencias' | 'gastronomia' | 'cocina',
       { label: string; intro: string }
     >;
     /** Tarjeta que ocupa el lugar de una categoría todavía sin piezas. */
@@ -499,6 +499,10 @@ const es: AppTranslations = {
         label: 'Hotelería',
         intro: 'Alojamientos grabados como una estadía real: la llegada, el primer ingreso, el amanecer, los detalles. No un recorrido de ambientes, sino la secuencia que hace que alguien se imagine adentro.',
       },
+      experiencias: {
+        label: 'Experiencias',
+        intro: 'Experiencias y actividades contadas desde adentro: la anticipación, el momento y la reacción. El formato que mejor funciona cuando lo que se vende es algo que se siente.',
+      },
       gastronomia: {
         label: 'Gastronomía',
         intro: 'Producto en contexto: lo que se pide, cómo llega, cómo se ve en la mesa y qué se siente al probarlo. Formatos cortos pensados para que dé hambre, no para catalogar la carta.',
@@ -506,10 +510,6 @@ const es: AppTranslations = {
       cocina: {
         label: 'Cocina',
         intro: 'Cocino en vivo de lunes a viernes en YouTube, una hora por día, contestando qué le pongo a cada plato. Un producto que aparece ahí se usa de verdad, delante de gente que pregunta.',
-      },
-      experiencias: {
-        label: 'Experiencias',
-        intro: 'Experiencias y actividades contadas desde adentro: la anticipación, el momento y la reacción. El formato que mejor funciona cuando lo que se vende es algo que se siente.',
       },
     },
     portfolioEmpty: {
@@ -1203,6 +1203,10 @@ const en: AppTranslations = {
         label: 'Hospitality',
         intro: 'Stays filmed like a real one: the arrival, walking in for the first time, sunrise, the small details. Not a tour of the rooms — the sequence that makes someone picture themselves there.',
       },
+      experiencias: {
+        label: 'Experiences',
+        intro: 'Experiences told from the inside: the build-up, the moment, the reaction. The format that works best when what you sell is something people feel.',
+      },
       gastronomia: {
         label: 'Food',
         intro: 'Product in context: what you order, how it arrives, how it looks on the table and what it feels like to taste it. Short formats built to make people hungry, not to catalogue the menu.',
@@ -1210,10 +1214,6 @@ const en: AppTranslations = {
       cocina: {
         label: 'Cooking',
         intro: 'I cook live on YouTube every weekday, an hour a day, answering what goes into each dish. A product that shows up there gets genuinely used, in front of people asking questions.',
-      },
-      experiencias: {
-        label: 'Experiences',
-        intro: 'Experiences told from the inside: the build-up, the moment, the reaction. The format that works best when what you sell is something people feel.',
       },
     },
     portfolioEmpty: {
@@ -1903,6 +1903,10 @@ const pt: AppTranslations = {
         label: 'Hotelaria',
         intro: 'Hospedagens gravadas como uma estadia de verdade: a chegada, a primeira entrada, o amanhecer, os detalhes. Não um tour pelos ambientes, e sim a sequência que faz alguém se imaginar lá dentro.',
       },
+      experiencias: {
+        label: 'Experiências',
+        intro: 'Experiências contadas de dentro: a expectativa, o momento e a reação. O formato que melhor funciona quando o que se vende é algo que se sente.',
+      },
       gastronomia: {
         label: 'Gastronomia',
         intro: 'Produto em contexto: o que se pede, como chega, como fica na mesa e o que se sente ao provar. Formatos curtos feitos para dar fome, não para catalogar o cardápio.',
@@ -1910,10 +1914,6 @@ const pt: AppTranslations = {
       cocina: {
         label: 'Cozinha',
         intro: 'Cozinho ao vivo no YouTube de segunda a sexta, uma hora por dia, respondendo o que vai em cada prato. Um produto que aparece ali é usado de verdade, na frente de gente que pergunta.',
-      },
-      experiencias: {
-        label: 'Experiências',
-        intro: 'Experiências contadas de dentro: a expectativa, o momento e a reação. O formato que melhor funciona quando o que se vende é algo que se sente.',
       },
     },
     portfolioEmpty: {

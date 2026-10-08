@@ -52,9 +52,9 @@ interface PlatformLink {
  */
 export const CATEGORIES = [
   'hoteleria',
+  'experiencias',
   'gastronomia',
   'cocina',
-  'experiencias',
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number];
@@ -122,6 +122,24 @@ const PORTFOLIO: PortfolioPiece[] = [
     ig: { url: 'https://www.instagram.com/reel/DdJlhUnOEU3/' },
   },
 
+  // ── Experiencias ───────────────────────────────────────────────────────────
+  {
+    key: 'globo', id: 'Urf1Qvxu3AU', category: 'experiencias',
+    thumb: '/assets/images/portfolio/globos',
+    yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU' },
+    ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
+  },
+  {
+    key: 'boxeo', id: '', category: 'experiencias',
+    thumb: '/assets/images/portfolio/boxeo',
+    ig: { url: 'https://www.instagram.com/reel/Ddyf0VhO48j/' },
+  },
+  {
+    key: 'who-win', id: '', category: 'experiencias',
+    thumb: '/assets/images/portfolio/who-win',
+    ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
+  },
+
   // ── Gastronomía ────────────────────────────────────────────────────────────
   {
     key: 'vero-cafe', id: 'hthFxbQBQxc', category: 'gastronomia',
@@ -158,25 +176,6 @@ const PORTFOLIO: PortfolioPiece[] = [
     thumb: '',
     yt: { url: 'https://www.youtube.com/watch?v=GPIOXYanTus' },
   },
-
-  // ── Experiencias ───────────────────────────────────────────────────────────
-  {
-    key: 'globo', id: 'Urf1Qvxu3AU', category: 'experiencias',
-    thumb: '/assets/images/portfolio/globos',
-    yt: { url: 'https://www.youtube.com/watch?v=Urf1Qvxu3AU' },
-    ig: { url: 'https://www.instagram.com/exploriando/reel/DB1eCtGAH7_/' },
-  },
-  {
-    key: 'boxeo', id: '', category: 'experiencias',
-    thumb: '/assets/images/portfolio/boxeo',
-    ig: { url: 'https://www.instagram.com/reel/Ddyf0VhO48j/' },
-  },
-  {
-    key: 'who-win', id: '', category: 'experiencias',
-    thumb: '/assets/images/portfolio/who-win',
-    ig: { url: 'https://www.instagram.com/reel/Ddw1i_du6JZ/' },
-  },
-
 ];
 
 
