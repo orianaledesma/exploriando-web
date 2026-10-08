@@ -32,6 +32,16 @@ describe('MarcasComponent', () => {
         expect(fixture.componentInstance).toBeTruthy();
     });
 
+    it('declara su propio canonical, no el de la home', () => {
+        // index.html trae un canonical estático a la portada. Si la página no lo
+        // sobreescribe, Google lee /marcas como un duplicado de la home.
+        const canonical = document.head
+            .querySelector<HTMLLinkElement>('link[rel="canonical"]')
+            ?.getAttribute('href');
+
+        expect(canonical).toBe('https://exploriando.page/marcas');
+    });
+
     describe('traducción de las piezas del portafolio', () => {
         /**
          * Hay una sola URL de /marcas y el idioma se cambia en el cliente, así

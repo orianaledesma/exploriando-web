@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DOCUMENT, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
@@ -9,6 +9,7 @@ import { LiteYoutubeComponent } from '../../components/lite-youtube/lite-youtube
 import { ProcesoTimelineComponent } from '../../components/proceso-timeline/proceso-timeline.component';
 import { HeroCardsComponent } from '../../components/hero-cards/hero-cards.component';
 import { YOUTUBE_CHANNEL_URL } from '../../data/links';
+import { SeoService } from '../../services/seo.service';
 
 // Contacto directo. Decisión Ori 2026-08-29: casi todas las respuestas de
 // marcas llegan por DM, así que sacamos el paso intermedio de agendar llamada.
@@ -193,6 +194,8 @@ export class MarcasComponent {
   private readonly lang = inject(LanguageService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
+  private readonly doc = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly analytics = inject(AnalyticsService);
 
@@ -310,6 +313,9 @@ export class MarcasComponent {
     this.meta.getTag('name="twitter:title"')?.content ?? '';
   private readonly previousTwitterDescription =
     this.meta.getTag('name="twitter:description"')?.content ?? '';
+  private readonly previousCanonical =
+    this.doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href
+    ?? 'https://exploriando.page';
 
   constructor() {
     effect(() => {
@@ -321,6 +327,9 @@ export class MarcasComponent {
       this.meta.updateTag({ property: 'og:url', content: 'https://exploriando.page/marcas' });
       this.meta.updateTag({ name: 'twitter:title', content: meta.title });
       this.meta.updateTag({ name: 'twitter:description', content: meta.description });
+      // Sin esto la página hereda el canonical estático de index.html, que
+      // apunta a la home: Google lee /marcas como un duplicado de la portada.
+      this.seo.setCanonicalPath('/marcas');
     });
 
     this.destroyRef.onDestroy(() => {
@@ -331,6 +340,7 @@ export class MarcasComponent {
       this.meta.updateTag({ property: 'og:url', content: this.previousOgUrl });
       this.meta.updateTag({ name: 'twitter:title', content: this.previousTwitterTitle });
       this.meta.updateTag({ name: 'twitter:description', content: this.previousTwitterDescription });
+      this.seo.setCanonicalPath(this.previousCanonical);
     });
   }
 

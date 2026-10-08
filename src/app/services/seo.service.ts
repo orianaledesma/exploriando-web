@@ -64,6 +64,21 @@ export class SeoService {
     this.meta.updateTag({ property, content });
   }
 
+  /**
+   * Fija sólo el canonical, para páginas que todavía manejan su propio título
+   * y sus meta a mano. Sin esto heredan el canonical estático de index.html,
+   * que apunta a la home: Google las lee como duplicados de la portada.
+   *
+   * Acepta una ruta (`/marcas`) o una URL absoluta.
+   */
+  setCanonicalPath(path: string): void {
+    this.setCanonical(
+      path.startsWith('http')
+        ? path
+        : `${ORIGIN}${path.startsWith('/') ? '' : '/'}${path}`,
+    );
+  }
+
   private setCanonical(url: string): void {
     let link = this.doc.head.querySelector<HTMLLinkElement>(
       'link[rel="canonical"]',
