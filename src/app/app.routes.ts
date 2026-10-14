@@ -22,6 +22,13 @@ export const routes: Routes = [
         .then(m => m.ViajeroCreadorPageComponent),
   },
 
+  // Apoyo al proyecto — fuera del nav a propósito: se llega desde la sección
+  // de la home o con el link directo que se pasa para donaciones.
+  {
+    path: 'apoyo',
+    loadComponent: () => import('./pages/apoyo/apoyo.component').then(m => m.ApoyoComponent),
+  },
+
   // Mapa + listado por país + blog post por ciudad — lazy para no inflar la landing.
   {
     path: 'mapa',

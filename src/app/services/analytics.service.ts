@@ -25,7 +25,9 @@ export type AnalyticsEvent =
   | 'viajero_creador_video_click'    // click a un video suelto de la grilla gratuita
   | 'affiliate_click'         // click outbound a un link de afiliado (param `partner` = id de la card)
   | 'latina_connection_click'   // salida a latinaconnection.info (param `lang`)
-  | 'camino_click';            // tarjeta del ruteador por audiencia en la home (param `camino`)
+  | 'camino_click'             // tarjeta del ruteador por audiencia en la home (param `camino`)
+  | 'apoyo_teaser_click'       // CTA de la sección "Apoyá el proyecto" en la home → /apoyo
+  | 'apoyo_click';             // salida a PayPal/Cafecito desde /apoyo (params `destino`, `medio`)
 
 export type AnalyticsParams = Record<string, string | number | boolean>;
 
