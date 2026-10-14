@@ -8,6 +8,7 @@ import { AboutComponent } from '../../components/about/about.component';
 import { AsesoriasComponent } from '../../components/asesorias/asesorias.component';
 import { MarcasTeaserComponent } from '../../components/marcas-teaser/marcas-teaser.component';
 import { AfiliadosComponent } from '../../components/afiliados/afiliados.component';
+import { ApoyoTeaserComponent } from '../../components/apoyo-teaser/apoyo-teaser.component';
 
 // Orden de la maqueta versión 2 (2026-10-01). El cambio de fondo es que la
 // home dejó de ser un funnel único y pasó a ser un ruteador por audiencia:
@@ -18,6 +19,7 @@ import { AfiliadosComponent } from '../../components/afiliados/afiliados.compone
 //   → promesa gratis (recursos) y prueba de valor (mapa)
 //   → confianza (about) y asesoría
 //   → derivación B2B (marcas-teaser) y herramientas (afiliados)
+//   → apoyo al proyecto (apoyo-teaser), única puerta a /apoyo
 //   → el CTA final de comunidad, que vive en el footer
 //
 // Movimientos respecto del orden anterior: recursos pasa antes del mapa, y
@@ -45,6 +47,7 @@ import { AfiliadosComponent } from '../../components/afiliados/afiliados.compone
     <app-asesorias />
     <app-marcas-teaser />
     <app-afiliados />
+    <app-apoyo-teaser />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -57,6 +60,7 @@ import { AfiliadosComponent } from '../../components/afiliados/afiliados.compone
     AsesoriasComponent,
     MarcasTeaserComponent,
     AfiliadosComponent,
+    ApoyoTeaserComponent,
   ],
 })
 export class LandingComponent {}
