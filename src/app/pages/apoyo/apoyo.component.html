@@ -1,0 +1,89 @@
+<main class="apoyo-page">
+
+  <!-- 1 · Hero compacto: el foco es que los botones se vean sin scrollear. -->
+  <section class="apoyo-hero">
+    <div class="container apoyo-hero__inner">
+      <h1 id="apoyo-title" class="hero-enter hero-enter-3">{{ t().hero.headline }}</h1>
+      <p class="apoyo-hero__sub hero-enter hero-enter-4">{{ t().hero.text }}</p>
+    </div>
+  </section>
+
+  <!-- 2 · Destinos del apoyo. Todos van a PayPal; el destino viaja en analytics. -->
+  <section class="apoyo-goals" aria-labelledby="apoyo-goals-title">
+    <div class="container">
+      <!-- Un solo título para las cuatro: el destino ya lo dice cada banner. -->
+      <h2 id="apoyo-goals-title" class="apoyo-goals__title">{{ t().paypalCta }}</h2>
+
+      <ul class="apoyo-goals__grid" role="list">
+        @for (goal of goals(); track goal.id; let i = $index) {
+          <!-- Sin appReveal: las tarjetas están arriba del pliegue y tienen que
+               verse de entrada, no aparecer al scrollear. -->
+          <li class="apoyo-card">
+            <picture class="apoyo-card__media">
+              <source [srcset]="goal.image + '.webp'" type="image/webp" />
+              <img [src]="goal.image + '.jpg'" [alt]="goal.imageAlt"
+                   width="436" height="151" decoding="async" />
+            </picture>
+
+            <div class="apoyo-card__body">
+              <p class="apoyo-card__text">{{ goal.text }}</p>
+
+              @if (goal.amount) {
+                <a [href]="paypalAmountUrl(goal.amount)"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn--primary apoyo-card__cta"
+                   (click)="onSupportClick(goal.id, 'paypal', goal.amount)"
+                   [attr.aria-label]="t().give + ' ' + currency + ' ' + goal.amount + ' — ' + goal.imageAlt">
+                  {{ t().give }} {{ currency }} {{ goal.amount }}
+                </a>
+              } @else {
+                <!-- Monto libre: el link se arma en vivo con lo que se escribe. -->
+                <div class="apoyo-card__amount">
+                  <label class="apoyo-card__amount-label" for="apoyo-monto">{{ t().amountLabel }}</label>
+                  <div class="apoyo-card__amount-row">
+                    <span class="apoyo-card__currency" aria-hidden="true">{{ currency }}</span>
+                    <input id="apoyo-monto"
+                           class="apoyo-card__input"
+                           type="number"
+                           inputmode="numeric"
+                           min="1"
+                           [max]="maxCustomAmount"
+                           step="1"
+                           [placeholder]="t().amountPlaceholder"
+                           (input)="onCustomAmountInput($any($event.target).value)" />
+                  </div>
+                </div>
+                <a [href]="customUrl()"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn--primary apoyo-card__cta"
+                   (click)="onSupportClick(goal.id, 'paypal', customAmount())">
+                  {{ customCta() }}
+                </a>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+
+      <!-- 3 · Cafecito: sólo desde Argentina (Mercado Pago, en pesos). -->
+      <div class="apoyo-cafecito" appReveal>
+        <div>
+          <h3 class="apoyo-cafecito__title">{{ t().cafecito.title }}</h3>
+          <p class="apoyo-cafecito__text">{{ t().cafecito.text }}</p>
+        </div>
+        <a [href]="cafecitoUrl"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn btn--outline"
+           (click)="onSupportClick('cafecito', 'cafecito')">
+          ☕ {{ t().cafecito.cta }}
+        </a>
+      </div>
+
+      <p class="apoyo-goals__thanks" appReveal>{{ t().thanks }}</p>
+    </div>
+  </section>
+
+</main>

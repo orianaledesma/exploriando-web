@@ -222,6 +222,31 @@ interface AppTranslations {
     sectionLabel: string; headline: string; text: string; note: string; cta: string;
   };
 
+  /** Apoyo al proyecto. `teaser` es la sección casi al final de la home; el
+   *  resto es la página /apoyo, que no está en el nav: se llega desde la home
+   *  o con el link directo. Las claves de `goals` coinciden con `APOYO_GOALS`
+   *  en la página, que pone la imagen y el orden. */
+  apoyo: {
+    meta: { title: string; description: string; };
+    teaser: { sectionLabel: string; headline: string; text: string; cta: string; };
+    /** Sin eyebrow: repetía el título (decisión Ori 2026-10-14). */
+    hero: { headline: string; text: string; };
+    /** El destino lo dice el banner de cada tarjeta, así que no lleva título
+     *  propio: `imageAlt` repite ese texto para lectores de pantalla. */
+    goals: Record<'ingredientes' | 'set' | 'yerba' | 'otro', {
+      text: string; imageAlt: string;
+    }>;
+    /** Título único arriba de las tarjetas. */
+    paypalCta: string;
+    /** Botón con monto: "{give} USD 10". */
+    give: string;
+    /** Campo de monto libre de la última tarjeta. */
+    amountLabel: string; amountPlaceholder: string;
+    /** Bloque aparte de Cafecito (Mercado Pago, en pesos). */
+    cafecito: { title: string; text: string; cta: string; };
+    thanks: string;
+  };
+
   /** Ruteador por audiencia, arriba de la home. Cuatro caminos, uno por
    *  intención: viajar, crear contenido, aprender español, contratar.
    *  Reemplaza a los teasers de Viajero Creador y Latina Connection, que
@@ -898,6 +923,50 @@ const es: AppTranslations = {
     text:         'Un curso corto de español argentino para hombres que quieren conocer a una latina. Lo doy con mi marido, que fue el primero en aprenderlo así.',
     note:         'Las clases son en inglés.',
     cta:          'Conocer el curso',
+  },
+  apoyo: {
+    meta: {
+      title:       'Apoyá a Exploriando',
+      description: 'El vivo de Exploriando se hace a pulmón. Si querés darme una mano, elegí a qué va tu aporte: los ingredientes, el set o la yerba.',
+    },
+    teaser: {
+      sectionLabel: 'Apoyá el proyecto',
+      headline:     '¿Te gusta el vivo? Podés ser parte.',
+      text:         'Los ingredientes, el set, la yerba: cada aporte va a algo concreto del canal. Cualquier monto suma.',
+      cta:          'Quiero apoyar',
+    },
+    hero: {
+      headline:     'Apoyá a tu servidora',
+      text:         'Elegí a qué va tu aporte. Cualquier monto suma.',
+    },
+    goals: {
+      ingredientes: {
+        text:     'Lo que cocino en cámara sale del súper. Con esto llenamos la mesa del próximo vivo.',
+        imageAlt: 'Para los ingredientes del vivo',
+      },
+      set: {
+        text:     'Luz, sonido, utensilios. Pequeñas mejoras para que el vivo se vea y se escuche mejor.',
+        imageAlt: 'Para mejorar el set',
+      },
+      yerba: {
+        text:     'El mate me acompaña en cada transmisión. Invitame el próximo paquete.',
+        imageAlt: 'Para el paquete de yerba',
+      },
+      otro: {
+        text:     '¿Se te ocurre otra cosa? Escribila en la nota del pago y tu aporte va a eso.',
+        imageAlt: 'Apoyo a tu servidora',
+      },
+    },
+    paypalCta: 'Apoyá con PayPal',
+    give:      'Aportar',
+    amountLabel:       'Monto en USD',
+    amountPlaceholder: 'Ej: 15',
+    cafecito: {
+      title: '¿Estás en Argentina?',
+      text:  'Invitame un cafecito: se paga con Mercado Pago, en pesos.',
+      cta:   'Invitame un cafecito',
+    },
+    thanks: 'Gracias por estar. Que el vivo siga existiendo es, en buena parte, gracias a vos.',
   },
   caminos: {
     sectionLabel: '¿Qué te trajo acá?',
@@ -1602,6 +1671,50 @@ const en: AppTranslations = {
     note:         '4 lessons, 55 minutes.',
     cta:          'See the course',
   },
+  apoyo: {
+    meta: {
+      title:       'Support Exploriando',
+      description: 'The Exploriando live show runs on a shoestring. If you want to help, choose what your support goes to: the ingredients, the set or the yerba mate.',
+    },
+    teaser: {
+      sectionLabel: 'Support the project',
+      headline:     'Enjoy the live show? You can be part of it.',
+      text:         'The ingredients, the set, the yerba mate: every contribution goes to something specific. Any amount helps.',
+      cta:          'I want to help',
+    },
+    hero: {
+      headline:     'Support yours truly',
+      text:         'Choose what your support goes to. Any amount helps.',
+    },
+    goals: {
+      ingredientes: {
+        text:     'What I cook on camera comes from the grocery store. This fills the table for the next live.',
+        imageAlt: 'For the live show ingredients',
+      },
+      set: {
+        text:     'Light, sound, kitchen gear. Small upgrades so the live looks and sounds better.',
+        imageAlt: 'To improve the set',
+      },
+      yerba: {
+        text:     'Mate keeps me company on every stream. Treat me to the next bag.',
+        imageAlt: 'For the bag of yerba mate',
+      },
+      otro: {
+        text:     'Have something else in mind? Write it in the payment note and your support goes there.',
+        imageAlt: 'Support for yours truly',
+      },
+    },
+    paypalCta: 'Support with PayPal',
+    give:      'Give',
+    amountLabel:       'Amount in USD',
+    amountPlaceholder: 'E.g. 15',
+    cafecito: {
+      title: 'Are you in Argentina?',
+      text:  'Buy me a cafecito: it is paid with Mercado Pago, in pesos.',
+      cta:   'Buy me a cafecito',
+    },
+    thanks: 'Thank you for being here. The live show keeps going in large part because of you.',
+  },
   caminos: {
     sectionLabel: 'What brought you here?',
     headline:     'Pick where to start',
@@ -2301,6 +2414,50 @@ const pt: AppTranslations = {
     text:         'Um curso curto de espanhol argentino para homens que querem conhecer uma latina. Dou com meu marido, que foi o primeiro a aprender assim.',
     note:         'As aulas são em inglês.',
     cta:          'Conhecer o curso',
+  },
+  apoyo: {
+    meta: {
+      title:       'Apoie o Exploriando',
+      description: 'A live do Exploriando é feita na raça. Se quiser dar uma força, escolha para onde vai o seu apoio: os ingredientes, o cenário ou a erva-mate.',
+    },
+    teaser: {
+      sectionLabel: 'Apoie o projeto',
+      headline:     'Curte a live? Você pode fazer parte.',
+      text:         'Os ingredientes, o cenário, a erva-mate: cada apoio vai para algo concreto do canal. Qualquer valor ajuda.',
+      cta:          'Quero apoiar',
+    },
+    hero: {
+      headline:     'Apoie esta que vos fala',
+      text:         'Escolha para onde vai o seu apoio. Qualquer valor ajuda.',
+    },
+    goals: {
+      ingredientes: {
+        text:     'O que eu cozinho na câmera sai do mercado. Com isso a gente enche a mesa da próxima live.',
+        imageAlt: 'Para os ingredientes da live',
+      },
+      set: {
+        text:     'Luz, som, utensílios. Pequenas melhorias para a live ficar com imagem e som melhores.',
+        imageAlt: 'Para melhorar o cenário',
+      },
+      yerba: {
+        text:     'O mate me acompanha em cada transmissão. Me dá o próximo pacote.',
+        imageAlt: 'Para o pacote de erva-mate',
+      },
+      otro: {
+        text:     'Pensou em outra coisa? Escreva na nota do pagamento e o seu apoio vai para isso.',
+        imageAlt: 'Apoio para esta que vos fala',
+      },
+    },
+    paypalCta: 'Apoie com PayPal',
+    give:      'Apoiar com',
+    amountLabel:       'Valor em USD',
+    amountPlaceholder: 'Ex: 15',
+    cafecito: {
+      title: 'Está na Argentina?',
+      text:  'Me pague um cafecito: o pagamento é pelo Mercado Pago, em pesos.',
+      cta:   'Me pague um cafecito',
+    },
+    thanks: 'Obrigada por estar aqui. A live continua existindo, em boa parte, graças a você.',
   },
   caminos: {
     sectionLabel: 'O que te trouxe aqui?',
